@@ -1,0 +1,10 @@
+{
+  "name": "stne-log-parser",
+  "version": "0.0.1",
+  "description": "log parsing library for STNE ingame logs",
+  "main": "lib/stne-log-parser.js",
+  "repository": "https://github.com/Dasug/stne-log-parser",
+  "author": "Marius Kaufmann <dasug@improved-madness.de>",
+  "license": "MIT",
+  "private": false
+}
