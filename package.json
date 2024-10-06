@@ -23,5 +23,8 @@
     "presets": [
       "@babel/preset-env"
     ]
+  },
+  "dependencies": {
+    "regex": "^4.3.3"
   }
 }
