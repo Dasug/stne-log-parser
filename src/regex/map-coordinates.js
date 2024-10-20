@@ -10,9 +10,11 @@ import MapCoordinatesResult from './parse-result/map-coordinates-result';
  * Returns the following named groups when matching:  
  * `x`: x coordinate  
  * `y`: y coordinate
+ * `orbit` `@` if in orbit, `undefined` otherwise
  */
 class MapCoordinates extends Expression {
   static regexPattern = pattern`
+    (?<orbit> @)?
     (?<x> \d+)\|(?<y> \d+)
   `;
 
@@ -29,6 +31,7 @@ class MapCoordinates extends Expression {
     const resultObject = new MapCoordinatesResult;
     resultObject.x = match.groups.x !== undefined ? Number(match.groups.x) : null;
     resultObject.y = match.groups.y !== undefined ? Number(match.groups.y) : null;
+    resultObject.orbit = match.groups.orbit !== undefined;
     return resultObject;
   }
 }

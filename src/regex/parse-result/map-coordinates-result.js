@@ -12,6 +12,12 @@ class MapCoordinatesResult {
    * @type {?number}
    */
   y;
+
+  /**
+   * is current coordinate in orbit
+   * @type {boolean}
+   */
+  orbit;
 }
 
 export default MapCoordinatesResult;
