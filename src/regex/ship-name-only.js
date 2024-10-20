@@ -8,12 +8,12 @@ import ShipNameOnlyResult from './parse-result/ship-name-only-result';
  * Parses a ship name only without added NCC, class etc..  
  * Example: `[Starbase] New Koweston` or any name usually but not always between 2 and 25 characters long
  * Returns the following named groups when matching:  
- * `ship_name`: name of the ship  
+ * `ship_name_single`: name of the ship  
  */
 class ShipNameOnly extends Expression {
   // normal ship names should only be up to 25 (visible) characters long but in some circumstances they can be longer
   static regexPattern = pattern`
-    (?<ship_name>.{2,45})
+    (?<ship_name_single>.{2,45})
   `;
 
   /**
@@ -27,7 +27,7 @@ class ShipNameOnly extends Expression {
     }
     
     const resultObject = new ShipNameOnlyResult;
-    resultObject.name = match.groups.ship_name;
+    resultObject.name = match.groups.ship_name_single;
     return resultObject;
   }
 }
