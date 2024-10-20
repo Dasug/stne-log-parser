@@ -20,6 +20,16 @@ describe('player name and id regex', () => {
   });
   test("PlayerNameAndId does not match ship name and NCC", () => {
     const match = PlayerNameAndId.match("1. Trapo-Links-3133 (2562637, Moringi)");
+    const matchResult = PlayerNameAndId.matchResult("1. Trapo-Links-3133 (2562637, Moringi)");
     expect(match).toBeNull();
+    expect(matchResult).toBeNull();
+  });
+
+  test("PlayerNameAndId matches and extracts NPC entry to result class", () => {
+    const result = PlayerNameAndId.matchResult("[DE-1] SUPPORT (NPC-50546)");
+    expect(result).not.toBeNull();
+    expect(result.name).toBe("[DE-1] SUPPORT");
+    expect(result.idPrefix).toBe("NPC");
+    expect(result.id).toBe(50546);
   });
 });

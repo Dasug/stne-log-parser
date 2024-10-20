@@ -2,6 +2,7 @@
 
 import {pattern} from 'regex';
 import Expression from './expression';
+import PlayerNameAndIdResult from './parse-result/player-name-and-id-result';
 
 /**
  * Parses a player name with ID and an optional ID prefix.  
@@ -22,6 +23,23 @@ class PlayerNameAndId extends Expression {
     (?<player_id>\d+)
     \)
   `;
+
+  /**
+   * @returns {?PlayerNameAndIdResult} player data extracted from the text or null if there's no match
+   * @inheritdoc 
+   */
+  static matchResult(text) {
+    const match = this.match(text);
+    if(match === null) {
+      return null;
+    }
+    
+    const resultObject = new PlayerNameAndIdResult;
+    resultObject.name = match.groups.player_name;
+    resultObject.idPrefix = match.groups.id_prefix !== undefined ? match.groups.id_prefix : null;
+    resultObject.id = Number(match.groups.player_id);
+    return resultObject;
+  }
 }
 
 export default PlayerNameAndId;
