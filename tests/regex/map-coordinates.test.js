@@ -12,4 +12,11 @@ describe('map coordinates regex', () => {
     expect(matches.groups.x).toBe("123");
     expect(matches.groups.y).toBe("456");
   });
+
+  test("map coordinates extracts to result class properly", () => {
+    const result = MapCoordinates.matchResult("543|119");
+    expect(result).not.toBeNull();
+    expect(result.x).toBe(543);
+    expect(result.y).toBe(119);
+  });
 });
