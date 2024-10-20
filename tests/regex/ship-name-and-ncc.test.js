@@ -13,6 +13,7 @@ describe('ship name and ncc regex', () => {
   });
   test("ShipNameAndNcc does not match if ship type is missing", () => {
     expect(ShipNameAndNcc.match("[Laburec] Eternal Flare (2527210)")).toBeNull();
+    expect(ShipNameAndNcc.matchResult("[Laburec] Eternal Flare (2527210)")).toBeNull();
   });
   test("ShipNameAndNcc extracts ship name, ncc, class and ncc prefix", () => {
     const match = ShipNameAndNcc.match("[Laburec] Eternal Flare (NX-2527210, Galaxy)");
@@ -31,5 +32,14 @@ describe('ship name and ncc regex', () => {
     expect(match.groups.ncc_prefix).toBeUndefined();
     expect(match.groups.ncc).toBe("2562637");
     expect(match.groups.ship_class).toBe("Moringi");
+  });
+
+  test("ShipNameAndNcc extracts ship data to result class properly", () => {
+    const result = ShipNameAndNcc.matchResult("[Laburec] Eternal Flare (NX-2527210, Galaxy)");
+    expect(result).not.toBeNull();
+    expect(result.name).toBe("[Laburec] Eternal Flare");
+    expect(result.nccPrefix).toBe("NX");
+    expect(result.ncc).toBe(2527210);
+    expect(result.shipClass).toBe("Galaxy");
   });
 });

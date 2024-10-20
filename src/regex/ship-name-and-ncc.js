@@ -2,6 +2,7 @@
 
 import {pattern} from 'regex';
 import Expression from './expression';
+import ShipNameAndNccResult from './parse-result/ship-name-and-ncc-result';
 
 /**
  * Parses a ship name with NCC, class and an optional NCC prefix.  
@@ -26,6 +27,24 @@ class ShipNameAndNcc extends Expression {
     (?<ship_class>.+)
     \)
   `;
+
+  /**
+   * @returns {?ShipNameAndNccResult} ship data extracted from the text or null if there's no match
+   * @inheritdoc 
+   */
+  static matchResult(text) {
+    const match = this.match(text);
+    if(match === null) {
+      return null;
+    }
+    
+    const resultObject = new ShipNameAndNccResult;
+    resultObject.name = match.groups.ship_name;
+    resultObject.nccPrefix = match.groups.ncc_prefix !== undefined ? match.groups.ncc_prefix : null;
+    resultObject.ncc = Number(match.groups.ncc);
+    resultObject.shipClass = match.groups.ship_class;
+    return resultObject;
+  }
 }
 
 export default ShipNameAndNcc;
