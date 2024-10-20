@@ -21,6 +21,15 @@ class Expression {
   static match(text) {
     return text.match(regex`^${this.regexPattern}$`);
   }
+
+  /**
+   * Matches the given text with the expression and returns matching result class
+   * @param {string} text 
+   * @returns {?object} result object or null if there was no match
+   */
+  static matchResult(text) {
+    return null;
+  }
 }
 
 export default Expression;
