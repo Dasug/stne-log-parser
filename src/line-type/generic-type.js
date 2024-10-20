@@ -13,6 +13,17 @@ class GenericType {
   }
 
   /**
+   * parses the log line and returns fitting parse result object
+   * @param {string} text log line text to be parsed
+   * @param {string} language language that the log line is in
+   * @returns object parsed object
+   */
+  static parse(text, language) {
+    // nothing to return
+    return {}
+  }
+
+  /**
    * Returns all tags that match this type of log line
    * This information is used to detect the type of the entire log entry
    * @returns array of tags
