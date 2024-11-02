@@ -18,6 +18,18 @@ class MapCoordinatesResult {
    * @type {boolean}
    */
   orbit;
+
+  /**
+   * id of the current map
+   * @type {number}
+   */
+  mapId;
+
+  /**
+   * id of the current map instance or null if map is not instanced
+   * @type {?number}
+   */
+  mapInstanceId;
 }
 
 export default MapCoordinatesResult;
