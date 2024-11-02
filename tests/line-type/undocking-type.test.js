@@ -1,7 +1,7 @@
 import { describe, expect, test } from '@jest/globals';
 import UndockingType from '../../src/line-type/undocking-type';
 
-describe('docking line type', () => {
+describe('undocking line type', () => {
   test("has ship_movement and docking tag", () => {
     expect(UndockingType.getTags()).toEqual(expect.arrayContaining(["ship_movement", "docking"]));
   });
