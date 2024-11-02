@@ -24,7 +24,13 @@ class ShipNameAndNcc extends Expression {
     (?<ncc>\d+)
     ,\ 
     # ship class
-    (?<ship_class>.+)
+    (?<ship_class> 
+      # ship class without parenthesis
+      (?:[^\(\)]+)
+      |
+      # ship class including type description for low level players
+      (?:[^\(\)]+\([^\(\)]+\))
+    )
     \)
   `;
 

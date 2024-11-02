@@ -42,4 +42,13 @@ describe('ship name and ncc regex', () => {
     expect(result.ncc).toBe(2527210);
     expect(result.shipClass).toBe("Galaxy");
   });
+
+  test("ShipNameAndNcc can parse ship types with included type description ", () => {
+    const result = ShipNameAndNcc.matchResult("First Strike (2774826, Pegasus (Sondenjagdschiff))");
+    expect(result).not.toBeNull();
+    expect(result.name).toBe("First Strike");
+    expect(result.nccPrefix).toBeNull();
+    expect(result.ncc).toBe(2774826);
+    expect(result.shipClass).toBe("Pegasus (Sondenjagdschiff)");
+  });
 });
