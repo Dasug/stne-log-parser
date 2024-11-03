@@ -4,7 +4,7 @@ import ShipNameAndNccResult from "../../regex/parse-result/ship-name-and-ncc-res
 
 class ArmorAbsorptionResult {
   /**
-   * sector the log line occured in
+   * ship that took the shot
    * @type {ShipNameAndNccResult}
    */
   ship;
