@@ -25,6 +25,7 @@
     ]
   },
   "dependencies": {
+    "enumify": "^2.0.0",
     "regex": "^4.3.3"
   }
 }
