@@ -22,6 +22,24 @@ class FireWeaponResult extends BaseShipEventResult {
    * @type {WeaponDamageResult}
    */
   weaponStrength;
+
+  /**
+   * whether the weapon has been fired offensively
+   * @type {boolean}
+   */
+  isOffensive;
+
+  /**
+   * whether the weapon has been fired defensively
+   * @type {boolean}
+   */
+  get isDefensive() {
+    return !this.isOffensive;
+  }
+
+  set isDefensive(value) {
+    this.isOffensive = !value;
+  }
 }
 
 export default FireWeaponResult;

@@ -33,7 +33,7 @@ class FireWeaponType extends GenericType {
       (?<ship> \g<shipAndNcc>)
       \ von \ 
       (?<owner> \g<playerAndId>)
-      \ greift\ 
+      \ (?<attack_type>greift|schlägt)\ 
 
       # target ship type, is duplicated later
       (?<prefix_target_ship_class>.+)\ 
@@ -56,7 +56,7 @@ class FireWeaponType extends GenericType {
       (?<weapon_name> .+)
       \ und\ Stärke\ 
       (?<weapon_strength> \g<weaponStrength>)
-      \ an$
+      \ (?:an|zurück)$
       `,
       {
         "shipAndNcc": ShipNameAndNcc.asSubroutineDefinition(),
@@ -83,9 +83,9 @@ class FireWeaponType extends GenericType {
         \)
       )
       (?<ship> \g<shipAndNcc>)
-      \ from\ 
+      \ (?:from|of)\ 
       (?<owner> \g<playerAndId>)
-      \ attacks\ 
+      \ (?<attack_type>attacks|retaliates)\ 
       # target ship type, is duplicated later
       (?<prefix_target_ship_class>.+)\ 
       # lookahead to make sure we have that ship class again later so we don't match too much now
@@ -142,6 +142,7 @@ class FireWeaponType extends GenericType {
     const target = ShipNameAndNcc.matchResult(matches.groups.target);
     const weaponStrength = WeaponDamage.matchResult(matches.groups.weapon_strength);
     const weaponName = matches.groups.weapon_name;
+    const attackType = matches.groups.attack_type;
 
     const resultObject = new FireWeaponResult;
     resultObject.ship = ship;
@@ -149,6 +150,7 @@ class FireWeaponType extends GenericType {
     resultObject.target = target;
     resultObject.weaponName = weaponName;
     resultObject.weaponStrength = weaponStrength;
+    resultObject.isOffensive = ["attacks", "greift"].includes(attackType);
 
     return resultObject;
   }

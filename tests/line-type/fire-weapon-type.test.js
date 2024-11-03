@@ -45,10 +45,51 @@ describe('fire weapon type line type', () => {
     expect(parseResult.target.shipClass).toBe("Verlassene Adrec");
 
     expect(parseResult.weaponName).toBe("Verteronphasenkanone");
+    expect(parseResult.isOffensive).toBe(true);
+    expect(parseResult.isDefensive).toBe(false);
 
     // weapon strength
     expect(parseResult.weaponStrength.shieldDamage).toBe(76);
     expect(parseResult.weaponStrength.hullDamage).toBe(72);
+    expect(parseResult.weaponStrength.energyDamage).toBe(0);
+    
+  });
+
+
+  test("parses defensive German entry log line correctly", () => {
+    const testLogEntry = { "lang": "de", "entry": "Vor'Cha Sverð (2353095, Vor'Cha) von ]=SLC=[ Halgar von Tronje --Sky-Vicings - (65330) schlägt Korolev U.S.S. Dracaix (2819313, Korolev) mit klingonischer Disruptor Typ chorgh und Stärke 84/94/0 zurück" };
+    const parseResult = FireWeaponType.parse(testLogEntry.entry, testLogEntry.lang);
+
+    // result is not null
+    expect(parseResult).not.toBeNull();
+    
+    // parts are not null if present
+    expect(parseResult.owner).not.toBeNull();
+    expect(parseResult.ship).not.toBeNull();
+    expect(parseResult.target).not.toBeNull();
+    expect(parseResult.weaponName).not.toBeNull();
+    expect(parseResult.weaponStrength).not.toBeNull();
+    
+    // parts are set correctly
+    // ship
+    expect(parseResult.ship.ncc).toBe(2353095);
+    expect(parseResult.ship.name).toBe("Sverð");
+    expect(parseResult.ship.nccPrefix).toBeNull();
+    expect(parseResult.ship.shipClass).toBe("Vor'Cha");
+    
+    // ship
+    expect(parseResult.target.ncc).toBe(2819313);
+    expect(parseResult.target.name).toBe("U.S.S. Dracaix");
+    expect(parseResult.target.nccPrefix).toBeNull();
+    expect(parseResult.target.shipClass).toBe("Korolev");
+
+    expect(parseResult.weaponName).toBe("klingonischer Disruptor Typ chorgh");
+    expect(parseResult.isOffensive).toBe(false);
+    expect(parseResult.isDefensive).toBe(true);
+
+    // weapon strength
+    expect(parseResult.weaponStrength.shieldDamage).toBe(84);
+    expect(parseResult.weaponStrength.hullDamage).toBe(94);
     expect(parseResult.weaponStrength.energyDamage).toBe(0);
     
   });
@@ -81,10 +122,51 @@ describe('fire weapon type line type', () => {
     expect(parseResult.target.shipClass).toBe("Vadwaur probe");
 
     expect(parseResult.weaponName).toBe("Phaser");
+    expect(parseResult.isOffensive).toBe(true);
+    expect(parseResult.isDefensive).toBe(false);
 
     // weapon strength
     expect(parseResult.weaponStrength.shieldDamage).toBe(20);
     expect(parseResult.weaponStrength.hullDamage).toBe(20);
     expect(parseResult.weaponStrength.energyDamage).toBe(0);
   });
+
+  test("parses somewhat old defensive English entry log line correctly", () => {
+    const testLogEntry = { "lang": "en", "entry": String.raw`Klaestron =s0x=SaLaMaNDeR 55 (1395455, Klaestron) of CoRMaC (76135) retaliates Adeos =TDS= J - 361 (1488361, Adeos) with Plasma Torpedo, Strength 24/24/0` };
+    const parseResult = FireWeaponType.parse(testLogEntry.entry, testLogEntry.lang);
+
+    // result is not null
+    expect(parseResult).not.toBeNull();
+    
+    // parts are not null if present
+    expect(parseResult.owner).not.toBeNull();
+    expect(parseResult.ship).not.toBeNull();
+    expect(parseResult.target).not.toBeNull();
+    expect(parseResult.weaponName).not.toBeNull();
+    expect(parseResult.weaponStrength).not.toBeNull();
+    
+    // parts are set correctly
+    // ship
+    expect(parseResult.ship.ncc).toBe(1395455);
+    expect(parseResult.ship.name).toBe("=s0x=SaLaMaNDeR 55");
+    expect(parseResult.ship.nccPrefix).toBeNull();
+    expect(parseResult.ship.shipClass).toBe("Klaestron");
+    
+    // target
+    expect(parseResult.target.ncc).toBe(1488361);
+    expect(parseResult.target.name).toBe("=TDS= J - 361");
+    expect(parseResult.target.nccPrefix).toBeNull();
+    expect(parseResult.target.shipClass).toBe("Adeos");
+
+    expect(parseResult.weaponName).toBe("Plasma Torpedo");
+    expect(parseResult.isOffensive).toBe(false);
+    expect(parseResult.isDefensive).toBe(true);
+
+    // weapon strength
+    expect(parseResult.weaponStrength.shieldDamage).toBe(24);
+    expect(parseResult.weaponStrength.hullDamage).toBe(24);
+    expect(parseResult.weaponStrength.energyDamage).toBe(0);
+    
+  });
+
 })
