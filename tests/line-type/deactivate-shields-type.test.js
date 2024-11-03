@@ -1,9 +1,10 @@
 import { describe, expect, test } from '@jest/globals';
 import DeactivateShieldsType from '../../src/line-type/deactivate-shields-type';
+import LineTag from '../../src/line-type/tags/line-tag';
 
 describe('deactivate shields line type', () => {
   test("has correct tags", () => {
-    expect(DeactivateShieldsType.getTags()).toEqual(expect.arrayContaining(["battle"]));
+    expect(DeactivateShieldsType.getTags()).toEqual(expect.arrayContaining([LineTag.battle]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`[IRV] Odysseus (2509111, Hurricane) von Tal’Shiar (75203) deaktiviert die Schilde` };

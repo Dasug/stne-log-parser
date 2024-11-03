@@ -1,5 +1,7 @@
 "use strict";
 
+import LineTag from "./tags/line-tag";
+
 class GenericType {
   /**
    * checks if log line matches this line type
@@ -26,11 +28,11 @@ class GenericType {
   /**
    * Returns all tags that match this type of log line
    * This information is used to detect the type of the entire log entry
-   * @returns array of tags
+   * @returns {LineTag[]}
    */
   static getTags() {
     return [
-      "generic"
+      LineTag.generic,
     ];
   }
 }

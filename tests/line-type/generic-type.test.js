@@ -1,9 +1,10 @@
 import { describe, expect, test } from '@jest/globals';
 import GenericType from '../../src/line-type/generic-type';
+import LineTag from '../../src/line-type/tags/line-tag';
 
 describe('generic log line type', () => {
   test("has generic tag", () => {
-    expect(GenericType.getTags()).toEqual(expect.arrayContaining(["generic"]));
+    expect(GenericType.getTags()).toEqual(expect.arrayContaining([LineTag.generic]));
   });
   test("doesn't detect positively", () => {
     const testLogEntries = [

@@ -1,9 +1,10 @@
 import { describe, expect, test } from '@jest/globals';
 import ActivateShieldsType from '../../src/line-type/activate-shields-type';
+import LineTag from '../../src/line-type/tags/line-tag';
 
 describe('activate shields line type', () => {
   test("has correct tags", () => {
-    expect(ActivateShieldsType.getTags()).toEqual(expect.arrayContaining(["battle"]));
+    expect(ActivateShieldsType.getTags()).toEqual(expect.arrayContaining([LineTag.battle]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`TS-4465-O-6465 (1372249, -) von Mortarion [OBV] * * * (28076) aktiviert die Schilde` };

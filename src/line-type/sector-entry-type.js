@@ -8,6 +8,7 @@ import { addSubroutines } from "../util/regex-helper";
 import GenericType from "./generic-type";
 import { pattern } from "regex";
 import SectorEntryResult from "./parse-result/sector-entry-result";
+import LineTag from "./tags/line-tag";
 
 class SectorEntryType extends GenericType {
   static #regexByLanguage = {
@@ -79,7 +80,7 @@ class SectorEntryType extends GenericType {
 
   static getTags() {
     return [
-      "ship_movement"
+      LineTag.shipMovement,
     ];
   }
 }

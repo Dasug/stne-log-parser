@@ -7,6 +7,7 @@ import { addSubroutines } from "../util/regex-helper";
 import GenericType from "./generic-type";
 import { pattern } from "regex";
 import ChargeWarpcoreResult from "./parse-result/charge-warpcore-result";
+import LineTag from "./tags/line-tag";
 
 class ChargeWarpcoreType extends GenericType {
   static #regexByLanguage = {
@@ -85,7 +86,7 @@ class ChargeWarpcoreType extends GenericType {
 
   static getTags() {
     return [
-      "ship_maintenance",
+      LineTag.shipMaintenance,
     ];
   }
 }

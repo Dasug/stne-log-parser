@@ -1,9 +1,10 @@
 import { describe, expect, test } from '@jest/globals';
 import FireWeaponType from '../../src/line-type/fire-weapon-type';
+import LineTag from '../../src/line-type/tags/line-tag';
 
 describe('fire weapon type line type', () => {
   test("has battle tag", () => {
-    expect(FireWeaponType.getTags()).toEqual(expect.arrayContaining(["battle"]));
+    expect(FireWeaponType.getTags()).toEqual(expect.arrayContaining([LineTag.battle]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Pegasus Hood (2360134, Pegasus) von Tanithisches Imperium (74379) greift Verlassene Adrec Pilli (2837151, Verlassene Adrec) mit Verteronphasenkanone und Stärke 76/72/0 an` };

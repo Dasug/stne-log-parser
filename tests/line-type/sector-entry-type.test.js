@@ -1,9 +1,10 @@
 import { describe, expect, test } from '@jest/globals';
 import SectorEntryType from '../../src/line-type/sector-entry-type';
+import LineTag from '../../src/line-type/tags/line-tag';
 
 describe('sector entry line type', () => {
   test("has ship_movement tag", () => {
-    expect(SectorEntryType.getTags()).toEqual(expect.arrayContaining(["ship_movement"]));
+    expect(SectorEntryType.getTags()).toEqual(expect.arrayContaining([LineTag.shipMovement]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": "Rohrfliege (2683217, Pegasus) von Systemlord Apophis (75604) ist in Sektor 123|456 eingeflogen" };

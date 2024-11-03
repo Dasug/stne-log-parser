@@ -7,6 +7,7 @@ import { addSubroutines } from "../util/regex-helper";
 import GenericType from "./generic-type";
 import { pattern } from "regex";
 import ActivateShieldsResult from "./parse-result/activate-shields-result";
+import LineTag from "./tags/line-tag";
 
 class DeactivateShieldsType extends GenericType {
   static #regexByLanguage = {
@@ -75,7 +76,7 @@ class DeactivateShieldsType extends GenericType {
 
   static getTags() {
     return [
-      "battle",
+      LineTag.battle,
     ];
   }
 }

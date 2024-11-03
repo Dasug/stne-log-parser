@@ -1,9 +1,10 @@
 import { describe, expect, test } from '@jest/globals';
 import UndockingType from '../../src/line-type/undocking-type';
+import LineTag from '../../src/line-type/tags/line-tag';
 
 describe('undocking line type', () => {
   test("has ship_movement and docking tag", () => {
-    expect(UndockingType.getTags()).toEqual(expect.arrayContaining(["ship_movement", "docking"]));
+    expect(UndockingType.getTags()).toEqual(expect.arrayContaining([LineTag.shipMovement, LineTag.docking]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Jabba T\`PauPau :.: (2508216, T'Pau) von Ashanti (76192) dockt im Sektor 21|88#115 von Lerko /*\\ (2530534, Taktischer Kubus) ab` };

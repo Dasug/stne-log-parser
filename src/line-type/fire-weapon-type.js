@@ -8,6 +8,7 @@ import { addSubroutines } from "../util/regex-helper";
 import GenericType from "./generic-type";
 import { pattern } from "regex";
 import FireWeaponResult from "./parse-result/fire-weapon-result";
+import LineTag from "./tags/line-tag";
 
 class FireWeaponType extends GenericType {
   static #regexByLanguage = {
@@ -154,7 +155,7 @@ class FireWeaponType extends GenericType {
 
   static getTags() {
     return [
-      "battle"
+      LineTag.battle,
     ];
   }
 }

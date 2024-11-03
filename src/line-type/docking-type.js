@@ -9,6 +9,7 @@ import { addSubroutines } from "../util/regex-helper";
 import GenericType from "./generic-type";
 import { pattern } from "regex";
 import DockingResult from "./parse-result/docking-result";
+import LineTag from "./tags/line-tag";
 
 class DockingType extends GenericType {
   static #regexByLanguage = {
@@ -91,8 +92,8 @@ class DockingType extends GenericType {
 
   static getTags() {
     return [
-      "ship_movement",
-      "docking"
+      LineTag.shipMovement,
+      LineTag.docking,
     ];
   }
 }

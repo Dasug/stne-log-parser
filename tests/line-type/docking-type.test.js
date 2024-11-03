@@ -1,10 +1,11 @@
 import { describe, expect, test } from '@jest/globals';
 import DockingType from '../../src/line-type/docking-type';
+import LineTag from '../../src/line-type/tags/line-tag';
 
 describe('docking line type', () => {
   test("has ship_movement and docking tag", () => {
-    expect(DockingType.getTags()).toEqual(expect.arrayContaining(["ship_movement", "docking"]));
-  });
+    expect(DockingType.getTags()).toEqual(expect.arrayContaining([LineTag.shipMovement, LineTag.docking]));
+  }); 
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`[Support] Kapir (2450112, Assimilator) dockt im Sektor @888|777 an [Starbase] New Koweston an` };
     

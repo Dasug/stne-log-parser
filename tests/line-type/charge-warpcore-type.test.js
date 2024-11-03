@@ -1,9 +1,10 @@
 import { describe, expect, test } from '@jest/globals';
 import ChargeWarpcoreType from '../../src/line-type/charge-warpcore-type';
+import LineTag from '../../src/line-type/tags/line-tag';
 
 describe('charge warpcore line type', () => {
   test("has correct tags", () => {
-    expect(ChargeWarpcoreType.getTags()).toEqual(expect.arrayContaining(["ship_maintenance"]));
+    expect(ChargeWarpcoreType.getTags()).toEqual(expect.arrayContaining([LineTag.shipMaintenance]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Juscag* (2583692, Vertiga) von Ikonianer [NOK] (21335) hat den Warpkern um 100 auf 9701,56 aufgeladen` };
