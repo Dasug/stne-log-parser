@@ -1,23 +1,11 @@
 "use strict"
 
+import BaseShipEventResult from "./base-ship-event-result";
+
 import MapCoordinatesResult from "../../regex/parse-result/map-coordinates-result";
-import PlayerNameAndIdResult from "../../regex/parse-result/player-name-and-id-result";
-import ShipNameAndNccResult from "../../regex/parse-result/ship-name-and-ncc-result";
 import ShipNameOnlyResult from "../../regex/parse-result/ship-name-only-result";
 
-class DockingResult {
-  /**
-   * ship that triggered the log
-   * @type {ShipNameAndNccResult}
-   */
-  ship;
-
-  /**
-   * owner of the ship that triggered the log, can be null if not included
-   * @type {?PlayerNameAndIdResult}
-   */
-  owner;
-
+class DockingResult extends BaseShipEventResult {
   /**
    * sector the log line occured in
    * @type {MapCoordinatesResult}
