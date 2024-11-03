@@ -8,6 +8,7 @@ class LineTag extends Enumify {
   static generic = new LineTag();
   static shipMaintenance = new LineTag();
   static shipMovement = new LineTag();
+  static weaponShot = new LineTag();
 
   static _ = this.closeEnum();
   

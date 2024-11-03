@@ -158,6 +158,7 @@ class FireWeaponType extends GenericType {
   static getTags() {
     return [
       LineTag.battle,
+      LineTag.weaponShot,
     ];
   }
 }
