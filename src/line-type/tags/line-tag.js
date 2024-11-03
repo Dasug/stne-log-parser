@@ -4,6 +4,7 @@ import { Enumify } from "enumify";
 
 class LineTag extends Enumify {
   static battle = new LineTag();
+  static damage = new LineTag();
   static docking = new LineTag();
   static generic = new LineTag();
   static shipMaintenance = new LineTag();
