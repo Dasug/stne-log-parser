@@ -1,6 +1,6 @@
 "use strict";
 
-import LineTag from "./tags/line-tag";
+import LineTag from "./tags/line-tag.js";
 
 class GenericType {
   /**

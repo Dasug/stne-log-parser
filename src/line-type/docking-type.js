@@ -1,15 +1,15 @@
 "use strict"
 
-import PlayerNameAndId from "../regex/player-name-and-id";
-import ShipNameAndNcc from "../regex/ship-name-and-ncc";
-import MapCoordinates from "../regex/map-coordinates";
-import ShipNameOnly from "../regex/ship-name-only";
+import PlayerNameAndId from "../regex/player-name-and-id.js";
+import ShipNameAndNcc from "../regex/ship-name-and-ncc.js";
+import MapCoordinates from "../regex/map-coordinates.js";
+import ShipNameOnly from "../regex/ship-name-only.js";
 
-import { addSubroutines } from "../util/regex-helper";
-import GenericType from "./generic-type";
+import { addSubroutines } from "../util/regex-helper.js";
+import GenericType from "./generic-type.js";
 import { pattern } from "regex";
-import DockingResult from "./parse-result/docking-result";
-import LineTag from "./tags/line-tag";
+import DockingResult from "./parse-result/docking-result.js";
+import LineTag from "./tags/line-tag.js";
 
 class DockingType extends GenericType {
   static #regexByLanguage = {

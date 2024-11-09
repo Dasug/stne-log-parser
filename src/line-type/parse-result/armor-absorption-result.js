@@ -1,6 +1,6 @@
 "use strict"
 
-import ShipNameAndNccResult from "../../regex/parse-result/ship-name-and-ncc-result";
+import ShipNameAndNccResult from "../../regex/parse-result/ship-name-and-ncc-result.js";
 
 class ArmorAbsorptionResult {
   /**

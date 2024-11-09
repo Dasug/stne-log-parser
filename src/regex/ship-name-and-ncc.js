@@ -1,8 +1,8 @@
 "use strict"
 
 import {pattern} from 'regex';
-import Expression from './expression';
-import ShipNameAndNccResult from './parse-result/ship-name-and-ncc-result';
+import Expression from './expression.js';
+import ShipNameAndNccResult from './parse-result/ship-name-and-ncc-result.js';
 
 /**
  * Parses a ship name with NCC, class and an optional NCC prefix.  

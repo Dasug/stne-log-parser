@@ -1,9 +1,9 @@
 "use strict"
 
-import BaseShipEventResult from "./base-ship-event-result";
+import BaseShipEventResult from "./base-ship-event-result.js";
 
-import MapCoordinatesResult from "../../regex/parse-result/map-coordinates-result";
-import ShipNameAndNccResult from "../../regex/parse-result/ship-name-and-ncc-result";
+import MapCoordinatesResult from "../../regex/parse-result/map-coordinates-result.js";
+import ShipNameAndNccResult from "../../regex/parse-result/ship-name-and-ncc-result.js";
 
 class UndockingResult extends BaseShipEventResult {
   /**

@@ -1,8 +1,8 @@
 "use strict"
 
 import {pattern} from 'regex';
-import Expression from './expression';
-import WeaponDamageResult from './parse-result/weapon-damage-result';
+import Expression from './expression.js';
+import WeaponDamageResult from './parse-result/weapon-damage-result.js';
 
 /**
  * Parses weapon damage numbers from battle logs.  

@@ -1,6 +1,6 @@
 "use strict"
 
-import BaseShipEventResult from "./base-ship-event-result";
+import BaseShipEventResult from "./base-ship-event-result.js";
 
 class ChargeWarpcoreResult extends BaseShipEventResult {
   /**

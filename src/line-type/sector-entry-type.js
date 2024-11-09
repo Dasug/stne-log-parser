@@ -1,14 +1,14 @@
 "use strict"
 
-import PlayerNameAndId from "../regex/player-name-and-id";
-import ShipNameAndNcc from "../regex/ship-name-and-ncc";
-import MapCoordinates from "../regex/map-coordinates";
+import PlayerNameAndId from "../regex/player-name-and-id.js";
+import ShipNameAndNcc from "../regex/ship-name-and-ncc.js";
+import MapCoordinates from "../regex/map-coordinates.js";
 
-import { addSubroutines } from "../util/regex-helper";
-import GenericType from "./generic-type";
+import { addSubroutines } from "../util/regex-helper.js";
+import GenericType from "./generic-type.js";
 import { pattern } from "regex";
-import SectorEntryResult from "./parse-result/sector-entry-result";
-import LineTag from "./tags/line-tag";
+import SectorEntryResult from "./parse-result/sector-entry-result.js";
+import LineTag from "./tags/line-tag.js";
 
 class SectorEntryType extends GenericType {
   static #regexByLanguage = {

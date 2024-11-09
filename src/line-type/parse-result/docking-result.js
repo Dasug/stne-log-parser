@@ -1,9 +1,9 @@
 "use strict"
 
-import BaseShipEventResult from "./base-ship-event-result";
+import BaseShipEventResult from "./base-ship-event-result.js";
 
-import MapCoordinatesResult from "../../regex/parse-result/map-coordinates-result";
-import ShipNameOnlyResult from "../../regex/parse-result/ship-name-only-result";
+import MapCoordinatesResult from "../../regex/parse-result/map-coordinates-result.js";
+import ShipNameOnlyResult from "../../regex/parse-result/ship-name-only-result.js";
 
 class DockingResult extends BaseShipEventResult {
   /**

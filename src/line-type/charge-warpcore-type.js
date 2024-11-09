@@ -1,13 +1,13 @@
 "use strict"
 
-import PlayerNameAndId from "../regex/player-name-and-id";
-import ShipNameAndNcc from "../regex/ship-name-and-ncc";
+import PlayerNameAndId from "../regex/player-name-and-id.js";
+import ShipNameAndNcc from "../regex/ship-name-and-ncc.js";
 
-import { addSubroutines } from "../util/regex-helper";
-import GenericType from "./generic-type";
+import { addSubroutines } from "../util/regex-helper.js";
+import GenericType from "./generic-type.js";
 import { pattern } from "regex";
-import ChargeWarpcoreResult from "./parse-result/charge-warpcore-result";
-import LineTag from "./tags/line-tag";
+import ChargeWarpcoreResult from "./parse-result/charge-warpcore-result.js";
+import LineTag from "./tags/line-tag.js";
 
 class ChargeWarpcoreType extends GenericType {
   static #regexByLanguage = {

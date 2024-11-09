@@ -1,9 +1,9 @@
 "use strict"
 
-import GenericType from "./generic-type";
+import GenericType from "./generic-type.js";
 import { regex } from "regex";
-import LineTag from "./tags/line-tag";
-import ArmorPenetrationResult from "./parse-result/armor-penetration-result";
+import LineTag from "./tags/line-tag.js";
+import ArmorPenetrationResult from "./parse-result/armor-penetration-result.js";
 
 class ArmorPenetrationType extends GenericType {
   static #regexByLanguage = {

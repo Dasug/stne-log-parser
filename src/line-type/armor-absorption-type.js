@@ -1,12 +1,12 @@
 "use strict"
 
-import ShipNameAndNcc from "../regex/ship-name-and-ncc";
+import ShipNameAndNcc from "../regex/ship-name-and-ncc.js";
 
-import { addSubroutines } from "../util/regex-helper";
-import GenericType from "./generic-type";
+import { addSubroutines } from "../util/regex-helper.js";
+import GenericType from "./generic-type.js";
 import { pattern } from "regex";
-import LineTag from "./tags/line-tag";
-import ArmorAbsorptionResult from "./parse-result/armor-absorption-result";
+import LineTag from "./tags/line-tag.js";
+import ArmorAbsorptionResult from "./parse-result/armor-absorption-result.js";
 
 class ArmorAbsorptionType extends GenericType {
   static #regexByLanguage = {

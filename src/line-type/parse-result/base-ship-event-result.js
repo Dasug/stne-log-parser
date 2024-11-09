@@ -1,7 +1,7 @@
 "use strict"
 
-import ShipNameAndNccResult from "../../regex/parse-result/ship-name-and-ncc-result";
-import PlayerNameAndIdResult from "../../regex/parse-result/player-name-and-id-result";
+import ShipNameAndNccResult from "../../regex/parse-result/ship-name-and-ncc-result.js";
+import PlayerNameAndIdResult from "../../regex/parse-result/player-name-and-id-result.js";
 
 class BaseShipEventResult {
   /**

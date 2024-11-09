@@ -1,8 +1,8 @@
 "use strict"
 
-import ShipNameAndNccResult from "../../regex/parse-result/ship-name-and-ncc-result";
-import WeaponDamageResult from "../../regex/parse-result/weapon-damage-result";
-import BaseShipEventResult from "./base-ship-event-result";
+import ShipNameAndNccResult from "../../regex/parse-result/ship-name-and-ncc-result.js";
+import WeaponDamageResult from "../../regex/parse-result/weapon-damage-result.js";
+import BaseShipEventResult from "./base-ship-event-result.js";
 
 class FireWeaponResult extends BaseShipEventResult {
   /**
