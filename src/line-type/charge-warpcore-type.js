@@ -20,9 +20,9 @@ class ChargeWarpcoreType extends GenericType {
         (?<owner> \g<playerAndId>)
       )?
       \ hat\ den\ Warpkern\ um\ 
-      (?<charge_amount> \d+(?:,|.\d+))
+      (?<charge_amount> \d+(?:(?:,|.)\d+)?)
       \ auf \ 
-      (?<warpcore_state> \d+(?:,|.\d+))
+      (?<warpcore_state> \d+(?:(?:,|.)\d+)?)
       \ aufgeladen$
       `,
       {
@@ -39,9 +39,9 @@ class ChargeWarpcoreType extends GenericType {
         (?<owner> \g<playerAndId>)
       )?
       \ has\ charged\ its\ warp\ core\ by\ 
-      (?<charge_amount> \d+(?:,|.\d+)?)
+      (?<charge_amount> \d+(?:(?:,|.)\d+)?)
       \ up\ to \ 
-      (?<warpcore_state> \d+(?:,|.\d+)?)
+      (?<warpcore_state> \d+(?:(?:,|.)\d+)?)
       $
       `,
       {
