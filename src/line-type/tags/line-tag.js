@@ -8,6 +8,7 @@ class LineTag extends Enumify {
   static docking = new LineTag();
   static generic = new LineTag();
   static shipDestruction = new LineTag();
+  static shipDisabled = new LineTag();
   static shipMaintenance = new LineTag();
   static shipMovement = new LineTag();
   static weaponShot = new LineTag();
