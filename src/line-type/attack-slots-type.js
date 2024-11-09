@@ -6,7 +6,7 @@ import LineTag from "./tags/line-tag.js";
 import AttackSlotsResult from "./parse-result/attack-slots-result.js";
 
 class AttackSlotsType extends GenericType {
-  static #regexByLanguage = {
+  static _regexByLanguage = {
     "de": regex`
       ^
       (?<attack_slots_amount> \d+(?:[,\.]\d+)?)
@@ -21,21 +21,13 @@ class AttackSlotsType extends GenericType {
       `,
   }
 
-  static detect(text, language) {
-    if (typeof this.#regexByLanguage[language] === "undefined") {
-      // language not supported for this type
-      return false;
-    }
-    return text.match(this.#regexByLanguage[language]) !== null;
-  }
-
   static parse(text, language) {
-    if (typeof this.#regexByLanguage[language] === "undefined") {
+    if (typeof this._regexByLanguage[language] === "undefined") {
       // language not supported for this type
       return null;
     }
 
-    const matches = text.match(this.#regexByLanguage[language]);
+    const matches = text.match(this._regexByLanguage[language]);
 
     if(matches === null) {
       return null;

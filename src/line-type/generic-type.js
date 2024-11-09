@@ -3,6 +3,7 @@
 import LineTag from "./tags/line-tag.js";
 
 class GenericType {
+  static _regexByLanguage = {}
   /**
    * checks if log line matches this line type
    * @param {string} text text to be detected
@@ -20,9 +21,12 @@ class GenericType {
    * @param {string} language language that the log line is in
    * @returns object parsed object
    */
-  static parse(text, language) {
-    // nothing to return
-    return {}
+  static detect(text, language) {
+    if (typeof this._regexByLanguage[language] === "undefined") {
+      // language not supported for this type
+      return false;
+    }
+    return text.match(this._regexByLanguage[language]) !== null;
   }
 
   /**

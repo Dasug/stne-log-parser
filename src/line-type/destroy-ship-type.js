@@ -11,7 +11,7 @@ import LineTag from "./tags/line-tag.js";
 import DestroyShipResult from "./parse-result/destroy-ship-result.js";
 
 class DestroyShipType extends GenericType {
-  static #regexByLanguage = {
+  static _regexByLanguage = {
     "de": addSubroutines(
       pattern`
       ^
@@ -47,21 +47,13 @@ class DestroyShipType extends GenericType {
     )
   }
 
-  static detect(text, language) {
-    if (typeof this.#regexByLanguage[language] === "undefined") {
-      // language not supported for this type
-      return false;
-    }
-    return text.match(this.#regexByLanguage[language]) !== null;
-  }
-
   static parse(text, language) {
-    if (typeof this.#regexByLanguage[language] === "undefined") {
+    if (typeof this._regexByLanguage[language] === "undefined") {
       // language not supported for this type
       return null;
     }
 
-    const matches = text.match(this.#regexByLanguage[language]);
+    const matches = text.match(this._regexByLanguage[language]);
 
     if(matches === null) {
       return null;
