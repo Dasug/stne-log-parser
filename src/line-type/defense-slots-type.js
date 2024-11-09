@@ -14,7 +14,7 @@ class DefenseSlotsType extends GenericType {
       pattern`
       ^
       (?<defense_slots_amount> \d+(?:[,\.]\d+)?)
-      \ Verteidigungskosten\ 
+      \ +Verteidigungskosten\ +
       (?<sector> \g<sectorCoordinates>)
       $
       `,
@@ -26,7 +26,7 @@ class DefenseSlotsType extends GenericType {
       pattern`
       ^
       (?<defense_slots_amount> \d+(?:[,\.]\d+)?)
-      \ Slots\ Defence\ Cost\ 
+      \ +Slots\ Defence\ Cost\ +
       (?<sector> \g<sectorCoordinates>)
       $
       `,
