@@ -54,17 +54,7 @@ class EnergyDamageType extends GenericType {
     )
   }
 
-  static parse(text, language) {
-    if (typeof this._regexByLanguage[language] === "undefined") {
-      // language not supported for this type
-      return null;
-    }
-    const matches = text.match(this._regexByLanguage[language]);
-
-    if(matches === null) {
-      return null;
-    }
-
+  static _buildResultObject(matches) {
     const ship = ShipNameAndNcc.matchResult(matches.groups.ship);
     const energyDamage = Number(matches.groups.energy_damage_amount.replace(",", "."));
     const disabled = typeof matches.groups.ship_got_disabled !== "undefined";

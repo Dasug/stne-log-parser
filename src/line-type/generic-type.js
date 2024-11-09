@@ -25,8 +25,26 @@ class GenericType {
    * @returns object parsed object
    */
   static parse(text, language) {
-    // nothing to return
-    return {}
+    if (typeof this._regexByLanguage[language] === "undefined") {
+      // language not supported for this type
+      return null;
+    }
+    const matches = text.match(this._regexByLanguage[language]);
+
+    if(matches === null) {
+      return null;
+    }
+
+    return this._buildResultObject(matches);
+  }
+
+  /**
+   * internal function to build the parse result object from regex matches
+   * @param {object} matches regex matches
+   * @returns parse result object depending on type
+   */
+  static _buildResultObject(matches) {
+    return {};
   }
 
   /**

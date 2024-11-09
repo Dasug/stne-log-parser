@@ -36,18 +36,7 @@ class FullSystemFailureType extends GenericType {
     )
   }
 
-  static parse(text, language) {
-    if (typeof this._regexByLanguage[language] === "undefined") {
-      // language not supported for this type
-      return null;
-    }
-
-    const matches = text.match(this._regexByLanguage[language]);
-
-    if(matches === null) {
-      return null;
-    }
-
+  static _buildResultObject(matches) {
     const ship = ShipNameAndNcc.matchResult(matches.groups.ship);
 
     const resultObject = new FullSystemFailureResult;

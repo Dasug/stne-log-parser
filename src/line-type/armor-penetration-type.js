@@ -22,17 +22,7 @@ class ArmorPenetrationType extends GenericType {
     `,
   }
 
-  static parse(text, language) {
-    if (typeof this._regexByLanguage[language] === "undefined") {
-      // language not supported for this type
-      return null;
-    }
-    const matches = text.match(this._regexByLanguage[language]);
-
-    if(matches === null) {
-      return null;
-    }
-
+  static _buildResultObject(matches) {
     const armorPenetration = Number(matches.groups.armor_penetration_points);
     
 

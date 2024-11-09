@@ -47,18 +47,7 @@ class DestroyShipType extends GenericType {
     )
   }
 
-  static parse(text, language) {
-    if (typeof this._regexByLanguage[language] === "undefined") {
-      // language not supported for this type
-      return null;
-    }
-
-    const matches = text.match(this._regexByLanguage[language]);
-
-    if(matches === null) {
-      return null;
-    }
-
+  static _buildResultObject(matches) {
     const ship = ShipNameAndNcc.matchResult(matches.groups.ship);
     const owner = PlayerNameAndId.matchResult(matches.groups.owner);
     const position = MapCoordinates.matchResult(matches.groups.sector);
