@@ -19,6 +19,7 @@ class ChargeWarpcoreType extends GenericType {
         \ von\ 
         (?<owner> \g<playerAndId>)
       )?
+      \ ? # there is a double space here occasionally
       \ hat\ den\ Warpkern\ um\ 
       (?<charge_amount> \d+(?:(?:,|.)\d+)?)
       \ auf \ 
@@ -38,6 +39,7 @@ class ChargeWarpcoreType extends GenericType {
         \ von\ # this part is in German even in the English log
         (?<owner> \g<playerAndId>)
       )?
+      \ ? # there is a double space here occasionally
       \ has\ charged\ its\ warp\ core\ by\ 
       (?<charge_amount> \d+(?:(?:,|.)\d+)?)
       \ up\ to \ 
