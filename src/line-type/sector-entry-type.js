@@ -9,13 +9,14 @@ import GenericType from "./generic-type.js";
 import { pattern } from "regex";
 import SectorEntryResult from "./parse-result/sector-entry-result.js";
 import LineTag from "./tags/line-tag.js";
+import ShipNameOnly from "../regex/ship-name-only.js";
 
 class SectorEntryType extends GenericType {
   static _regexByLanguage = {
     "de": addSubroutines(
       pattern`
       ^
-      (?<ship> \g<shipAndNcc>)
+      (?<ship> \g<shipAndNcc>|\g<shipNameOnly>)
       (?:
         \ von \ 
         (?<owner> \g<playerAndId>)
@@ -26,6 +27,7 @@ class SectorEntryType extends GenericType {
       `,
       {
         "shipAndNcc": ShipNameAndNcc.asSubroutineDefinition(),
+        "shipNameOnly": ShipNameOnly.asSubroutineDefinition(),
         "playerAndId": PlayerNameAndId.asSubroutineDefinition(),
         "sectorCoordinates": MapCoordinates.asSubroutineDefinition(),
       }
@@ -33,7 +35,7 @@ class SectorEntryType extends GenericType {
     "en": addSubroutines(
       pattern`
       ^
-      (?<ship> \g<shipAndNcc>)
+      (?<ship> \g<shipAndNcc>|\g<shipNameOnly>)
       (?:
         \ von\ # this line is in German in the log for some reason...
         (?<owner> \g<playerAndId>)
@@ -44,6 +46,7 @@ class SectorEntryType extends GenericType {
       `,
       {
         "shipAndNcc": ShipNameAndNcc.asSubroutineDefinition(),
+        "shipNameOnly": ShipNameOnly.asSubroutineDefinition(),
         "playerAndId": PlayerNameAndId.asSubroutineDefinition(),
         "sectorCoordinates": MapCoordinates.asSubroutineDefinition(),
       }
@@ -51,7 +54,8 @@ class SectorEntryType extends GenericType {
   }
 
   static _buildResultObject(matches) {
-    const ship = ShipNameAndNcc.matchResult(matches.groups.ship);
+    const shipWithNccMatch = ShipNameAndNcc.matchResult(matches.groups.ship);
+    const ship = shipWithNccMatch !== null ? shipWithNccMatch : ShipNameOnly.matchResult(matches.groups.ship);
     const owner = typeof matches.groups.owner === "undefined" ? null : PlayerNameAndId.matchResult(matches.groups.owner);
     const sector = MapCoordinates.matchResult(matches.groups.sector);
 

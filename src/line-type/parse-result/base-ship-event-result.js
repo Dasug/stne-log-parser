@@ -2,11 +2,13 @@
 
 import ShipNameAndNccResult from "../../regex/parse-result/ship-name-and-ncc-result.js";
 import PlayerNameAndIdResult from "../../regex/parse-result/player-name-and-id-result.js";
+import ShipNameOnlyResult from "../../regex/parse-result/ship-name-only-result.js";
 
 class BaseShipEventResult {
   /**
    * ship that triggered the log
-   * @type {ShipNameAndNccResult}
+   * often ship name only in logbook sent folder
+   * @type {ShipNameAndNccResult|ShipNameOnlyResult}
    */
   ship;
 
