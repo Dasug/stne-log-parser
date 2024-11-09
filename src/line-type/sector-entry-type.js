@@ -34,7 +34,7 @@ class SectorEntryType extends GenericType {
       pattern`
       ^
       (?<ship> \g<shipAndNcc>)
-      (?:)
+      (?:
         \ von\ # this line is in German in the log for some reason...
         (?<owner> \g<playerAndId>)
       )?
