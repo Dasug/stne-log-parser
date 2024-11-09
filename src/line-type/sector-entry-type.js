@@ -16,8 +16,10 @@ class SectorEntryType extends GenericType {
       pattern`
       ^
       (?<ship> \g<shipAndNcc>)
-      \ von \ 
-      (?<owner> \g<playerAndId>)
+      (?:
+        \ von \ 
+        (?<owner> \g<playerAndId>)
+      )?
       \ ist\ in\ Sektor\ 
       (?<sector> \g<sectorCoordinates>)
       \ eingeflogen$
@@ -32,8 +34,10 @@ class SectorEntryType extends GenericType {
       pattern`
       ^
       (?<ship> \g<shipAndNcc>)
-      \ von\ # this line is in German in the log for some reason...
-      (?<owner> \g<playerAndId>)
+      (?:)
+        \ von\ # this line is in German in the log for some reason...
+        (?<owner> \g<playerAndId>)
+      )?
       \ has\ entered\ sector\ 
       (?<sector> \g<sectorCoordinates>)
       $
@@ -48,7 +52,7 @@ class SectorEntryType extends GenericType {
 
   static _buildResultObject(matches) {
     const ship = ShipNameAndNcc.matchResult(matches.groups.ship);
-    const owner = PlayerNameAndId.matchResult(matches.groups.owner);
+    const owner = typeof matches.groups.owner === "undefined" ? null : PlayerNameAndId.matchResult(matches.groups.owner);
     const sector = MapCoordinates.matchResult(matches.groups.sector);
 
     const resultObject = new SectorEntryResult;
