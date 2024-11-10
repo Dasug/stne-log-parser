@@ -59,6 +59,7 @@ class ActivateShieldsType extends GenericType {
   static getTags() {
     return [
       LineTag.battle,
+      LineTag.shipMaintenance,
     ];
   }
 }
