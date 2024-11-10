@@ -6,7 +6,7 @@ import { addSubroutines } from "../util/regex-helper.js";
 import GenericType from "./generic-type.js";
 import { pattern } from "regex";
 import PortalJumpResult from "./parse-result/portal-jump-result.js";
-import LineTag from "./tags/line-tag.js";
+import LineTag from "../../src/enum/line-tag.js";
 
 class PortalJumpType extends GenericType {
   static _regexByLanguage = {

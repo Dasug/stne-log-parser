@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
 import DeactivateShieldsType from '../../src/line-type/deactivate-shields-type';
-import LineTag from '../../src/line-type/tags/line-tag';
+import LineTag from '../../src/enum/line-tag.js';
 
 describe('deactivate shields line type', () => {
   test("has correct tags", () => {

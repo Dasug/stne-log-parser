@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
 import PortalJumpType from '../../src/line-type/portal-jump-type.js';
-import LineTag from '../../src/line-type/tags/line-tag';
+import LineTag from '../../src/enum/line-tag.js';
 
 describe('portal jump line type', () => {
   test("has ship_movement tag", () => {

@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
-import LineTag from '../../src/line-type/tags/line-tag.js';
+import LineTag from '../../src/enum/line-tag.js';
 import MainComputerCrashType from '../../src/line-type/main-computer-crash-type.js';
 
 describe('main computer crash line type', () => {

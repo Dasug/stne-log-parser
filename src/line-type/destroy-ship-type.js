@@ -7,7 +7,7 @@ import MapCoordinates from "../regex/map-coordinates.js";
 import { addSubroutines } from "../util/regex-helper.js";
 import GenericType from "./generic-type.js";
 import { pattern } from "regex";
-import LineTag from "./tags/line-tag.js";
+import LineTag from "../../src/enum/line-tag.js";
 import DestroyShipResult from "./parse-result/destroy-ship-result.js";
 
 class DestroyShipType extends GenericType {

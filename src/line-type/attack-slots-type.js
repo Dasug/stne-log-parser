@@ -2,7 +2,7 @@
 
 import GenericType from "./generic-type.js";
 import { regex } from "regex";
-import LineTag from "./tags/line-tag.js";
+import LineTag from "../../src/enum/line-tag.js";
 import AttackSlotsResult from "./parse-result/attack-slots-result.js";
 
 class AttackSlotsType extends GenericType {

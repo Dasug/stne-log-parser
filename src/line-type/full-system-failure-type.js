@@ -5,7 +5,7 @@ import ShipNameAndNcc from "../regex/ship-name-and-ncc.js";
 import { addSubroutines } from "../util/regex-helper.js";
 import GenericType from "./generic-type.js";
 import { pattern } from "regex";
-import LineTag from "./tags/line-tag.js";
+import LineTag from "../../src/enum/line-tag.js";
 import FullSystemFailureResult from "./parse-result/full-system-failure-result.js";
 
 class FullSystemFailureType extends GenericType {

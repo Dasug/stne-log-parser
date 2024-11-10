@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
-import LineTag from '../../src/line-type/tags/line-tag.js';
+import LineTag from '../../src/enum/line-tag.js';
 import DefenseSlotsType from '../../src/line-type/defense-slots-type.js';
 
 describe('defense slots line type', () => {

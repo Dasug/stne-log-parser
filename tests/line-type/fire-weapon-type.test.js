@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
 import FireWeaponType from '../../src/line-type/fire-weapon-type';
-import LineTag from '../../src/line-type/tags/line-tag';
+import LineTag from '../../src/enum/line-tag.js';
 
 describe('fire weapon type line type', () => {
   test("has battle tag", () => {

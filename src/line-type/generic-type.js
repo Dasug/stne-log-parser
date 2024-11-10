@@ -1,6 +1,6 @@
 "use strict";
 
-import LineTag from "./tags/line-tag.js";
+import LineTag from "../../src/enum/line-tag.js";
 
 class GenericType {
   static _regexByLanguage = {};

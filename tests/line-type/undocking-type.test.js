@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
 import UndockingType from '../../src/line-type/undocking-type';
-import LineTag from '../../src/line-type/tags/line-tag';
+import LineTag from '../../src/enum/line-tag.js';
 
 describe('undocking line type', () => {
   test("has ship_movement and docking tag", () => {

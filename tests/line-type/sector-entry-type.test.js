@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
 import SectorEntryType from '../../src/line-type/sector-entry-type';
-import LineTag from '../../src/line-type/tags/line-tag';
+import LineTag from '../../src/enum/line-tag.js';
 
 describe('sector entry line type', () => {
   test("has ship_movement tag", () => {

@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
-import LineTag from '../../src/line-type/tags/line-tag';
+import LineTag from '../../src/enum/line-tag.js';
 import ArmorPenetrationType from '../../src/line-type/armor-penetration-type';
 
 describe('armor penetration line type', () => {

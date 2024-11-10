@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
 import ChargeWarpcoreType from '../../src/line-type/charge-warpcore-type';
-import LineTag from '../../src/line-type/tags/line-tag';
+import LineTag from '../../src/enum/line-tag.js';
 
 describe('charge warpcore line type', () => {
   test("has correct tags", () => {

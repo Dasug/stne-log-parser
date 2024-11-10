@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
 import InitializeMainComputerType from '../../src/line-type/initialize-main-computer-type.js';
-import LineTag from '../../src/line-type/tags/line-tag';
+import LineTag from '../../src/enum/line-tag.js';
 import ShipNameAndNccResult from '../../src/regex/parse-result/ship-name-and-ncc-result.js';
 import ShipNameOnlyResult from '../../src/regex/parse-result/ship-name-only-result.js';
 

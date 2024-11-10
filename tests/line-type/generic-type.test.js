@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
 import GenericType from '../../src/line-type/generic-type';
-import LineTag from '../../src/line-type/tags/line-tag';
+import LineTag from '../../src/enum/line-tag.js';
 
 describe('generic log line type', () => {
   test("has generic tag", () => {
