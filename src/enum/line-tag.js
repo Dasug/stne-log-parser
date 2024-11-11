@@ -3,6 +3,9 @@
 import { Enumify } from "enumify";
 
 class LineTag extends Enumify {
+  static avatarAction = new LineTag();
+  static avatarActionSuccess = new LineTag();
+  static avatarActionFailure = new LineTag();
   static battle = new LineTag();
   static battleSlots = new LineTag();
   static damage = new LineTag();
