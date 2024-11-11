@@ -2,7 +2,7 @@
 
 import {pattern} from 'regex';
 import Expression from './expression.js';
-import AvatarResult from './parse-result/avatar-results.js';
+import AvatarResult from './parse-result/avatar-result.js';
 import AvatarJob from '../enum/avatar-job.js';
 
 /**
