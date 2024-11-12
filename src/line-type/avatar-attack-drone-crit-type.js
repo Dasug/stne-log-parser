@@ -14,9 +14,17 @@ class AvatarAttackDroneCritType extends GenericType {
     "de": addSubroutines(
       pattern`
       ^
-      Die\ Drohne\ trifft\ und\ setzt\ am\ Einschlagort\ die\ Notfallkraftfelder\ von\ 
+      Die\ Drohne\ trifft\ und\ 
+      (?:
+        setzt\ am\ Einschlagort\ die\ Notfallkraftfelder\ 
+        |
+        destabilisiert\ das\ Schildgitter\ 
+      )
+      von\ 
       (?<target> \g<shipAndNcc>)
-      \ durch\ einen\ EMP-Impuls\ außer\ Gefecht,\ wodurch\ sich\ die\ Chance\ für\ 
+      \ durch\ einen\ EMP-Impuls
+      (?:\ außer\ Gefecht)?
+      ,\ wodurch\ sich\ die\ Chance\ für\ 
       (?<trigger_avatar> \g<avatar>)
       \ ergibt\ kritische\ Schäden\ \(x2\)\ gegen\ 
       (?<target_again> \g<shipAndNcc>)
