@@ -1,9 +1,10 @@
 "use strict"
 
+import DronePilotDroneType from "../../enum/drone-pilot-drone-type.js";
 import AvatarResult from "../../regex/parse-result/avatar-result.js";
 import ShipNameAndNccResult from "../../regex/parse-result/ship-name-and-ncc-result.js";
 
-class AvatarOutOfBaitDronesResult {
+class AvatarOutOfDronesResult {
   /**
    * avatar that triggered the log line
    * @type {AvatarResult}
@@ -11,16 +12,22 @@ class AvatarOutOfBaitDronesResult {
   avatar;
 
   /**
-   * ship that fired the shot
+   * ship the avatar is based on
    * @type {ShipNameAndNccResult}
    */
   ship;
 
   /**
-   * ship that's being fired upon'
+   * opposing ship that either fired or was fired upon'
    * @type {ShipNameAndNccResult}
    */
-  target;
+  opponent;
+
+  /**
+   * type of drone the avatar ran out of
+   * @type {DronePilotDroneType}
+   */
+  droneType;
 }
 
-export default AvatarOutOfBaitDronesResult;
+export default AvatarOutOfDronesResult;
