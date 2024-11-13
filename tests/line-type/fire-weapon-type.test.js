@@ -169,4 +169,48 @@ describe('fire weapon type line type', () => {
     
   });
 
+  test("detects somewhat broken German entry log line positively (Dahel)", () => {
+    const testLogEntry = { "lang": "de", "entry": String.raw`Verlassener Außenposten Egriuvu (2841450, Verlassener Außenposten) von Die Verdammten (NPC-76936) schlägt Dahel Strafe Poseidons 29 (2658963, Dahel) mit Kürbiskern und Stärke 8/0/16 ` };
+    
+    expect(FireWeaponType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+  });
+
+  test("parses German entry log line correctly", () => {
+    const testLogEntry = { "lang": "de", "entry": "Verlassener Außenposten Egriuvu (2841450, Verlassener Außenposten) von Die Verdammten (NPC-76936) schlägt Dahel Strafe Poseidons 29 (2658963, Dahel) mit Kürbiskern und Stärke 8/0/16 " };
+    const parseResult = FireWeaponType.parse(testLogEntry.entry, testLogEntry.lang);
+
+    // result is not null
+    expect(parseResult).not.toBeNull();
+    
+    // parts are not null if present
+    expect(parseResult.owner).not.toBeNull();
+    expect(parseResult.ship).not.toBeNull();
+    expect(parseResult.target).not.toBeNull();
+    expect(parseResult.weaponName).not.toBeNull();
+    expect(parseResult.weaponStrength).not.toBeNull();
+    
+    // parts are set correctly
+    // ship
+    expect(parseResult.ship.ncc).toBe(2841450);
+    expect(parseResult.ship.name).toBe("Egriuvu");
+    expect(parseResult.ship.nccPrefix).toBeNull();
+    expect(parseResult.ship.shipClass).toBe("Verlassener Außenposten");
+    
+    // ship
+    expect(parseResult.target.ncc).toBe(2658963);
+    expect(parseResult.target.name).toBe("Strafe Poseidons 29");
+    expect(parseResult.target.nccPrefix).toBeNull();
+    expect(parseResult.target.shipClass).toBe("Dahel");
+
+    expect(parseResult.weaponName).toBe("Kürbiskern");
+    expect(parseResult.isOffensive).toBe(false);
+    expect(parseResult.isDefensive).toBe(true);
+
+    // weapon strength
+    expect(parseResult.weaponStrength.shieldDamage).toBe(8);
+    expect(parseResult.weaponStrength.hullDamage).toBe(0);
+    expect(parseResult.weaponStrength.energyDamage).toBe(16);
+    
+  });
+
 })

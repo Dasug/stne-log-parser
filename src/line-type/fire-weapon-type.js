@@ -56,7 +56,9 @@ class FireWeaponType extends GenericType {
       (?<weapon_name> .+)
       \ und\ Stärke\ 
       (?<weapon_strength> \g<weaponStrength>)
-      \ (?:an|zurück)$
+      \ (?:an|zurück)?
+      \s*
+      $
       `,
       {
         "shipAndNcc": ShipNameAndNcc.asSubroutineDefinition(),
