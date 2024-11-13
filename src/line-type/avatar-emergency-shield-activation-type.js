@@ -7,7 +7,6 @@ import GenericType from "./generic-type.js";
 import { pattern } from "regex";
 import LineTag from "../../src/enum/line-tag.js";
 import Avatar from "../regex/avatar.js";
-import AvatarDecoyDroneFailureResult from "./parse-result/avatar-decoy-drone-failure-result.js";
 import AvatarEmergencyShieldActivationResult from "./parse-result/avatar-emergency-shield-activation-result.js";
 
 class AvatarEmergencyShieldActivationType extends GenericType {
