@@ -9,7 +9,7 @@ import { addSubroutines } from "../util/regex-helper.js";
 import GenericType from "./generic-type.js";
 import { pattern } from "regex";
 import LineTag from "../../src/enum/line-tag.js";
-import EnterHangarResult from "./parse-result/enter-hangar-result.js";
+import EnterMovementResult from "./parse-result/enter-movement-result.js";
 
 class EnterHangarType extends GenericType {
   static _regexByLanguage = {
@@ -64,11 +64,12 @@ class EnterHangarType extends GenericType {
     const sector = MapCoordinates.matchResult(matches.groups.sector);
     const carrier = ShipNameOnly.matchResult(matches.groups.carrier);
 
-    const resultObject = new EnterHangarResult;
+    const resultObject = new EnterMovementResult;
     resultObject.ship = ship;
     resultObject.owner = owner;
     resultObject.sector = sector;
     resultObject.carrier = carrier;
+    resultObject.isEntry = true;
 
     return resultObject;
   }

@@ -5,7 +5,7 @@ import BaseShipEventResult from "./base-ship-event-result.js";
 import MapCoordinatesResult from "../../regex/parse-result/map-coordinates-result.js";
 import ShipNameOnlyResult from "../../regex/parse-result/ship-name-only-result.js";
 
-class EnterHangarResult extends BaseShipEventResult {
+class HangarMovementResult extends BaseShipEventResult {
   /**
    * sector the log line occured in
    * @type {MapCoordinatesResult}
@@ -17,6 +17,12 @@ class EnterHangarResult extends BaseShipEventResult {
    * @type {ShipNameOnlyResult}
   */
   carrier;
+
+  /**
+   * direction of movement, true if entry, false if exit
+   * @type {boolean}
+   */
+  isEntry;
 }
 
-export default EnterHangarResult;
+export default HangarMovementResult;

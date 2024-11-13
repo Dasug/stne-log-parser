@@ -49,6 +49,8 @@ describe('enter hangar line type', () => {
     expect(parseResult.sector.y).toBe(66);
     expect(parseResult.sector.orbit).toBe(false);
     expect(parseResult.sector.mapId).toBe(115);
+
+    expect(parseResult.isEntry).toBe(true);
     
   });
 
@@ -73,5 +75,7 @@ describe('enter hangar line type', () => {
     expect(parseResult.ship.shipClass).toBe("Atel");
     
     expect(parseResult.carrier.name).toBe("{=BSC=} Energy Vault A");
+
+    expect(parseResult.isEntry).toBe(true);
   });
 })
