@@ -4,6 +4,7 @@ import BaseShipEventResult from "./base-ship-event-result.js";
 
 import MapCoordinatesResult from "../../regex/parse-result/map-coordinates-result.js";
 import ShipNameOnlyResult from "../../regex/parse-result/ship-name-only-result.js";
+import ShipNameAndNccResult from "../../regex/parse-result/ship-name-and-ncc-result.js";
 
 class HangarMovementResult extends BaseShipEventResult {
   /**
@@ -14,7 +15,7 @@ class HangarMovementResult extends BaseShipEventResult {
 
   /** 
    * carrier ship or station whose hangar was entered
-   * @type {ShipNameOnlyResult}
+   * @type {ShipNameAndNccResult|ShipNameOnlyResult}
   */
   carrier;
 
