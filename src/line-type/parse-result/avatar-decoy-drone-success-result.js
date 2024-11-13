@@ -26,7 +26,7 @@ class AvatarDecoyDroneSuccessResult {
    * name of the fired weapon
    * @type {string}
    */
-  weapon;
+  weaponName;
 }
 
 export default AvatarDecoyDroneSuccessResult;
