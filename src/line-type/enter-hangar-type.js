@@ -9,7 +9,7 @@ import { addSubroutines } from "../util/regex-helper.js";
 import GenericType from "./generic-type.js";
 import { pattern } from "regex";
 import LineTag from "../../src/enum/line-tag.js";
-import EnterMovementResult from "./parse-result/enter-movement-result.js";
+import EnterMovementResult from "./parse-result/hangar-movement-result.js";
 
 class EnterHangarType extends GenericType {
   static _regexByLanguage = {
