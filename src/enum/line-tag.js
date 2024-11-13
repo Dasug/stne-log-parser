@@ -11,6 +11,7 @@ class LineTag extends Enumify {
   static damage = new LineTag();
   static docking = new LineTag();
   static generic = new LineTag();
+  static hangar = new LineTag();
   /**
    * This log line is redundant and does not add additional information.
    * It might however be used for clarification or additional flavor.
