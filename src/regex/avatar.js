@@ -6,13 +6,12 @@ import AvatarResult from './parse-result/avatar-result.js';
 import AvatarJob from '../enum/avatar-job.js';
 
 /**
- * Parses a ship name with NCC, class and an optional NCC prefix.  
- * Examples: `Konrika [Friedensmission (2191321, Nova)`, `MyShip (NX-123456, Nova)`  
+ * Parses an avatar name with item id and job.  
+ * Example: `XiloliX ~ I (230718, Drohnenpilot)`  
  * Returns the following named groups when matching:  
- * `ship_name`: name of the ship  
- * `ncc_prefix`: NCC prefixes like NX or NPC/Admin specific prefixes if existing  
- * `ncc`: ship id  
- * `ship_class`: ship class name
+ * `avatar_name`: name of the avatar  
+ * `avatar_item_id`: item id of the avatar  
+ * `avatar_job`: the avatar's job. Note that the exact content of this group depends on the respective game localization  
  */
 class Avatar extends Expression {
   static regexPattern = pattern`
@@ -25,7 +24,7 @@ class Avatar extends Expression {
   `;
 
   /**
-   * @returns {?AvatarResult} ship data extracted from the text or null if there's no match
+   * @returns {?AvatarResult} avatar data extracted from the text or null if there's no match
    * @inheritdoc 
    */
   static matchResult(text) {
