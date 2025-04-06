@@ -21,6 +21,7 @@ class LineTag extends Enumify {
   static shipDisabled = new LineTag();
   static shipMaintenance = new LineTag();
   static shipMovement = new LineTag();
+  static transport = new LineTag();
   static weaponShot = new LineTag();
   static weaponShotResult = new LineTag();
 
