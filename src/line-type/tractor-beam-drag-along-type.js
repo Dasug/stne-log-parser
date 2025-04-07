@@ -63,6 +63,7 @@ class TractorBeamDragAlongType extends GenericType {
   static getTags() {
     return [
       LineTag.shipMovement,
+      LineTag.tractorBeam,
     ];
   }
 }
