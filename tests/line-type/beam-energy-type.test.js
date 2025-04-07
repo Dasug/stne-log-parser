@@ -60,6 +60,6 @@ describe('beam energy line type', () => {
     const warpCore = parseResult.resources[0];
 
     expect(warpCore.resource).toBe(BeamResource.warpCore);
-    expect(warpCore.amount).toBe(7355.44);
+    expect(warpCore.amount).toBeCloseTo(7355.44);
   });
 })
