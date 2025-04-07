@@ -14,6 +14,8 @@ import BeamTransportType from "../enum/beam-transport-type.js";
 import BeamDirection from "../enum/beam-direction.js";
 import BeamResult from "./parse-result/beam-result.js";
 import ShipNameAndNccResult from "../regex/parse-result/ship-name-and-ncc-result.js";
+import BeamResourceResult from "../regex/parse-result/beam-resource-result.js";
+import BeamResource from "../enum/beam-resource.js";
 
 class BeamResourcesType extends GenericType {
   static _regexByLanguage = {
@@ -55,17 +57,34 @@ class BeamResourcesType extends GenericType {
   static _buildResultObject(matches) {
     const shipWithNccMatch = ShipNameAndNcc.matchResult(matches.groups.ship);
     const ship = shipWithNccMatch !== null ? shipWithNccMatch : ShipNameOnly.matchResult(matches.groups.ship);
-    const shipNcc = ship instanceof ShipNameAndNccResult ? ship.ncc : null;
+    const shipNcc = ship instanceof ShipNameAndNccResult ? ship.ncc : (typeof matches.groups.shipNcc === "undefined" ? null : Number(matches.groups.shipNcc));
     const targetWithNccMatch = ShipNameAndNcc.matchResult(matches.groups.target);
     const beamTarget = targetWithNccMatch !== null ? targetWithNccMatch : ShipNameOnly.matchResult(matches.groups.target);
     const owner = typeof matches.groups.owner === "undefined" ? null : PlayerNameAndId.matchResult(matches.groups.owner);
     const transportType = ['transportiert'].includes(matches.groups.transportType) ? BeamTransportType.transport : BeamTransportType.beam;
     const sector = MapCoordinates.matchResult(matches.groups.sector);
     const beamDirection = ['von'].includes(matches.groups.direction) ? BeamDirection.fromTarget : BeamDirection.toTarget;
-    const beamResourcesString = matches.groups.beamResourcesString ?? "";
-    const beamResources = beamResourcesString.split(". ").map(
-      resourceString => BeamResourceDe.matchResult(resourceString.endsWith(".") ? resourceString : (resourceString.trim() + "."))
-    );
+    let beamResources = [];
+    if(typeof matches.groups.beamResourcesString !== "undefined") {
+      const beamResourcesString = matches.groups.beamResourcesString ?? "";
+      beamResources = beamResourcesString.split(". ").map(
+        resourceString => BeamResourceDe.matchResult(resourceString.endsWith(".") ? resourceString : (resourceString.trim() + "."))
+      );
+    } else if(typeof matches.groups.beamEnergyResource !== "undefined") {
+      const beamEnergyResource = new BeamResourceResult;
+      switch(matches.groups.beamEnergyResource) {
+        case "Energie":
+          beamEnergyResource.resource = BeamResource.energy;
+          break;
+        case "Warpkern":
+          beamEnergyResource.resource = BeamResource.warpCore;
+          break;
+        default:
+          beamEnergyResource.resource = BeamResource.unknown;
+      }
+      beamEnergyResource.amount = Number((matches.groups.amount ?? "").replaceAll(",", "."));
+      beamResources = [...beamResources, beamEnergyResource];
+    }
 
     const resultObject = new BeamResult;
     resultObject.ship = ship;
