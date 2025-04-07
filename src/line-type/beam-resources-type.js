@@ -35,7 +35,11 @@ class BeamResourcesType extends GenericType {
       \ 
       (?<target> \g<shipAndNcc>|\g<shipNameOnly>)
       :
-      (?<beamResources> (?:\ \g<beamResourceDe>)+)
+      (?<beamResourcesString> 
+        # for some reason beamResources has to be a capturing group here even if it's unused
+        # or it won't match on Node 20. It works on all other node versions I tested though
+        (?<beamResources> (\ \g<beamResourceDe>))+
+      )
       $
       `,
       {
@@ -59,7 +63,7 @@ class BeamResourcesType extends GenericType {
     const transportType = ['transportiert'].includes(matches.groups.transportType) ? BeamTransportType.transport : BeamTransportType.beam;
     const sector = MapCoordinates.matchResult(matches.groups.sector);
     const beamDirection = ['von'].includes(matches.groups.direction) ? BeamDirection.fromTarget : BeamDirection.toTarget;
-    const beamResourcesString = matches.groups.beamResources ?? "";
+    const beamResourcesString = matches.groups.beamResourcesString ?? "";
     const beamResources = beamResourcesString.split(". ").map(
       resourceString => BeamResourceDe.matchResult(resourceString.endsWith(".") ? resourceString : (resourceString.trim() + "."))
     );
