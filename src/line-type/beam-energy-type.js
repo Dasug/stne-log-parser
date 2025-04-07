@@ -14,15 +14,15 @@ class BeamEnergyType extends BeamResourcesType {
       pattern`
       ^
       (?<ship> \g<shipNameOnly>)
-      \ NCC\ 
+      \ +NCC\ 
       (?<shipNcc>\d+)
       (?:
         \ von \ 
         (?<owner> \g<playerAndId>)
       )?
-      \ 
+      \ +
       (?<transportType>beamt|transportiert)
-      \ in\ Sektor\ 
+      \ +in\ Sektor\ 
       (?<sector> \g<sectorCoordinates>)
       \ 
       (?<amount>\d+(?:,\d+)?)
