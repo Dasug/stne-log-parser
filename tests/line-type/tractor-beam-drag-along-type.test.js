@@ -6,7 +6,7 @@ import ShipNameOnlyResult from '../../src/regex/parse-result/ship-name-only-resu
 
 describe('tractor beam drag along line type', () => {
   test("has correct tags", () => {
-    expect(TractorBeamDragAlongType.getTags()).toEqual(expect.arrayContaining([LineTag.shipMovement]));
+    expect(TractorBeamDragAlongType.getTags()).toEqual(expect.arrayContaining([LineTag.shipMovement, LineTag.tractorBeam]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Glanz & Gloria (2642114, Kairos) von Kôntránisches VerwaltungsAmt [PeaceInUkraine] (56813) wird im Traktorstrahl hinterhergezogen.` };
