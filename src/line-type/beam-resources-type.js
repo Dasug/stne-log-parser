@@ -7,7 +7,6 @@ import MapCoordinates from "../regex/map-coordinates.js";
 import { addSubroutines } from "../util/regex-helper.js";
 import GenericType from "./generic-type.js";
 import { pattern } from "regex";
-import SectorEntryResult from "./parse-result/sector-entry-result.js";
 import LineTag from "../enum/line-tag.js";
 import ShipNameOnly from "../regex/ship-name-only.js";
 import BeamResourceDe from "../regex/beam-resource-de.js";
