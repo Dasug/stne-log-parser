@@ -53,7 +53,7 @@ class ActivateWeaponsType extends GenericType {
   static _buildResultObject(matches) {
     const ship = ShipNameAndNcc.matchResult(matches.groups.ship);
     const owner = matches.groups.owner === undefined ? null : PlayerNameAndId.matchResult(matches.groups.owner);
-    const state = ["de"].includes(matches.groups.disable) ? WeaponsState.active : WeaponsState.inactive;
+    const state = ["de"].includes(matches.groups.disable) ? WeaponsState.inactive : WeaponsState.active;
 
     const resultObject = new ActivateWeaponsResult;
     resultObject.ship = ship;
