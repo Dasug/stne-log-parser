@@ -47,7 +47,7 @@ describe('system blockade line type', () => {
     expect(parseResult.state).toBe(SystemBlockadeState.raised);
   });
 
-  test("parses English drop log line correctly", () => {
+  test("parses German drop log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`H|K ~KS~ Wrong Way (2563440, Atel) hat im Sektor 229|423 die Systemblockade aufgegeben` };
     const parseResult = SystemBlockadeType.parse(testLogEntry.entry, testLogEntry.lang);
 
