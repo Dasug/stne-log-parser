@@ -11,6 +11,7 @@ class LineTag extends Enumify {
   static damage = new LineTag();
   static diplomacy = new LineTag();
   static docking = new LineTag();
+  static economy = new LineTag();
   static generic = new LineTag();
   static hangar = new LineTag();
   /**
