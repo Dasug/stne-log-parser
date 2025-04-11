@@ -1,4 +1,5 @@
 import path from 'path';
+import TerserPlugin from 'terser-webpack-plugin';
 
 export default {
   entry: './src/index.js',
@@ -24,5 +25,14 @@ export default {
       amd: 'regex',
       root: 'Regex',
     }
-  }
+  },
+  optimization: {
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          keep_classnames: true,
+        },
+      }),
+    ],
+  },
 };
