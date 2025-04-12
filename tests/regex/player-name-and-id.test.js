@@ -32,4 +32,13 @@ describe('player name and id regex', () => {
     expect(result.idPrefix).toBe("NPC");
     expect(result.id).toBe(50546);
   });
+
+  test("Matches even with linebreak between name and ID", () => {
+    const result = PlayerNameAndId.matchResult(String.raw`S||Mâreth McDèrmot
+(75738)`);
+    expect(result).not.toBeNull();
+    expect(result.name).toBe("S||Mâreth McDèrmot");
+    expect(result.idPrefix).toBeNull();
+    expect(result.id).toBe(75738);
+  });
 });

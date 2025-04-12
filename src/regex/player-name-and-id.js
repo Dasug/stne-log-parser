@@ -16,7 +16,7 @@ class PlayerNameAndId extends Expression {
   static regexPattern = pattern`
     # player name
     (?<player_name>.+)
-    \ \(
+    \s+\(
     # player id prefix if existing
     ((?<id_prefix>[a-zA-Z0-9]+)-)?
     # player id
