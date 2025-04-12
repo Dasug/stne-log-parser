@@ -48,6 +48,17 @@ class GenericType {
   }
 
   /**
+   * Returns all languages that are supported by this line type
+   * @returns {string[]}
+   */
+  static getSupportedLanguages() {
+    if(typeof this._regexByLanguage !== "object") {
+      return [];
+    }
+    return Object.keys(this._regexByLanguage);
+  }
+
+  /**
    * Returns all tags that match this type of log line
    * This information is used to detect the type of the entire log entry
    * @returns {LineTag[]}
