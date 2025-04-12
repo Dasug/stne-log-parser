@@ -1,6 +1,6 @@
 "use strict";
 
-import ShipNameAndNcc from "../../regex/ship-name-and-ncc.js";
+import ShipNameAndNcc from "../../regex/subroutine/ship-name-and-ncc.js";
 
 class EnvironmentCeruleanResult {
   /**

@@ -2,7 +2,7 @@
 
 import {pattern} from 'regex';
 import Expression from './expression.js';
-import ColonyNameAndIdResult from './parse-result/colony-name-and-id-result.js';
+import ColonyNameAndIdResult from '../parse-result/colony-name-and-id-result.js';
 
 /**
  * Parses a player name with ID and an optional ID prefix.  

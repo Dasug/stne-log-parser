@@ -1,8 +1,8 @@
 "use strict"
 
-import PlayerNameAndId from "../regex/player-name-and-id.js";
-import ShipNameAndNcc from "../regex/ship-name-and-ncc.js";
-import WeaponDamage from "../regex/weapon-damage.js";
+import PlayerNameAndId from "../regex/subroutine/player-name-and-id.js";
+import ShipNameAndNcc from "../regex/subroutine/ship-name-and-ncc.js";
+import WeaponDamage from "../regex/subroutine/weapon-damage.js";
 
 import { addSubroutines } from "../util/regex-helper.js";
 import GenericType from "./generic-type.js";

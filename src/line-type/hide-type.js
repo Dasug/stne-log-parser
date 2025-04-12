@@ -1,13 +1,13 @@
 "use strict"
 
-import ShipNameAndNcc from "../regex/ship-name-and-ncc.js";
-import MapCoordinates from "../regex/map-coordinates.js";
+import ShipNameAndNcc from "../regex/subroutine/ship-name-and-ncc.js";
+import MapCoordinates from "../regex/subroutine/map-coordinates.js";
 
 import { addSubroutines } from "../util/regex-helper.js";
 import GenericType from "./generic-type.js";
 import { pattern } from "regex";
 import LineTag from "../../src/enum/line-tag.js";
-import PlayerNameAndId from "../regex/player-name-and-id.js";
+import PlayerNameAndId from "../regex/subroutine/player-name-and-id.js";
 import HideStatus from "../enum/hide-status.js";
 import HideResult from "./parse-result/hide-result.js";
 import MapFieldType from "../enum/map-field-type.js";

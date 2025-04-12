@@ -1,6 +1,6 @@
 "use strict"
 
-import ShipNameOnly from '../regex/ship-name-only.js'
+import ShipNameOnly from '../regex/subroutine/ship-name-only.js'
 
 import { addSubroutines } from "../util/regex-helper.js";
 import GenericType from "./generic-type.js";

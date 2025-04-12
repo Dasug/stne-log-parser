@@ -1,11 +1,11 @@
 "use strict"
 
-import PlayerNameAndId from "../regex/player-name-and-id.js";
-import MapCoordinates from "../regex/map-coordinates.js";
+import PlayerNameAndId from "../regex/subroutine/player-name-and-id.js";
+import MapCoordinates from "../regex/subroutine/map-coordinates.js";
 
 import { addSubroutines } from "../util/regex-helper.js";
 import { pattern } from "regex";
-import ShipNameOnly from "../regex/ship-name-only.js";
+import ShipNameOnly from "../regex/subroutine/ship-name-only.js";
 import BeamResourcesType from "./beam-resources-type.js";
 
 class BeamEnergyType extends BeamResourcesType {

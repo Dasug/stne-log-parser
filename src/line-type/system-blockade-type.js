@@ -1,7 +1,7 @@
 "use strict"
 
-import ShipNameAndNcc from "../regex/ship-name-and-ncc.js";
-import MapCoordinates from "../regex/map-coordinates.js";
+import ShipNameAndNcc from "../regex/subroutine/ship-name-and-ncc.js";
+import MapCoordinates from "../regex/subroutine/map-coordinates.js";
 
 import { addSubroutines } from "../util/regex-helper.js";
 import GenericType from "./generic-type.js";

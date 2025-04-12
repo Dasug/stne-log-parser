@@ -2,8 +2,8 @@
 
 import {pattern} from 'regex';
 import Expression from './expression.js';
-import BeamResourceResult from './parse-result/beam-resource-result.js';
-import BeamResource from '../enum/beam-resource.js';
+import BeamResourceResult from '../parse-result/beam-resource-result.js';
+import BeamResource from '../../enum/beam-resource.js';
 
 /**
  * Parses a beam resource name and amount in German language logs.  

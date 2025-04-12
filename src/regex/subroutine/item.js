@@ -2,7 +2,7 @@
 
 import {pattern} from 'regex';
 import Expression from './expression.js';
-import ItemResult from './parse-result/item-result.js';
+import ItemResult from '../parse-result/item-result.js';
 
 /**
  * Parses an item with its type id and optionally its item id 

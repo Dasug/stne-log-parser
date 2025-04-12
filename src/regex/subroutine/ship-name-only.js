@@ -2,7 +2,7 @@
 
 import {pattern} from 'regex';
 import Expression from './expression.js';
-import ShipNameOnlyResult from './parse-result/ship-name-only-result.js';
+import ShipNameOnlyResult from '../parse-result/ship-name-only-result.js';
 
 /**
  * Parses a ship name only without added NCC, class etc..  

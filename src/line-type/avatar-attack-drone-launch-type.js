@@ -1,12 +1,12 @@
 "use strict"
 
-import ShipNameAndNcc from "../regex/ship-name-and-ncc.js";
+import ShipNameAndNcc from "../regex/subroutine/ship-name-and-ncc.js";
 
 import { addSubroutines } from "../util/regex-helper.js";
 import GenericType from "./generic-type.js";
 import { pattern } from "regex";
 import LineTag from "../../src/enum/line-tag.js";
-import Avatar from "../regex/avatar.js";
+import Avatar from "../regex/subroutine/avatar.js";
 import AvatarAttackDroneLaunchResult from "./parse-result/avatar-attack-drone-launch-result.js";
 
 class AvatarAttackDroneLaunchType extends GenericType {

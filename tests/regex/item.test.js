@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
-import Item from '../../src/regex/item.js';
+import Item from '../../src/regex/subroutine/item.js';
 
 describe('item regex', () => {
   test("avatar matches valid entry", () => {

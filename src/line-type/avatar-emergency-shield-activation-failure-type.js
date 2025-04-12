@@ -1,12 +1,12 @@
 "use strict"
 
-import ShipNameAndNcc from "../regex/ship-name-and-ncc.js";
+import ShipNameAndNcc from "../regex/subroutine/ship-name-and-ncc.js";
 
 import { addSubroutines } from "../util/regex-helper.js";
 import GenericType from "./generic-type.js";
 import { pattern } from "regex";
 import LineTag from "../../src/enum/line-tag.js";
-import Avatar from "../regex/avatar.js";
+import Avatar from "../regex/subroutine/avatar.js";
 import AvatarEmergencyShieldActivationFailureResult from "./parse-result/avatar-emergency-shield-activation-failure-result.js";
 
 class AvatarEmergencyShieldActivationFailureType extends GenericType {

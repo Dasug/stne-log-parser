@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
-import PlayerNameAndId from '../../src/regex/player-name-and-id';
+import PlayerNameAndId from '../../src/regex/subroutine/player-name-and-id.js';
 
 describe('player name and id regex', () => {
   test("PlayerNameAndId matches and extracts valid entry", () => {

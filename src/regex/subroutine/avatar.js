@@ -2,8 +2,8 @@
 
 import {pattern} from 'regex';
 import Expression from './expression.js';
-import AvatarResult from './parse-result/avatar-result.js';
-import AvatarJob from '../enum/avatar-job.js';
+import AvatarResult from '../parse-result/avatar-result.js';
+import AvatarJob from '../../enum/avatar-job.js';
 
 /**
  * Parses an avatar name with item id and job.  

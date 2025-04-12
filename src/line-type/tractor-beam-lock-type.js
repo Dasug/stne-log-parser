@@ -1,12 +1,12 @@
 "use strict"
 
-import ShipNameOnly from '../regex/ship-name-only.js'
+import ShipNameOnly from '../regex/subroutine/ship-name-only.js'
 
 import { addSubroutines } from "../util/regex-helper.js";
 import GenericType from "./generic-type.js";
 import { pattern } from "regex";
 import LineTag from "../../src/enum/line-tag.js";
-import MapCoordinates from "../regex/map-coordinates.js";
+import MapCoordinates from "../regex/subroutine/map-coordinates.js";
 import TractorBeamResult from "./parse-result/tractor-beam-result.js";
 
 class TractorBeamLockType extends GenericType {

@@ -1,6 +1,6 @@
 "use strict"
 
-import PlayerNameAndId from "../regex/player-name-and-id.js";
+import PlayerNameAndId from "../regex/subroutine/player-name-and-id.js";
 
 import { addSubroutines } from "../util/regex-helper.js";
 import GenericType from "./generic-type.js";

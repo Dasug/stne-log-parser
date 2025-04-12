@@ -1,15 +1,15 @@
 "use strict"
 
-import PlayerNameAndId from "../regex/player-name-and-id.js";
-import ShipNameAndNcc from "../regex/ship-name-and-ncc.js";
-import MapCoordinates from "../regex/map-coordinates.js";
+import PlayerNameAndId from "../regex/subroutine/player-name-and-id.js";
+import ShipNameAndNcc from "../regex/subroutine/ship-name-and-ncc.js";
+import MapCoordinates from "../regex/subroutine/map-coordinates.js";
 
 import { addSubroutines } from "../util/regex-helper.js";
 import GenericType from "./generic-type.js";
 import { pattern } from "regex";
 import LineTag from "../enum/line-tag.js";
-import ShipNameOnly from "../regex/ship-name-only.js";
-import BeamResourceDe from "../regex/beam-resource-de.js";
+import ShipNameOnly from "../regex/subroutine/ship-name-only.js";
+import BeamResourceDe from "../regex/subroutine/beam-resource-de.js";
 import BeamTransportType from "../enum/beam-transport-type.js";
 import BeamDirection from "../enum/beam-direction.js";
 import BeamResult from "./parse-result/beam-result.js";

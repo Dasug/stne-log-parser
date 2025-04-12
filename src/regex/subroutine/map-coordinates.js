@@ -2,7 +2,7 @@
 
 import {pattern} from 'regex';
 import Expression from './expression.js';
-import MapCoordinatesResult from './parse-result/map-coordinates-result.js';
+import MapCoordinatesResult from '../parse-result/map-coordinates-result.js';
 
 const phaseMapId = 101;
 const hangarMapId = 102;

@@ -1,7 +1,7 @@
 import { describe, expect, test } from '@jest/globals';
 import BeamResource from '../../src/enum/beam-resource.js';
 import Resource from '../../src/enum/resource.js';
-import BeamResourceDe from '../../src/regex/beam-resource-de.js';
+import BeamResourceDe from '../../src/regex/subroutine/beam-resource-de.js';
 
 describe('german language beam resource regex', () => {
   test("test all resources with random amounts", () => {
