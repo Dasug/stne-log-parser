@@ -2,6 +2,7 @@
 
 import { lineTypes } from "./line-types.js";
 import GenericType from "./line-type/generic-type.js";
+import LineTag from "./enum/line-tag.js";
 
 class LogLine {
   #language = null;
@@ -39,6 +40,12 @@ class LogLine {
    * @returns {?GenericType}
    */
   get lineParser() { return this.#lineParser; }
+
+  /**
+   * the tags of the parsed log line type, only available after parsing was successful
+   * @returns {LineTag[]}
+   */
+  get tags() { return this.#lineParser?.getTags() ?? []; }
 
   /**
    * Parse a given log line
