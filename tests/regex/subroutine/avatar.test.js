@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
-import Avatar from '../../src/regex/subroutine/avatar.js';
-import AvatarJob from '../../src/enum/avatar-job.js';
+import Avatar from '../../../src/regex/subroutine/avatar.js';
+import AvatarJob from '../../../src/enum/avatar-job.js';
 
 describe('avatar regex', () => {
   test("avatar matches valid entry", () => {

@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
-import ShipNameAndNcc from '../../src/regex/subroutine/ship-name-and-ncc.js';
+import ShipNameAndNcc from '../../../src/regex/subroutine/ship-name-and-ncc.js';
 
 describe('ship name and ncc regex', () => {
   test("ShipNameAndNcc matches valid entry", () => {

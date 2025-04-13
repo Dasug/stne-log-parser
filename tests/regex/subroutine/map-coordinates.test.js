@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
-import MapCoordinates from '../../src/regex/subroutine/map-coordinates.js';
+import MapCoordinates from '../../../src/regex/subroutine/map-coordinates.js';
 
 describe('map coordinates regex', () => {
   test("map coordinates matches simple main map coordinates", () => {

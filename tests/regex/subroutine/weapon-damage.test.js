@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
-import WeaponDamage from '../../src/regex/subroutine/weapon-damage.js';
+import WeaponDamage from '../../../src/regex/subroutine/weapon-damage.js';
 
 describe('weapon damage regex', () => {
   test("WeaponDamage matches and extracts valid entry", () => {

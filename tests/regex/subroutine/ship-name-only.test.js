@@ -1,4 +1,4 @@
-import ShipNameOnly from "../../src/regex/subroutine/ship-name-only.js";
+import ShipNameOnly from "../../../src/regex/subroutine/ship-name-only.js";
 
 // kind of pointless but here we go
 describe('ship name only regex', () => {
