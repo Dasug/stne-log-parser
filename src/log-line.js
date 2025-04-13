@@ -8,6 +8,7 @@ class LogLine {
   #detected = false;
   #line = "";
   #parseResult = null;
+  #lineParser = null;
 
   /**
    * true if the log line was successfully detected by a parser
@@ -34,6 +35,12 @@ class LogLine {
   get language() { return this.#language; }
 
   /**
+   * parser class that detected and parsed the log line
+   * @returns {?GenericType}
+   */
+  get lineParser() { return this.#lineParser; }
+
+  /**
    * Parse a given log line
    * 
    * Note: This method will run through the parsers synchronously. This can cause performance issues.
@@ -45,6 +52,7 @@ class LogLine {
     const trimmedLine = (typeof line === "string")? line.trim() : "";
     let parsedLine = null;
     let detectedLanguage = null;
+    let detectedLineType = null;
     lineTypes.some(/** @param {GenericType} lineType */ lineType => {
       let checkedLanguages = [];
       if(language === null) {
@@ -56,6 +64,7 @@ class LogLine {
         if(lineType.detect(trimmedLine, lang)) {
           detectedLanguage = lang;
           parsedLine = lineType.parse(trimmedLine, lang);
+          detectedLineType = lineType;
 
           return true;
         }
@@ -68,6 +77,7 @@ class LogLine {
       logLine.#parseResult = parsedLine;
       logLine.#language = detectedLanguage;
       logLine.#detected = true;
+      logLine.#lineParser = detectedLineType;
     }
 
     return logLine;
