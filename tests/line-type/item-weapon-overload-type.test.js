@@ -23,7 +23,7 @@ describe('item weapon overload type', () => {
     // parts are not null if present
     expect(parseResult.target).not.toBeNull();
     expect(parseResult.target).toBeInstanceOf(ShipNameAndNccResult);
-    expect(parseResult.strengthIncrease).not.toBeNull();
+    expect(parseResult.damageIncrease).not.toBeNull();
     
     // parts are set correctly
     // ship
@@ -33,6 +33,6 @@ describe('item weapon overload type', () => {
     expect(parseResult.target.shipClass).toBe("Tamani");
     
     // strength increase
-    expect(parseResult.strengthIncrease).toBeCloseTo(35);
+    expect(parseResult.damageIncrease).toBeCloseTo(35);
   });
 })

@@ -13,7 +13,7 @@ class ItemWeaponOverloadResult {
    * percentage of damage increase caused by the item
    * @type {number}
    */
-  strengthIncrease;
+  damageIncrease;
 }
 
 export default ItemWeaponOverloadResult;

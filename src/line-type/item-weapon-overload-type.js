@@ -29,11 +29,11 @@ class ItemWeaponOverloadType extends GenericType {
 
   static _buildResultObject(matches) {
     const target = ShipNameAndNcc.matchResult(matches.groups.target);
-    const strengthIncrease = Number(matches.groups.damageIncrease);
+    const damageIncrease = Number(matches.groups.damageIncrease);
     
     const resultObject = new ItemWeaponOverloadResult;
     resultObject.target = target;
-    resultObject.strengthIncrease = strengthIncrease;
+    resultObject.damageIncrease = damageIncrease;
 
     return resultObject;
   }
