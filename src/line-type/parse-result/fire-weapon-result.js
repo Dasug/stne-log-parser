@@ -6,8 +6,9 @@ import BaseShipEventResult from "./base-ship-event-result.js";
 
 class FireWeaponResult extends BaseShipEventResult {
   /**
-   * the target ship that is being fired upon
-   * @type {ShipNameAndNccResult}
+   * the target that is being fired upon
+   * if this is null, the target is a colony (that is not named in the log line)
+   * @type {?ShipNameAndNccResult}
    */
   target;
 
@@ -39,6 +40,10 @@ class FireWeaponResult extends BaseShipEventResult {
 
   set isDefensive(value) {
     this.isOffensive = !value;
+  }
+
+  get targetIsColony() {
+    return this.target === null;
   }
 }
 

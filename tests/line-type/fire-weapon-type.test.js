@@ -30,6 +30,8 @@ describe('fire weapon type line type', () => {
     expect(parseResult.target).not.toBeNull();
     expect(parseResult.weaponName).not.toBeNull();
     expect(parseResult.weaponStrength).not.toBeNull();
+
+    expect(parseResult.targetIsColony).toBe(false);
     
     // parts are set correctly
     // ship
@@ -69,6 +71,8 @@ describe('fire weapon type line type', () => {
     expect(parseResult.target).not.toBeNull();
     expect(parseResult.weaponName).not.toBeNull();
     expect(parseResult.weaponStrength).not.toBeNull();
+
+    expect(parseResult.targetIsColony).toBe(false);
     
     // parts are set correctly
     // ship
@@ -107,6 +111,8 @@ describe('fire weapon type line type', () => {
     expect(parseResult.target).not.toBeNull();
     expect(parseResult.weaponName).not.toBeNull();
     expect(parseResult.weaponStrength).not.toBeNull();
+
+    expect(parseResult.targetIsColony).toBe(false);
     
     // parts are set correctly
     // ship
@@ -144,6 +150,8 @@ describe('fire weapon type line type', () => {
     expect(parseResult.target).not.toBeNull();
     expect(parseResult.weaponName).not.toBeNull();
     expect(parseResult.weaponStrength).not.toBeNull();
+
+    expect(parseResult.targetIsColony).toBe(false);
     
     // parts are set correctly
     // ship
@@ -175,7 +183,7 @@ describe('fire weapon type line type', () => {
     expect(FireWeaponType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
-  test("parses German entry log line correctly", () => {
+  test("parses somewhat broken German entry log line correctly (Dahel)", () => {
     const testLogEntry = { "lang": "de", "entry": "Verlassener Außenposten Egriuvu (2841450, Verlassener Außenposten) von Die Verdammten (NPC-76936) schlägt Dahel Strafe Poseidons 29 (2658963, Dahel) mit Kürbiskern und Stärke 8/0/16 " };
     const parseResult = FireWeaponType.parse(testLogEntry.entry, testLogEntry.lang);
 
@@ -188,6 +196,8 @@ describe('fire weapon type line type', () => {
     expect(parseResult.target).not.toBeNull();
     expect(parseResult.weaponName).not.toBeNull();
     expect(parseResult.weaponStrength).not.toBeNull();
+
+    expect(parseResult.targetIsColony).toBe(false);
     
     // parts are set correctly
     // ship
@@ -196,7 +206,7 @@ describe('fire weapon type line type', () => {
     expect(parseResult.ship.nccPrefix).toBeNull();
     expect(parseResult.ship.shipClass).toBe("Verlassener Außenposten");
     
-    // ship
+    // target
     expect(parseResult.target.ncc).toBe(2658963);
     expect(parseResult.target.name).toBe("Strafe Poseidons 29");
     expect(parseResult.target.nccPrefix).toBeNull();
@@ -210,6 +220,40 @@ describe('fire weapon type line type', () => {
     expect(parseResult.weaponStrength.shieldDamage).toBe(8);
     expect(parseResult.weaponStrength.hullDamage).toBe(0);
     expect(parseResult.weaponStrength.energyDamage).toBe(16);
+    
+  });
+
+  test("parses German attack on colony log line correctly", () => {
+    const testLogEntry = { "lang": "de", "entry": "Tamani =MS= Echo Fatalis (2873452, Tamani) greift mit Phaser und Stärke 20/20/0 an" };
+    const parseResult = FireWeaponType.parse(testLogEntry.entry, testLogEntry.lang);
+
+    // result is not null
+    expect(parseResult).not.toBeNull();
+    
+    // parts are not null if present
+    expect(parseResult.owner).toBeNull();
+    expect(parseResult.ship).not.toBeNull();
+    expect(parseResult.target).toBeNull();
+    expect(parseResult.weaponName).not.toBeNull();
+    expect(parseResult.weaponStrength).not.toBeNull();
+
+    expect(parseResult.targetIsColony).toBe(true);
+    
+    // parts are set correctly
+    // ship
+    expect(parseResult.ship.ncc).toBe(2873452);
+    expect(parseResult.ship.name).toBe("=MS= Echo Fatalis");
+    expect(parseResult.ship.nccPrefix).toBeNull();
+    expect(parseResult.ship.shipClass).toBe("Tamani");
+
+    expect(parseResult.weaponName).toBe("Phaser");
+    expect(parseResult.isOffensive).toBe(true);
+    expect(parseResult.isDefensive).toBe(false);
+
+    // weapon strength
+    expect(parseResult.weaponStrength.shieldDamage).toBe(20);
+    expect(parseResult.weaponStrength.hullDamage).toBe(20);
+    expect(parseResult.weaponStrength.energyDamage).toBe(0);
     
   });
 

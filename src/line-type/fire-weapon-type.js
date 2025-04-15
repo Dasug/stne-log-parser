@@ -31,28 +31,35 @@ class FireWeaponType extends GenericType {
         \)
       )
       (?<ship> \g<shipAndNcc>)
-      \ von \ 
-      (?<owner> \g<playerAndId>)
+      # owner information, is occasionally empty
+      (?:
+        \ von \ 
+        (?<owner> \g<playerAndId>)
+      )?
       \ (?<attack_type>greift|schlägt)\ 
 
-      # target ship type, is duplicated later
-      (?<prefix_target_ship_class>.+)\ 
-      # lookahead to make sure we have that ship class again later so we don't match too much now
-      (?=
-        # target ship name
-        .+
-        \(
-        (?:[a-zA-Z]+-)?
-        \d+
-        ,\ 
-        \k<prefix_target_ship_class>
-        # for Sabre class that ends with a space
-        \ ?
-        \)
-      )
+      # target information, is missing when attacking a colony
+      (?:
+        # target ship type, is duplicated later
+        (?<prefix_target_ship_class>.+)\ 
+        # lookahead to make sure we have that ship class again later so we don't match too much now
+        (?=
+          # target ship name
+          .+
+          \(
+          (?:[a-zA-Z]+-)?
+          \d+
+          ,\ 
+          \k<prefix_target_ship_class>
+          # for Sabre class that ends with a space
+          \ ?
+          \)
+        )
 
-      (?<target> \g<shipAndNcc>)
-      \ mit\ 
+        (?<target> \g<shipAndNcc>)
+        \ 
+      )?
+      mit\ 
       (?<weapon_name> .+)
       \ und\ Stärke\ 
       (?<weapon_strength> \g<weaponStrength>)
@@ -85,27 +92,35 @@ class FireWeaponType extends GenericType {
         \)
       )
       (?<ship> \g<shipAndNcc>)
-      \ (?:from|of)\ 
-      (?<owner> \g<playerAndId>)
-      \ (?<attack_type>attacks|retaliates)\ 
-      # target ship type, is duplicated later
-      (?<prefix_target_ship_class>.+)\ 
-      # lookahead to make sure we have that ship class again later so we don't match too much now
-      (?=
-        # target ship name
-        .+
-        \(
-        (?:[a-zA-Z]+-)?
-        \d+
-        ,\ 
-        \k<prefix_target_ship_class>
-        # for Sabre class that ends with a space
-        \ ?
-        \)
-      )
+      # owner information, is occasionally empty
+      (?:
+        \ (?:from|of)\ 
+        (?<owner> \g<playerAndId>)
+      )?
 
-      (?<target> \g<shipAndNcc>)
-      \ with\ 
+      \ (?<attack_type>attacks|retaliates)\ 
+      # target information, is missing when attacking a colony
+      (?:
+        # target ship type, is duplicated later
+        (?<prefix_target_ship_class>.+)\ 
+        # lookahead to make sure we have that ship class again later so we don't match too much now
+        (?=
+          # target ship name
+          .+
+          \(
+          (?:[a-zA-Z]+-)?
+          \d+
+          ,\ 
+          \k<prefix_target_ship_class>
+          # for Sabre class that ends with a space
+          \ ?
+          \)
+        )
+
+        (?<target> \g<shipAndNcc>)
+        \ 
+      )?
+      with\ 
       (?<weapon_name> .+)
       ,\ Strength\ 
       (?<weapon_strength> \g<weaponStrength>)
@@ -121,8 +136,8 @@ class FireWeaponType extends GenericType {
 
   static _buildResultObject(matches) {
     const ship = ShipNameAndNcc.matchResult(matches.groups.ship);
-    const owner = PlayerNameAndId.matchResult(matches.groups.owner);
-    const target = ShipNameAndNcc.matchResult(matches.groups.target);
+    const owner = typeof matches.groups.owner === "undefined" ? null : PlayerNameAndId.matchResult(matches.groups.owner);
+    const target = typeof matches.groups.target === "undefined" ? null : ShipNameAndNcc.matchResult(matches.groups.target);
     const weaponStrength = WeaponDamage.matchResult(matches.groups.weapon_strength);
     const weaponName = matches.groups.weapon_name;
     const attackType = matches.groups.attack_type;
