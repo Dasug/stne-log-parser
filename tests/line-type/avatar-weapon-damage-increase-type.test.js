@@ -47,7 +47,7 @@ describe('avatar weapon damage increase line type', () => {
     expect(parseResult.target.nccPrefix).toBeNull();
     expect(parseResult.target.shipClass).toBe("Verlassene Rhino");
 
-    // alert level
+    // damage increase
     expect(parseResult.damageIncrease).toBe(28);
     
   });
@@ -82,7 +82,7 @@ describe('avatar weapon damage increase line type', () => {
     expect(parseResult.target.id).toBe(69619);
     expect(parseResult.target.name).toBe("neu-aut");
 
-    // alert level
+    // damage increase
     expect(parseResult.damageIncrease).toBe(22);
     
   });
