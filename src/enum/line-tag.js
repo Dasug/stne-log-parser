@@ -16,6 +16,10 @@ class LineTag extends Enumify {
   static generic = new LineTag();
   static hangar = new LineTag();
   /**
+   * this log was triggered by an item, other than an avatar
+   */
+  static item = new LineTag();
+  /**
    * This log line is redundant and does not add additional information.
    * It might however be used for clarification or additional flavor.
    */
