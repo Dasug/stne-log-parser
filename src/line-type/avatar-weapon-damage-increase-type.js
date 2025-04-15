@@ -8,6 +8,7 @@ import { pattern } from "regex";
 import LineTag from "../../src/enum/line-tag.js";
 import Avatar from "../regex/subroutine/avatar.js";
 import AvatarWeaponDamageIncreaseResult from "./parse-result/avatar-weapon-damage-increase-result.js";
+import ColonyNameAndId from "../regex/subroutine/colony-name-and-id.js";
 
 class AvatarWeaponDamageIncreaseType extends GenericType {
   static _regexByLanguage = {
@@ -15,10 +16,12 @@ class AvatarWeaponDamageIncreaseType extends GenericType {
       pattern`
       ^
       (?<trigger_avatar> \g<avatar>)
-      \ zielt\ auf\ ein\ kritisches\ Untersystem\ wodurch\ der\ Angriff\ von \ 
-      (?<ship> \g<shipAndNcc>)
+      \ zielt\ auf\ 
+      (?:ein\ kritisches\ Untersystem|eine\ Schwachstelle)
+      \ wodurch\ der\ Angriff\ von \ 
+      (?<origin> \g<shipAndNcc>|\g<colonyNameAndId>)
       \ gegen\ 
-      (?<target> \g<shipAndNcc>)
+      (?<target> \g<shipAndNcc>|\g<colonyNameAndId>)
       \ um \ 
       (?<damage_increase> \d+?)%
       \ stärker\ ausfällt!
@@ -26,6 +29,7 @@ class AvatarWeaponDamageIncreaseType extends GenericType {
       `,
       {
         "shipAndNcc": ShipNameAndNcc.asSubroutineDefinition(),
+        "colonyNameAndId": ColonyNameAndId.asSubroutineDefinition(),
         "avatar": Avatar.asSubroutineDefinition(),
       }
     ),
@@ -34,12 +38,12 @@ class AvatarWeaponDamageIncreaseType extends GenericType {
 
   static _buildResultObject(matches) {
     const avatar = Avatar.matchResult(matches.groups.trigger_avatar);
-    const ship = ShipNameAndNcc.matchResult(matches.groups.ship);
-    const target = ShipNameAndNcc.matchResult(matches.groups.target);
+    const origin = ShipNameAndNcc.matchResult(matches.groups.origin) ?? ColonyNameAndId.matchResult(matches.groups.origin);
+    const target = ShipNameAndNcc.matchResult(matches.groups.target) ?? ColonyNameAndId.matchResult(matches.groups.target);
     const damageIncrease = Number(matches.groups.damage_increase);
 
     const resultObject = new AvatarWeaponDamageIncreaseResult;
-    resultObject.ship = ship;
+    resultObject.origin = origin;
     resultObject.target = target;
     resultObject.avatar = avatar;
     resultObject.damageIncrease = damageIncrease;

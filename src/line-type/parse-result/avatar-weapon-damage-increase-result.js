@@ -1,6 +1,7 @@
 "use strict"
 
 import AvatarResult from "../../regex/parse-result/avatar-result.js";
+import ColonyNameAndIdResult from "../../regex/parse-result/colony-name-and-id-result.js";
 import ShipNameAndNccResult from "../../regex/parse-result/ship-name-and-ncc-result.js";
 
 class AvatarWeaponDamageIncreaseResult {
@@ -11,14 +12,14 @@ class AvatarWeaponDamageIncreaseResult {
   avatar;
 
   /**
-   * ship that fired the shot
-   * @type {ShipNameAndNccResult}
+   * ship or colony that fired the shot
+   * @type {ShipNameAndNccResult|ColonyNameAndIdResult}
    */
-  ship;
+  origin;
 
   /**
    * ship that is being fired on
-   * @type {ShipNameAndNccResult}
+   * @type {ShipNameAndNccResult|ColonyNameAndIdResult}
    */
   target;
   
