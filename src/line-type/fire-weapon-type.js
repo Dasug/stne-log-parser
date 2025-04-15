@@ -36,7 +36,7 @@ class FireWeaponType extends GenericType {
         \ von \ 
         (?<owner> \g<playerAndId>)
       )?
-      \ (?<attack_type>greift|schlägt)\ 
+      \ (?<attack_type>greift|schlägt)\ +
 
       # target information, is missing when attacking a colony
       (?:
@@ -97,8 +97,8 @@ class FireWeaponType extends GenericType {
         \ (?:from|of)\ 
         (?<owner> \g<playerAndId>)
       )?
+      \ (?<attack_type>attacks|retaliates)\ +
 
-      \ (?<attack_type>attacks|retaliates)\ 
       # target information, is missing when attacking a colony
       (?:
         # target ship type, is duplicated later
