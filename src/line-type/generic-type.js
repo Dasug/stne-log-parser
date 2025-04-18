@@ -15,7 +15,11 @@ class GenericType {
       // language not supported for this type
       return false;
     }
-    return text.match(this._regexByLanguage[language]) !== null;
+    // no text was given, return no valid match
+    if(typeof text === "undefined" || text === null) {
+      return null;
+    }
+    return String(text).match(this._regexByLanguage[language]) !== null;
   }
 
   /**
