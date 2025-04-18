@@ -38,7 +38,7 @@ class FireWeaponType extends GenericType {
       )?
       \ (?<attack_type>greift|schlägt)\ +
 
-      # target information, is missing when attacking a colony
+      # target information, is missing when attacking a colony with an unnamed building
       (?:
         # target ship type, is duplicated later
         (?<prefix_target_ship_class>.+)\ 
@@ -57,6 +57,10 @@ class FireWeaponType extends GenericType {
         )
 
         (?<target> \g<shipAndNcc>)
+        \ 
+        |
+        # alternatively there might be a building name here
+        .{1,20}
         \ 
       )?
       mit\ 
@@ -118,6 +122,10 @@ class FireWeaponType extends GenericType {
         )
 
         (?<target> \g<shipAndNcc>)
+        \ 
+        |
+        # alternatively there might be a building name here
+        .{1,20}
         \ 
       )?
       with\ 

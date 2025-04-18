@@ -257,4 +257,38 @@ describe('fire weapon type line type', () => {
     
   });
 
+  test("parses German attack on colony with named building log line correctly", () => {
+    const testLogEntry = { "lang": "de", "entry": "Sovereign Refit Sprungkosten (69307, Sovereign Refit) greift PewPew mit Quantentorpedo MK 2 und Stärke 130/120/0 an" };
+    const parseResult = FireWeaponType.parse(testLogEntry.entry, testLogEntry.lang);
+
+    // result is not null
+    expect(parseResult).not.toBeNull();
+    
+    // parts are not null if present
+    expect(parseResult.owner).toBeNull();
+    expect(parseResult.ship).not.toBeNull();
+    expect(parseResult.target).toBeNull();
+    expect(parseResult.weaponName).not.toBeNull();
+    expect(parseResult.weaponStrength).not.toBeNull();
+
+    expect(parseResult.targetIsColony).toBe(true);
+    
+    // parts are set correctly
+    // ship
+    expect(parseResult.ship.ncc).toBe(69307);
+    expect(parseResult.ship.name).toBe("Sprungkosten");
+    expect(parseResult.ship.nccPrefix).toBeNull();
+    expect(parseResult.ship.shipClass).toBe("Sovereign Refit");
+
+    expect(parseResult.weaponName).toBe("Quantentorpedo MK 2");
+    expect(parseResult.isOffensive).toBe(true);
+    expect(parseResult.isDefensive).toBe(false);
+
+    // weapon strength
+    expect(parseResult.weaponStrength.shieldDamage).toBe(130);
+    expect(parseResult.weaponStrength.hullDamage).toBe(120);
+    expect(parseResult.weaponStrength.energyDamage).toBe(0);
+    
+  });
+
 })
