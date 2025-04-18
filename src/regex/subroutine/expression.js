@@ -19,7 +19,10 @@ class Expression {
    * @returns array of matches
    */
   static match(text) {
-    return text.match(regex`^${this.regexPattern}$`);
+    if(typeof text === "undefined" || text === null) {
+      return null;
+    }
+    return String(text).match(regex`^${this.regexPattern}$`);
   }
 
   /**
