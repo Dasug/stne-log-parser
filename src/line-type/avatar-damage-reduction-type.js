@@ -1,7 +1,7 @@
 "use strict"
 
 import ShipNameAndNcc from "../regex/subroutine/ship-name-and-ncc.js";
-
+import ColonyNameAndId from "../regex/subroutine/colony-name-and-id.js";
 import { addSubroutines } from "../util/regex-helper.js";
 import GenericType from "./generic-type.js";
 import { pattern } from "regex";
@@ -16,7 +16,11 @@ class AvatarDamageReductionType extends GenericType {
       ^
       (?<trigger_avatar> \g<avatar>)
       \ stört\ die\ Zielerfassung\ von\ 
-      (?<ship> \g<shipAndNcc>)
+      (?:
+        (?<ship> \g<shipAndNcc>)
+        |
+        (?<colony> \g<colonyNameAndId>)
+      )
       ,\ wodurch\ dessen\ Angriff\ auf\ 
       (?<target> \g<shipAndNcc>)
       \ um \ 
@@ -26,6 +30,7 @@ class AvatarDamageReductionType extends GenericType {
       `,
       {
         "shipAndNcc": ShipNameAndNcc.asSubroutineDefinition(),
+        "colonyNameAndId": ColonyNameAndId.asSubroutineDefinition(),
         "avatar": Avatar.asSubroutineDefinition(),
       }
     ),
@@ -35,11 +40,12 @@ class AvatarDamageReductionType extends GenericType {
   static _buildResultObject(matches) {
     const avatar = Avatar.matchResult(matches.groups.trigger_avatar);
     const ship = ShipNameAndNcc.matchResult(matches.groups.ship);
+    const colony = ColonyNameAndId.matchResult(matches.groups.colony);
     const target = ShipNameAndNcc.matchResult(matches.groups.target);
     const damageReduction = Number(matches.groups.damage_reduction);
 
     const resultObject = new AvatarDamageReductionResult;
-    resultObject.ship = ship;
+    resultObject.origin = ship ?? colony;
     resultObject.target = target;
     resultObject.avatar = avatar;
     resultObject.damageReduction = damageReduction;
