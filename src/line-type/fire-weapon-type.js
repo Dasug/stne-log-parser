@@ -9,28 +9,37 @@ import GenericType from "./generic-type.js";
 import { pattern } from "regex";
 import FireWeaponResult from "./parse-result/fire-weapon-result.js";
 import LineTag from "../../src/enum/line-tag.js";
+import Building from "../regex/subroutine/building.js";
 
 class FireWeaponType extends GenericType {
   static _regexByLanguage = {
     "de": addSubroutines(
       pattern`
       ^
-      # ship type, is duplicated later
-      (?<prefix_ship_class>.+)\ 
-      # lookahead to make sure we have that ship class again later so we don't match too much now
-      (?=
-        # ship name
-        .+
-        \(
-        (?:[a-zA-Z]+-)?
-        \d+
-        ,\ 
-        \k<prefix_ship_class>
-        # for Sabre class that ends with a space
-        \ ?
-        \)
+      (?:
+        # ship type, is duplicated later
+        (?<prefix_ship_class>.+)\ 
+        # lookahead to make sure we have that ship class again later so we don't match too much now
+        (?=
+          # ship name
+          .+
+          \(
+          (?:[a-zA-Z]+-)?
+          \d+
+          ,\ 
+          \k<prefix_ship_class>
+          # for Sabre class that ends with a space
+          \ ?
+          \)
+        )
+        (?<ship> \g<shipAndNcc>)
+
+        |
+
+        # alternatively this could be a building
+        (?<building> \g<buildingData>)
       )
-      (?<ship> \g<shipAndNcc>)
+      
       # owner information, is occasionally empty
       (?:
         \ von \ 
@@ -73,6 +82,7 @@ class FireWeaponType extends GenericType {
       `,
       {
         "shipAndNcc": ShipNameAndNcc.asSubroutineDefinition(),
+        "buildingData": Building.asSubroutineDefinition(),
         "playerAndId": PlayerNameAndId.asSubroutineDefinition(),
         "weaponStrength": WeaponDamage.asSubroutineDefinition(),
       }
@@ -80,22 +90,30 @@ class FireWeaponType extends GenericType {
     "en": addSubroutines(
       pattern`
       ^
-      # ship type, is duplicated later
-      (?<prefix_ship_class>.+)\ 
-      # lookahead to make sure we have that ship class again later so we don't match too much now
-      (?=
-        # ship name
-        .+
-        \(
-        (?:[a-zA-Z]+-)?
-        \d+
-        ,\ 
-        \k<prefix_ship_class>
-        # for Sabre class that ends with a space
-        \ ?
-        \)
+      (?:
+        # ship type, is duplicated later
+        (?<prefix_ship_class>.+)\ 
+        # lookahead to make sure we have that ship class again later so we don't match too much now
+        (?=
+          # ship name
+          .+
+          \(
+          (?:[a-zA-Z]+-)?
+          \d+
+          ,\ 
+          \k<prefix_ship_class>
+          # for Sabre class that ends with a space
+          \ ?
+          \)
+        )
+        (?<ship> \g<shipAndNcc>)
+        
+
+        |
+
+        # alternatively this could be a building
+        (?<building> \g<buildingData>)
       )
-      (?<ship> \g<shipAndNcc>)
       # owner information, is occasionally empty
       (?:
         \ (?:from|of)\ 
@@ -136,6 +154,7 @@ class FireWeaponType extends GenericType {
       `,
       {
         "shipAndNcc": ShipNameAndNcc.asSubroutineDefinition(),
+        "buildingData": Building.asSubroutineDefinition(),
         "playerAndId": PlayerNameAndId.asSubroutineDefinition(),
         "weaponStrength": WeaponDamage.asSubroutineDefinition(),
       }
@@ -144,6 +163,7 @@ class FireWeaponType extends GenericType {
 
   static _buildResultObject(matches) {
     const ship = ShipNameAndNcc.matchResult(matches.groups.ship);
+    const building = typeof matches.groups.building === "undefined" ? null : Building.matchResult(matches.groups.building);
     const owner = typeof matches.groups.owner === "undefined" ? null : PlayerNameAndId.matchResult(matches.groups.owner);
     const target = typeof matches.groups.target === "undefined" ? null : ShipNameAndNcc.matchResult(matches.groups.target);
     const weaponStrength = WeaponDamage.matchResult(matches.groups.weapon_strength);
@@ -151,7 +171,7 @@ class FireWeaponType extends GenericType {
     const attackType = matches.groups.attack_type;
 
     const resultObject = new FireWeaponResult;
-    resultObject.ship = ship;
+    resultObject.origin = ship ?? building
     resultObject.owner = owner;
     resultObject.target = target;
     resultObject.weaponName = weaponName;

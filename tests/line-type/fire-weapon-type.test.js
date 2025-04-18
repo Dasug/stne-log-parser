@@ -1,6 +1,9 @@
 import { describe, expect, test } from '@jest/globals';
 import FireWeaponType from '../../src/line-type/fire-weapon-type';
 import LineTag from '../../src/enum/line-tag.js';
+import ShipNameAndNccResult from '../../src/regex/parse-result/ship-name-and-ncc-result.js';
+import BuildingResult from '../../src/regex/parse-result/building-result.js';
+import BuildingType from '../../src/enum/building-type.js';
 
 describe('fire weapon type line type', () => {
   test("has battle tag", () => {
@@ -26,21 +29,23 @@ describe('fire weapon type line type', () => {
     
     // parts are not null if present
     expect(parseResult.owner).not.toBeNull();
-    expect(parseResult.ship).not.toBeNull();
+    expect(parseResult.origin).not.toBeNull();
     expect(parseResult.target).not.toBeNull();
     expect(parseResult.weaponName).not.toBeNull();
     expect(parseResult.weaponStrength).not.toBeNull();
 
     expect(parseResult.targetIsColony).toBe(false);
+    expect(parseResult.originIsColony).toBe(false);
     
     // parts are set correctly
-    // ship
-    expect(parseResult.ship.ncc).toBe(2360134);
-    expect(parseResult.ship.name).toBe("Hood");
-    expect(parseResult.ship.nccPrefix).toBeNull();
-    expect(parseResult.ship.shipClass).toBe("Pegasus");
+    // origin
+    expect(parseResult.origin).toBeInstanceOf(ShipNameAndNccResult);
+    expect(parseResult.origin.ncc).toBe(2360134);
+    expect(parseResult.origin.name).toBe("Hood");
+    expect(parseResult.origin.nccPrefix).toBeNull();
+    expect(parseResult.origin.shipClass).toBe("Pegasus");
     
-    // ship
+    // target
     expect(parseResult.target.ncc).toBe(2837151);
     expect(parseResult.target.name).toBe("Pilli");
     expect(parseResult.target.nccPrefix).toBeNull();
@@ -67,21 +72,23 @@ describe('fire weapon type line type', () => {
     
     // parts are not null if present
     expect(parseResult.owner).not.toBeNull();
-    expect(parseResult.ship).not.toBeNull();
+    expect(parseResult.origin).not.toBeNull();
     expect(parseResult.target).not.toBeNull();
     expect(parseResult.weaponName).not.toBeNull();
     expect(parseResult.weaponStrength).not.toBeNull();
 
     expect(parseResult.targetIsColony).toBe(false);
+    expect(parseResult.originIsColony).toBe(false);
     
     // parts are set correctly
-    // ship
-    expect(parseResult.ship.ncc).toBe(2353095);
-    expect(parseResult.ship.name).toBe("Sverð");
-    expect(parseResult.ship.nccPrefix).toBeNull();
-    expect(parseResult.ship.shipClass).toBe("Vor'Cha");
+    // origin
+    expect(parseResult.origin).toBeInstanceOf(ShipNameAndNccResult);
+    expect(parseResult.origin.ncc).toBe(2353095);
+    expect(parseResult.origin.name).toBe("Sverð");
+    expect(parseResult.origin.nccPrefix).toBeNull();
+    expect(parseResult.origin.shipClass).toBe("Vor'Cha");
     
-    // ship
+    // target
     expect(parseResult.target.ncc).toBe(2819313);
     expect(parseResult.target.name).toBe("U.S.S. Dracaix");
     expect(parseResult.target.nccPrefix).toBeNull();
@@ -107,19 +114,21 @@ describe('fire weapon type line type', () => {
     
     // parts are not null if present
     expect(parseResult.owner).not.toBeNull();
-    expect(parseResult.ship).not.toBeNull();
+    expect(parseResult.origin).not.toBeNull();
     expect(parseResult.target).not.toBeNull();
     expect(parseResult.weaponName).not.toBeNull();
     expect(parseResult.weaponStrength).not.toBeNull();
 
     expect(parseResult.targetIsColony).toBe(false);
+    expect(parseResult.originIsColony).toBe(false);
     
     // parts are set correctly
-    // ship
-    expect(parseResult.ship.ncc).toBe(1500023);
-    expect(parseResult.ship.name).toBe("[FIST] Unknown Classified");
-    expect(parseResult.ship.nccPrefix).toBeNull();
-    expect(parseResult.ship.shipClass).toBe("Tamani");
+    // origin
+    expect(parseResult.origin).toBeInstanceOf(ShipNameAndNccResult);
+    expect(parseResult.origin.ncc).toBe(1500023);
+    expect(parseResult.origin.name).toBe("[FIST] Unknown Classified");
+    expect(parseResult.origin.nccPrefix).toBeNull();
+    expect(parseResult.origin.shipClass).toBe("Tamani");
     
     // ship
     expect(parseResult.target.ncc).toBe(1663682);
@@ -146,19 +155,21 @@ describe('fire weapon type line type', () => {
     
     // parts are not null if present
     expect(parseResult.owner).not.toBeNull();
-    expect(parseResult.ship).not.toBeNull();
+    expect(parseResult.origin).not.toBeNull();
     expect(parseResult.target).not.toBeNull();
     expect(parseResult.weaponName).not.toBeNull();
     expect(parseResult.weaponStrength).not.toBeNull();
 
     expect(parseResult.targetIsColony).toBe(false);
+    expect(parseResult.originIsColony).toBe(false);
     
     // parts are set correctly
-    // ship
-    expect(parseResult.ship.ncc).toBe(1395455);
-    expect(parseResult.ship.name).toBe("=s0x=SaLaMaNDeR 55");
-    expect(parseResult.ship.nccPrefix).toBeNull();
-    expect(parseResult.ship.shipClass).toBe("Klaestron");
+    // origin
+    expect(parseResult.origin).toBeInstanceOf(ShipNameAndNccResult);
+    expect(parseResult.origin.ncc).toBe(1395455);
+    expect(parseResult.origin.name).toBe("=s0x=SaLaMaNDeR 55");
+    expect(parseResult.origin.nccPrefix).toBeNull();
+    expect(parseResult.origin.shipClass).toBe("Klaestron");
     
     // target
     expect(parseResult.target.ncc).toBe(1488361);
@@ -192,19 +203,21 @@ describe('fire weapon type line type', () => {
     
     // parts are not null if present
     expect(parseResult.owner).not.toBeNull();
-    expect(parseResult.ship).not.toBeNull();
+    expect(parseResult.origin).not.toBeNull();
     expect(parseResult.target).not.toBeNull();
     expect(parseResult.weaponName).not.toBeNull();
     expect(parseResult.weaponStrength).not.toBeNull();
 
     expect(parseResult.targetIsColony).toBe(false);
+    expect(parseResult.originIsColony).toBe(false);
     
     // parts are set correctly
-    // ship
-    expect(parseResult.ship.ncc).toBe(2841450);
-    expect(parseResult.ship.name).toBe("Egriuvu");
-    expect(parseResult.ship.nccPrefix).toBeNull();
-    expect(parseResult.ship.shipClass).toBe("Verlassener Außenposten");
+    // origin
+    expect(parseResult.origin).toBeInstanceOf(ShipNameAndNccResult);
+    expect(parseResult.origin.ncc).toBe(2841450);
+    expect(parseResult.origin.name).toBe("Egriuvu");
+    expect(parseResult.origin.nccPrefix).toBeNull();
+    expect(parseResult.origin.shipClass).toBe("Verlassener Außenposten");
     
     // target
     expect(parseResult.target.ncc).toBe(2658963);
@@ -232,19 +245,21 @@ describe('fire weapon type line type', () => {
     
     // parts are not null if present
     expect(parseResult.owner).toBeNull();
-    expect(parseResult.ship).not.toBeNull();
+    expect(parseResult.origin).not.toBeNull();
     expect(parseResult.target).toBeNull();
     expect(parseResult.weaponName).not.toBeNull();
     expect(parseResult.weaponStrength).not.toBeNull();
 
     expect(parseResult.targetIsColony).toBe(true);
+    expect(parseResult.originIsColony).toBe(false);
     
     // parts are set correctly
-    // ship
-    expect(parseResult.ship.ncc).toBe(2873452);
-    expect(parseResult.ship.name).toBe("=MS= Echo Fatalis");
-    expect(parseResult.ship.nccPrefix).toBeNull();
-    expect(parseResult.ship.shipClass).toBe("Tamani");
+    // origin
+    expect(parseResult.origin).toBeInstanceOf(ShipNameAndNccResult);
+    expect(parseResult.origin.ncc).toBe(2873452);
+    expect(parseResult.origin.name).toBe("=MS= Echo Fatalis");
+    expect(parseResult.origin.nccPrefix).toBeNull();
+    expect(parseResult.origin.shipClass).toBe("Tamani");
 
     expect(parseResult.weaponName).toBe("Phaser");
     expect(parseResult.isOffensive).toBe(true);
@@ -266,19 +281,21 @@ describe('fire weapon type line type', () => {
     
     // parts are not null if present
     expect(parseResult.owner).toBeNull();
-    expect(parseResult.ship).not.toBeNull();
+    expect(parseResult.origin).not.toBeNull();
     expect(parseResult.target).toBeNull();
     expect(parseResult.weaponName).not.toBeNull();
     expect(parseResult.weaponStrength).not.toBeNull();
 
     expect(parseResult.targetIsColony).toBe(true);
+    expect(parseResult.originIsColony).toBe(false);
     
     // parts are set correctly
-    // ship
-    expect(parseResult.ship.ncc).toBe(69307);
-    expect(parseResult.ship.name).toBe("Sprungkosten");
-    expect(parseResult.ship.nccPrefix).toBeNull();
-    expect(parseResult.ship.shipClass).toBe("Sovereign Refit");
+    // origin
+    expect(parseResult.origin).toBeInstanceOf(ShipNameAndNccResult);
+    expect(parseResult.origin.ncc).toBe(69307);
+    expect(parseResult.origin.name).toBe("Sprungkosten");
+    expect(parseResult.origin.nccPrefix).toBeNull();
+    expect(parseResult.origin.shipClass).toBe("Sovereign Refit");
 
     expect(parseResult.weaponName).toBe("Quantentorpedo MK 2");
     expect(parseResult.isOffensive).toBe(true);
@@ -287,6 +304,46 @@ describe('fire weapon type line type', () => {
     // weapon strength
     expect(parseResult.weaponStrength.shieldDamage).toBe(130);
     expect(parseResult.weaponStrength.hullDamage).toBe(120);
+    expect(parseResult.weaponStrength.energyDamage).toBe(0);
+    
+  });
+
+  test("parses German colony defense log line correctly", () => {
+    const testLogEntry = { "lang": "de", "entry": "Disruptorbatterie von captain dajetschko (67572) schlägt Tamani =MS= Echo Fatalis (2873452, Tamani) mit Disruptor und Stärke 22/22/0 zurück" };
+    const parseResult = FireWeaponType.parse(testLogEntry.entry, testLogEntry.lang);
+
+    // result is not null
+    expect(parseResult).not.toBeNull();
+    
+    // parts are not null if present
+    expect(parseResult.owner).not.toBeNull();
+    expect(parseResult.origin).not.toBeNull();
+    expect(parseResult.target).not.toBeNull();
+    expect(parseResult.weaponName).not.toBeNull();
+    expect(parseResult.weaponStrength).not.toBeNull();
+
+    expect(parseResult.targetIsColony).toBe(false);
+    expect(parseResult.originIsColony).toBe(true);
+    
+    // parts are set correctly
+    // origin
+    expect(parseResult.origin).toBeInstanceOf(BuildingResult);
+    expect(parseResult.origin.name).toBeNull();
+    expect(parseResult.origin.type).toBe(BuildingType.disruptorBattery);
+    
+    // target
+    expect(parseResult.target.ncc).toBe(2873452);
+    expect(parseResult.target.name).toBe("=MS= Echo Fatalis");
+    expect(parseResult.target.nccPrefix).toBeNull();
+    expect(parseResult.target.shipClass).toBe("Tamani");
+
+    expect(parseResult.weaponName).toBe("Disruptor");
+    expect(parseResult.isOffensive).toBe(false);
+    expect(parseResult.isDefensive).toBe(true);
+
+    // weapon strength
+    expect(parseResult.weaponStrength.shieldDamage).toBe(22);
+    expect(parseResult.weaponStrength.hullDamage).toBe(22);
     expect(parseResult.weaponStrength.energyDamage).toBe(0);
     
   });

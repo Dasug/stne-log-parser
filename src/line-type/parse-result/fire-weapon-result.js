@@ -1,10 +1,22 @@
 "use strict"
 
+import BuildingResult from "../../regex/parse-result/building-result.js";
 import ShipNameAndNccResult from "../../regex/parse-result/ship-name-and-ncc-result.js";
 import WeaponDamageResult from "../../regex/parse-result/weapon-damage-result.js";
-import BaseShipEventResult from "./base-ship-event-result.js";
 
-class FireWeaponResult extends BaseShipEventResult {
+class FireWeaponResult {
+  /**
+   * ship or building that shot the weapon
+   * @type {ShipNameAndNccResult|BuildingResult}
+   */
+  origin;
+
+  /**
+   * owner of the ship or building that shot the weapon, can be null if not included
+   * @type {?PlayerNameAndIdResult}
+   */
+  owner;
+
   /**
    * the target that is being fired upon
    * if this is null, the target is a colony (that is not named in the log line)
@@ -44,6 +56,10 @@ class FireWeaponResult extends BaseShipEventResult {
 
   get targetIsColony() {
     return this.target === null;
+  }
+
+  get originIsColony() {
+    return this.origin instanceof BuildingResult;
   }
 }
 
