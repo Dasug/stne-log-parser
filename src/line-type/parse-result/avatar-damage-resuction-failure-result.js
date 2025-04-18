@@ -14,7 +14,7 @@ class AvatarDamageReductionFailureResult {
    * ship that fired the shot
    * @type {ShipNameAndNccResult}
    */
-  ship;
+  origin;
 }
 
 export default AvatarDamageReductionFailureResult;

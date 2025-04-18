@@ -29,11 +29,11 @@ describe('avatar damage reduction failure line type', () => {
     expect(parseResult.avatar.itemId).toBe(1336742);
     expect(parseResult.avatar.job).toBe(AvatarJob.defenseTactician);
 
-    // target
-    expect(parseResult.target.ncc).toBe(2841450);
-    expect(parseResult.target.name).toBe("Egriuvu");
-    expect(parseResult.target.nccPrefix).toBeNull();
-    expect(parseResult.target.shipClass).toBe("Verlassener Außenposten");
+    // origin
+    expect(parseResult.origin.ncc).toBe(2841450);
+    expect(parseResult.origin.name).toBe("Egriuvu");
+    expect(parseResult.origin.nccPrefix).toBeNull();
+    expect(parseResult.origin.shipClass).toBe("Verlassener Außenposten");
     
   });
 })

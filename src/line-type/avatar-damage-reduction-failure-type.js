@@ -16,7 +16,7 @@ class AvatarDamageReductionFailureType extends GenericType {
       ^
       (?<trigger_avatar> \g<avatar>)
       \ versucht\ die\ Zielerfassung\ von\ 
-      (?<target> \g<shipAndNcc>)
+      (?<ship> \g<shipAndNcc>)
       \ zu\ stören,\ hat\ damit\ aber\ keinerlei\ Erfolg!
       $
       `,
@@ -30,10 +30,10 @@ class AvatarDamageReductionFailureType extends GenericType {
 
   static _buildResultObject(matches) {
     const avatar = Avatar.matchResult(matches.groups.trigger_avatar);
-    const target = ShipNameAndNcc.matchResult(matches.groups.target);
+    const ship = ShipNameAndNcc.matchResult(matches.groups.ship);
 
     const resultObject = new AvatarDamageReductionFailureResult;
-    resultObject.target = target;
+    resultObject.origin = ship;
     resultObject.avatar = avatar;
 
     return resultObject;
