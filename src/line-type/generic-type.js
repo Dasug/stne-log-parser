@@ -29,7 +29,11 @@ class GenericType {
       // language not supported for this type
       return null;
     }
-    const matches = text.match(this._regexByLanguage[language]);
+    // no text was given, return no valid match
+    if(typeof text === "undefined" || text === null) {
+      return null;
+    }
+    const matches = String(text).match(this._regexByLanguage[language]);
 
     if(matches === null) {
       return null;
