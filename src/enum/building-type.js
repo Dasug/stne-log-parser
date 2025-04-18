@@ -17,7 +17,7 @@ class BuildingType extends Enumify {
   static dilithiumMine = new BuildingType();
   static hydroponicDome = new BuildingType();
   static habitatDome = new BuildingType();
-  static WorkBeeSpaceport = new BuildingType();
+  static workBeeSpaceport = new BuildingType();
   static solarSatellite = new BuildingType();
   static flowTurbine = new BuildingType();
   static algaeFarm = new BuildingType();
