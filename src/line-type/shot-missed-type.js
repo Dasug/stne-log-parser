@@ -7,28 +7,39 @@ import GenericType from "./generic-type.js";
 import { pattern } from "regex";
 import LineTag from "../../src/enum/line-tag.js";
 import ShotMissedResult from "./parse-result/shot-missed-result.js";
+import Building from "../regex/subroutine/building.js";
 
 class ShotMissedType extends GenericType {
   static _regexByLanguage = {
     "de": addSubroutines(
       pattern`
       ^
-      (?<ship> \g<shipAndNcc>)
+      (?:
+        (?<ship> \g<shipAndNcc>)
+        |
+        (?<building> \g<buildingData>)
+      )
       \ verfehlt\ das\ Ziel!
       $
       `,
       {
+        "buildingData": Building.asSubroutineDefinition(),
         "shipAndNcc": ShipNameAndNcc.asSubroutineDefinition(),
       }
     ),
     "en": addSubroutines(
       pattern`
       ^
-      (?<ship> \g<shipAndNcc>)
+      (?:
+        (?<ship> \g<shipAndNcc>)
+        |
+        (?<building> \g<buildingData>)
+      )
       \ misses\ its\ target!
       $
       `,
       {
+        "buildingData": Building.asSubroutineDefinition(),
         "shipAndNcc": ShipNameAndNcc.asSubroutineDefinition(),
       }
     )
@@ -36,11 +47,10 @@ class ShotMissedType extends GenericType {
 
   static _buildResultObject(matches) {
     const ship = ShipNameAndNcc.matchResult(matches.groups.ship);
-    const armorAbsorption = Number(matches.groups.armor_absorption_points);
+    const building = Building.matchResult(matches.groups.building);
     
-
     const resultObject = new ShotMissedResult;
-    resultObject.ship = ship; 
+    resultObject.origin = ship ?? building; 
 
     return resultObject;
   }

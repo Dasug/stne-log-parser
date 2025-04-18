@@ -1,6 +1,9 @@
 import { describe, expect, test } from '@jest/globals';
 import LineTag from '../../src/enum/line-tag.js';
 import ShotMissedType from '../../src/line-type/shot-missed-type';
+import ShipNameAndNccResult from '../../src/regex/parse-result/ship-name-and-ncc-result.js';
+import BuildingResult from '../../src/regex/parse-result/building-result.js';
+import BuildingType from '../../src/enum/building-type.js';
 
 describe('shot missed line type', () => {
   test("has battle tag", () => {
@@ -25,14 +28,15 @@ describe('shot missed line type', () => {
     expect(parseResult).not.toBeNull();
     
     // parts are not null if present
-    expect(parseResult.ship).not.toBeNull();
+    expect(parseResult.origin).not.toBeNull();
     
     // parts are set correctly
-    // ship
-    expect(parseResult.ship.ncc).toBe(2837138);
-    expect(parseResult.ship.name).toBe("Ifuat");
-    expect(parseResult.ship.nccPrefix).toBeNull();
-    expect(parseResult.ship.shipClass).toBe("Verlassene Klaestron");
+    // origin
+    expect(parseResult.origin).toBeInstanceOf(ShipNameAndNccResult);
+    expect(parseResult.origin.ncc).toBe(2837138);
+    expect(parseResult.origin.name).toBe("Ifuat");
+    expect(parseResult.origin.nccPrefix).toBeNull();
+    expect(parseResult.origin.shipClass).toBe("Verlassene Klaestron");
   });
 
   test("parses English entry log line correctly", () => {
@@ -44,15 +48,33 @@ describe('shot missed line type', () => {
     
     // parts are not null
     expect(parseResult.owner).not.toBeNull();
-    expect(parseResult.ship).not.toBeNull();
+    expect(parseResult.origin).not.toBeNull();
     expect(parseResult.sector).not.toBeNull();
     expect(parseResult.station).not.toBeNull();
     
     // parts are set correctly
-    // ship
-    expect(parseResult.ship.ncc).toBe(1658087);
-    expect(parseResult.ship.name).toBe("Warrior OI8497");
-    expect(parseResult.ship.nccPrefix).toBeNull();
-    expect(parseResult.ship.shipClass).toBe("LX710b");
+    // origin
+    expect(parseResult.origin).toBeInstanceOf(ShipNameAndNccResult);
+    expect(parseResult.origin.ncc).toBe(1658087);
+    expect(parseResult.origin.name).toBe("Warrior OI8497");
+    expect(parseResult.origin.nccPrefix).toBeNull();
+    expect(parseResult.origin.shipClass).toBe("LX710b");
+  });
+
+  test("parses German building log line correctly", () => {
+    const testLogEntry = { "lang": "de", "entry": String.raw`Disruptorbatterie verfehlt das Ziel!` };
+    const parseResult = ShotMissedType.parse(testLogEntry.entry, testLogEntry.lang);
+
+    // result is not null
+    expect(parseResult).not.toBeNull();
+    
+    // parts are not null if present
+    expect(parseResult.origin).not.toBeNull();
+    
+    // parts are set correctly
+    // origin
+    expect(parseResult.origin).toBeInstanceOf(BuildingResult);
+    expect(parseResult.origin.name).toBeNull();
+    expect(parseResult.origin.type).toBe(BuildingType.disruptorBattery);
   });
 })
