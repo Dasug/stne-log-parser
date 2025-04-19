@@ -8,6 +8,7 @@ import { pattern } from "regex";
 import LineTag from "../../src/enum/line-tag.js";
 import Avatar from "../regex/subroutine/avatar.js";
 import AvatarDamageReductionFailureResult from "./parse-result/avatar-damage-resuction-failure-result.js";
+import ColonyNameAndId from "../regex/subroutine/colony-name-and-id.js";
 
 class AvatarDamageReductionFailureType extends GenericType {
   static _regexByLanguage = {
@@ -16,12 +17,17 @@ class AvatarDamageReductionFailureType extends GenericType {
       ^
       (?<trigger_avatar> \g<avatar>)
       \ versucht\ die\ Zielerfassung\ von\ 
-      (?<ship> \g<shipAndNcc>)
+      (?:
+        (?<ship> \g<shipAndNcc>)
+        |
+        (?<colony> \g<colonyNameAndId>)
+      )
       \ zu\ stören,\ hat\ damit\ aber\ keinerlei\ Erfolg!
       $
       `,
       {
         "shipAndNcc": ShipNameAndNcc.asSubroutineDefinition(),
+        "colonyNameAndId": ColonyNameAndId.asSubroutineDefinition(),
         "avatar": Avatar.asSubroutineDefinition(),
       }
     ),
@@ -31,9 +37,10 @@ class AvatarDamageReductionFailureType extends GenericType {
   static _buildResultObject(matches) {
     const avatar = Avatar.matchResult(matches.groups.trigger_avatar);
     const ship = ShipNameAndNcc.matchResult(matches.groups.ship);
+    const colony = ColonyNameAndId.matchResult(matches.groups.colony);
 
     const resultObject = new AvatarDamageReductionFailureResult;
-    resultObject.origin = ship;
+    resultObject.origin = ship ?? colony;
     resultObject.avatar = avatar;
 
     return resultObject;
