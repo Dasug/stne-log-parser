@@ -2,6 +2,8 @@ import { describe, expect, test } from '@jest/globals';
 import LineTag from '../../src/enum/line-tag.js';
 import AvatarJob from '../../src/enum/avatar-job.js';
 import AvatarDecoyDroneSuccessType from '../../src/line-type/avatar-decoy-drone-success-type.js';
+import ShipNameAndNccResult from '../../src/regex/parse-result/ship-name-and-ncc-result.js';
+import ColonyNameAndIdResult from '../../src/regex/parse-result/colony-name-and-id-result.js';
 
 describe('avatar decoy drone success line type', () => {
   test("has correct tags", () => {
@@ -32,6 +34,7 @@ describe('avatar decoy drone success line type', () => {
     expect(parseResult.avatar.job).toBe(AvatarJob.dronePilot);
 
     // opponent
+    expect(parseResult.opponent).toBeInstanceOf(ShipNameAndNccResult);
     expect(parseResult.opponent.ncc).toBe(2841749);
     expect(parseResult.opponent.name).toBe("Frothu");
     expect(parseResult.opponent.nccPrefix).toBeNull();
@@ -44,6 +47,39 @@ describe('avatar decoy drone success line type', () => {
     expect(parseResult.ship.shipClass).toBe("Iowa Typ Z");
 
     expect(parseResult.weaponName).toBe("Geistlanze");
+    
+  });
+
+  test("parses German log line against colony correctly", () => {
+    const testLogEntry = { "lang": "de", "entry": "Asuras (85945) trifft die Köderdrohne von Jürgen Abendroth (1492415, Drohnenpilot) auf =MS= Panthera Nebulos (2441662, Iowa Typ Z) mit Phaser und zerstört sie!" };
+    const parseResult = AvatarDecoyDroneSuccessType.parse(testLogEntry.entry, testLogEntry.lang);
+
+    // result is not null
+    expect(parseResult).not.toBeNull();
+    
+    // parts are not null if present
+    expect(parseResult.avatar).not.toBeNull();
+    expect(parseResult.opponent).not.toBeNull();
+    expect(parseResult.ship).not.toBeNull();
+        
+    // parts are set correctly
+    // avatar
+    expect(parseResult.avatar.name).toBe("Jürgen Abendroth");
+    expect(parseResult.avatar.itemId).toBe(1492415);
+    expect(parseResult.avatar.job).toBe(AvatarJob.dronePilot);
+
+    // opponent
+    expect(parseResult.opponent).toBeInstanceOf(ColonyNameAndIdResult);
+    expect(parseResult.opponent.id).toBe(85945);
+    expect(parseResult.opponent.name).toBe("Asuras");
+
+    // ship
+    expect(parseResult.ship.ncc).toBe(2441662);
+    expect(parseResult.ship.name).toBe("=MS= Panthera Nebulos");
+    expect(parseResult.ship.nccPrefix).toBeNull();
+    expect(parseResult.ship.shipClass).toBe("Iowa Typ Z");
+
+    expect(parseResult.weaponName).toBe("Phaser");
     
   });
 })
