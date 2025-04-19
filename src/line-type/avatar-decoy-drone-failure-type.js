@@ -1,6 +1,7 @@
 "use strict"
 
 import ShipNameAndNcc from "../regex/subroutine/ship-name-and-ncc.js";
+import ColonyNameAndId from "../regex/subroutine/colony-name-and-id.js";
 
 import { addSubroutines } from "../util/regex-helper.js";
 import GenericType from "./generic-type.js";
@@ -16,7 +17,7 @@ class AvatarDecoyDroneFailureType extends GenericType {
       ^
       (?<trigger_avatar> \g<avatar>)
       \ setzt\ eine\ Köderdrohne\ ein,\ kann\ die\ Zielerfassung\ von\ 
-      (?<opponent> \g<shipAndNcc>)
+      (?<opponent> \g<shipAndNcc>|\g<colonyNameAndId>)
       \ beim\ Angriff\ auf\  
       (?<ship> \g<shipAndNcc>)
       \ aber\ nicht\ täuschen!
@@ -24,6 +25,7 @@ class AvatarDecoyDroneFailureType extends GenericType {
       `,
       {
         "shipAndNcc": ShipNameAndNcc.asSubroutineDefinition(),
+        "colonyNameAndId": ColonyNameAndId.asSubroutineDefinition(),
         "avatar": Avatar.asSubroutineDefinition(),
       }
     ),
@@ -32,12 +34,13 @@ class AvatarDecoyDroneFailureType extends GenericType {
 
   static _buildResultObject(matches) {
     const avatar = Avatar.matchResult(matches.groups.trigger_avatar);
-    const opponent = ShipNameAndNcc.matchResult(matches.groups.opponent);
+    const opponentShip = ShipNameAndNcc.matchResult(matches.groups.opponent);
+    const colonyOpponent = ColonyNameAndId.matchResult(matches.groups.opponent);
     const ship = ShipNameAndNcc.matchResult(matches.groups.ship);
     
     const resultObject = new AvatarDecoyDroneFailureResult;
     resultObject.avatar = avatar;
-    resultObject.opponent = opponent;
+    resultObject.opponent = opponentShip ?? colonyOpponent;
     resultObject.ship = ship;
     
     return resultObject;

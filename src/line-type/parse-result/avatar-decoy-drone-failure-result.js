@@ -2,6 +2,7 @@
 
 import AvatarResult from "../../regex/parse-result/avatar-result.js";
 import ShipNameAndNccResult from "../../regex/parse-result/ship-name-and-ncc-result.js";
+import ColonyNameAndIdResult from "../../regex/parse-result/colony-name-and-id-result.js";
 
 class AvatarDecoyDroneFailureResult {
   /**
@@ -17,8 +18,8 @@ class AvatarDecoyDroneFailureResult {
   ship;
 
   /**
-   * ship that tried firing on the avatar's ship
-   * @type {ShipNameAndNccResult}
+   * ship or colony that tried firing on the avatar's ship
+   * @type {ShipNameAndNccResult|ColonyNameAndIdResult}
    */
   opponent;
 }
