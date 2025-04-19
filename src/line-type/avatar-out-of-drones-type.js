@@ -9,6 +9,7 @@ import LineTag from "../enum/line-tag.js";
 import Avatar from "../regex/subroutine/avatar.js";
 import AvatarOutOfDronesResult from "./parse-result/avatar-out-of-drones-result.js";
 import DronePilotDroneType from "../enum/drone-pilot-drone-type.js";
+import ColonyNameAndId from "../regex/subroutine/colony-name-and-id.js";
 
 class AvatarOutOfDronesType extends GenericType {
   static _regexByLanguage = {
@@ -26,7 +27,7 @@ class AvatarOutOfDronesType extends GenericType {
         |
         den\ Angriff\ gegen\ 
       ) 
-      (?<opponent> \g<shipAndNcc>)
+      (?<opponent> \g<shipAndNcc>|\g<colonyNameAndId>)
       \ zu\ 
       (?: en(?:t?)gehen|verstärken)
       !
@@ -34,6 +35,7 @@ class AvatarOutOfDronesType extends GenericType {
       `,
       {
         "shipAndNcc": ShipNameAndNcc.asSubroutineDefinition(),
+        "colonyNameAndId": ColonyNameAndId.asSubroutineDefinition(),
         "avatar": Avatar.asSubroutineDefinition(),
       }
     ),
@@ -43,12 +45,13 @@ class AvatarOutOfDronesType extends GenericType {
   static _buildResultObject(matches) {
     const avatar = Avatar.matchResult(matches.groups.trigger_avatar);
     const ship = ShipNameAndNcc.matchResult(matches.groups.ship);
-    const opponent = ShipNameAndNcc.matchResult(matches.groups.opponent);
+    const opponentShip = ShipNameAndNcc.matchResult(matches.groups.opponent);
+    const opponentColony = ColonyNameAndId.matchResult(matches.groups.opponent);
     const droneType = matches.groups.drone_type;
 
     const resultObject = new AvatarOutOfDronesResult;
     resultObject.ship = ship;
-    resultObject.opponent = opponent;
+    resultObject.opponent = opponentShip ?? opponentColony;
     resultObject.avatar = avatar;
 
     switch(droneType.toLowerCase()) {

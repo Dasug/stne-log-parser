@@ -3,6 +3,8 @@ import LineTag from '../../src/enum/line-tag.js';
 import AvatarJob from '../../src/enum/avatar-job.js';
 import AvatarOutOfDronesType from '../../src/line-type/avatar-out-of-drones-type.js';
 import DronePilotDroneType from '../../src/enum/drone-pilot-drone-type.js';
+import ColonyNameAndIdResult from '../../src/regex/parse-result/colony-name-and-id-result.js';
+import ShipNameAndNccResult from '../../src/regex/parse-result/ship-name-and-ncc-result.js';
 
 describe('avatar out of drones line type', () => {
   test("has correct tags", () => {
@@ -35,6 +37,7 @@ describe('avatar out of drones line type', () => {
     expect(parseResult.avatar.job).toBe(AvatarJob.dronePilot);
 
     // opponent
+    expect(parseResult.opponent).toBeInstanceOf(ShipNameAndNccResult);
     expect(parseResult.opponent.ncc).toBe(2822078);
     expect(parseResult.opponent.name).toBe("Susco");
     expect(parseResult.opponent.nccPrefix).toBeNull();
@@ -45,6 +48,39 @@ describe('avatar out of drones line type', () => {
     expect(parseResult.ship.name).toBe("[I.R.W.] Praetor II");
     expect(parseResult.ship.nccPrefix).toBeNull();
     expect(parseResult.ship.shipClass).toBe("Praetor");
+    
+  });
+
+  test("parses German decoy drone log line against colony correctly", () => {
+    const testLogEntry = { "lang": "de", "entry": "Jürgen Abendroth (1492415, Drohnenpilot) hat keine Köderdrohnen mehr zur Verfügung und kann deshalb nichts für =MS= Panthera Nebulos (2441662, Iowa Typ Z) tun um dem Angriff von Asuras (85945) zu engehen!" };
+    const parseResult = AvatarOutOfDronesType.parse(testLogEntry.entry, testLogEntry.lang);
+
+    // result is not null
+    expect(parseResult).not.toBeNull();
+    
+    // parts are not null if present
+    expect(parseResult.ship).not.toBeNull();
+    expect(parseResult.avatar).not.toBeNull();
+    expect(parseResult.opponent).not.toBeNull();
+    
+    // parts are set correctly
+    expect(parseResult.droneType).toBe(DronePilotDroneType.decoyDrone);
+
+    // avatar
+    expect(parseResult.avatar.name).toBe("Jürgen Abendroth");
+    expect(parseResult.avatar.itemId).toBe(1492415);
+    expect(parseResult.avatar.job).toBe(AvatarJob.dronePilot);
+
+    // opponent
+    expect(parseResult.opponent).toBeInstanceOf(ColonyNameAndIdResult);
+    expect(parseResult.opponent.id).toBe(85945);
+    expect(parseResult.opponent.name).toBe("Asuras");
+
+    // ship
+    expect(parseResult.ship.ncc).toBe(2441662);
+    expect(parseResult.ship.name).toBe("=MS= Panthera Nebulos");
+    expect(parseResult.ship.nccPrefix).toBeNull();
+    expect(parseResult.ship.shipClass).toBe("Iowa Typ Z");
     
   });
 
@@ -75,6 +111,7 @@ describe('avatar out of drones line type', () => {
     expect(parseResult.avatar.job).toBe(AvatarJob.dronePilot);
 
     // opponent
+    expect(parseResult.opponent).toBeInstanceOf(ShipNameAndNccResult);
     expect(parseResult.opponent.ncc).toBe(2841463);
     expect(parseResult.opponent.name).toBe("Oonaowu");
     expect(parseResult.opponent.nccPrefix).toBeNull();
