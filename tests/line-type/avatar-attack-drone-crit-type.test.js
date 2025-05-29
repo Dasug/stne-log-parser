@@ -2,6 +2,7 @@ import { describe, expect, test } from '@jest/globals';
 import LineTag from '../../src/enum/line-tag.js';
 import AvatarJob from '../../src/enum/avatar-job.js';
 import AvatarAttackDroneCritType from '../../src/line-type/avatar-attack-drone-crit-type.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('avatar attack drone crit line type', () => {
   const lineTypeClass = AvatarAttackDroneCritType;
@@ -67,5 +68,19 @@ describe('avatar attack drone crit line type', () => {
     expect(parseResult.target.nccPrefix).toBeNull();
     expect(parseResult.target.shipClass).toBe("Portal Generator");
     
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Die Drohne trifft und destabilisiert das Schildgitter von [U] Portal Generator (2822090, Portal Generator) durch einen EMP-Impuls, wodurch sich die Chance für Tom Herz (1555792, Drohnenpilot) ergibt kritische Schäden (x2) gegen [U] Portal Generator (2822090, Portal Generator) zu verursachen!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(1);
+    const ship = statistics.ships.getShipByNcc(2822090);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2822090);
+    expect(ship.name).toBe("[U] Portal Generator");
   });
 })
