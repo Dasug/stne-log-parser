@@ -58,7 +58,7 @@ class LogLine {
       return statistics;
     }
 
-    this.lineParser.populateStatistics(statistics);
+    this.lineParser.populateStatistics(statistics, this.parseResult);
     return statistics;
   }
 
