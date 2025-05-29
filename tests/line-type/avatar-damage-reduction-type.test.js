@@ -4,6 +4,7 @@ import AvatarJob from '../../src/enum/avatar-job.js';
 import AvatarDamageReductionType from '../../src/line-type/avatar-damage-reduction-type.js';
 import ShipNameAndNccResult from '../../src/regex/parse-result/ship-name-and-ncc-result.js';
 import ColonyNameAndIdResult from '../../src/regex/parse-result/colony-name-and-id-result.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('avatar damage reduction line type', () => {
   const lineTypeClass = AvatarDamageReductionType;
@@ -84,5 +85,23 @@ describe('avatar damage reduction line type', () => {
     // damage reduction
     expect(parseResult.damageReduction).toBe(31);
     
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Adept XT-571 (905722, Verteidigungstaktiker) stört die Zielerfassung von Kofes (2839350, Verlassene Adrec), wodurch dessen Angriff auf Storm of Retribution (2551448, Prometheus) um 42% schwächer ausfällt!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(2);
+    const ship = statistics.ships.getShipByNcc(2839350);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2839350);
+    expect(ship.name).toBe("Kofes");
+    const targetShip = statistics.ships.getShipByNcc(2551448);
+    expect(targetShip).not.toBeNull();
+    expect(targetShip.ncc).toBe(2551448);
+    expect(targetShip.name).toBe("Storm of Retribution");
   });
 })
