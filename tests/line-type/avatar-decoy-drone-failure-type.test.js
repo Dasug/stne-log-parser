@@ -4,6 +4,7 @@ import AvatarJob from '../../src/enum/avatar-job.js';
 import AvatarDecoyDroneFailureType from '../../src/line-type/avatar-decoy-drone-failure-type.js';
 import ColonyNameAndIdResult from '../../src/regex/parse-result/colony-name-and-id-result.js';
 import ShipNameAndNccResult from '../../src/regex/parse-result/ship-name-and-ncc-result.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('avatar decoy drone failure line type', () => {
   const lineTypeClass = AvatarDecoyDroneFailureType;
@@ -78,5 +79,19 @@ describe('avatar decoy drone failure line type', () => {
     expect(parseResult.ship.nccPrefix).toBeNull();
     expect(parseResult.ship.shipClass).toBe("Iowa Typ Z");
     
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Lukas Meyer (1492406, Drohnenpilot) setzt eine Köderdrohne ein, kann die Zielerfassung von Kluboc (2838279, Battle Carrier Wrack) beim Angriff auf =MS= Panthera Nebulos (2441662, Iowa Typ Z) aber nicht täuschen!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(1);
+    const ship = statistics.ships.getShipByNcc(2838279);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2838279);
+    expect(ship.name).toBe("Kluboc");
   });
 })
