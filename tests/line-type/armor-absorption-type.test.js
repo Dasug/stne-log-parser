@@ -1,6 +1,7 @@
 import { describe, expect, test } from '@jest/globals';
 import LineTag from '../../src/enum/line-tag.js';
 import ArmorAbsorptionType from '../../src/line-type/armor-absorption-type';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('armor absorption line type', () => {
   test("has battle tag", () => {
@@ -58,5 +59,19 @@ describe('armor absorption line type', () => {
     expect(parseResult.ship.shipClass).toBe("LX710b");
     
     expect(parseResult.armorAbsorption).toBe(2);
+  });
+
+  test("registers ship in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Panzerung von U.S.S. Dracaix (2819313, Korolev) schwächt Angriff um 1 Punkte` };
+    const parseResult = ArmorAbsorptionType.parse(testLogEntry.entry, testLogEntry.lang);
+
+    ArmorAbsorptionType.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(1);
+    const ship = statistics.ships.getShipByNcc(2819313);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2819313);
+    expect(ship.name).toBe("U.S.S. Dracaix");
   });
 })
