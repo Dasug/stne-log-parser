@@ -2,6 +2,7 @@ import { describe, expect, test } from '@jest/globals';
 import LineTag from '../../src/enum/line-tag.js';
 import AvatarJob from '../../src/enum/avatar-job.js';
 import AvatarAttackDroneLaunchType from '../../src/line-type/avatar-attack-drone-launch-type.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('avatar attack drone launch line type', () => {
   const lineTypeClass = AvatarAttackDroneLaunchType;
@@ -37,5 +38,19 @@ describe('avatar attack drone launch line type', () => {
     expect(parseResult.target.nccPrefix).toBeNull();
     expect(parseResult.target.shipClass).toBe("Verlassene Adrec");
     
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Petra Kappel (570216, Drohnenpilot) setzt eine Angriffsdrohne ein und stürzt sie auf Dikees (2826794, Verlassene Adrec)!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(1);
+    const ship = statistics.ships.getShipByNcc(2826794);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2826794);
+    expect(ship.name).toBe("Dikees");
   });
 })

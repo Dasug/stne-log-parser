@@ -39,6 +39,17 @@ class AvatarAttackDroneLaunchType extends GenericType {
     return resultObject;
   }
 
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ship
+    statistics.ships.registerShip(parseResult.target);
+    
+    return statistics;
+  }
+
   static getTags() {
     return [
       LineTag.battle,
