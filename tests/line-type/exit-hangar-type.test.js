@@ -3,23 +3,24 @@ import LineTag from '../../src/enum/line-tag.js';
 import ExitHangarType from '../../src/line-type/exit-hangar-type.js';
 
 describe('exit hangar line type', () => {
+  const lineTypeClass = ExitHangarType;
   test("has ship_movement and hangar tag", () => {
-    expect(ExitHangarType.getTags()).toEqual(expect.arrayContaining([LineTag.shipMovement, LineTag.hangar]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.shipMovement, LineTag.hangar]));
   }); 
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Jasta 11 XI (2671415, Assertive) von Flotten-Admiral Shean (19372) fliegt im Sektor 33|64#115 aus dem Hangar von SMS Kaiser Karl der Große (1956264, Cellship)` };
     
-    expect(ExitHangarType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
   test("detects English entry log line positively", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Tuahe (1501545, Atel) flies out of the hangar of {=BSC=} Energy Vault A (1498772, Trading base) in sector @333|666` };
 
-    expect(ExitHangarType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Jasta 11 XI (2671415, Assertive) von Flotten-Admiral Shean (19372) fliegt im Sektor 33|64#115 aus dem Hangar von SMS Kaiser Karl der Große (1956264, Cellship)` };
-    const parseResult = ExitHangarType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -58,7 +59,7 @@ describe('exit hangar line type', () => {
 
   test("parses English entry log line correctly", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Tuahe (1501545, Atel) flies out of the hangar of {=BSC=} Energy Vault A (1498772, Trading base) in sector @333|666` };
-    const parseResult = ExitHangarType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

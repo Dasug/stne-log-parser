@@ -7,18 +7,19 @@ import BeamEnergyType from '../../src/line-type/beam-energy-type.js';
 import ShipNameOnlyResult from '../../src/regex/parse-result/ship-name-only-result.js';
 
 describe('beam energy line type', () => {
+  const lineTypeClass = BeamEnergyType;
   test("has correct tags", () => {
-    expect(BeamEnergyType.getTags()).toEqual(expect.arrayContaining([LineTag.transport]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.transport]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`[Support] Amaryll NCC 1678153 transportiert in Sektor 0|0 7355,44 Warpkern zu =UDR= GanYMeD` };
     
-    expect(BeamEnergyType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "[Support] Amaryll NCC 1678153 transportiert in Sektor 0|0 7355,44 Warpkern zu =UDR= GanYMeD" };
-    const parseResult = BeamEnergyType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

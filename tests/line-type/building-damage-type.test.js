@@ -4,18 +4,19 @@ import BuildingDamageType from '../../src/line-type/building-damage-type.js';
 import BuildingType from '../../src/enum/building-type.js';
 
 describe('building damage line type', () => {
+  const lineTypeClass = BuildingDamageType;
   test("has correct tags", () => {
-    expect(BuildingDamageType.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.weaponShotResult]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.weaponShotResult]));
   });
   test("detects German log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": "Phaser beschädigt Disruptorbatterie bei Position 1|0 um 20 Schadenspunkte! Disruptorbatterie ist jetzt auf 220." };
 
-    expect(BuildingDamageType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Phaser beschädigt Disruptorbatterie bei Position 1|0 um 20 Schadenspunkte! Disruptorbatterie ist jetzt auf 220.` };
-    const parseResult = BuildingDamageType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -39,7 +40,7 @@ describe('building damage line type', () => {
 
   test("parses German log line with building name correctly", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Quantentorpedo MK 2 beschädigt PewPew(Phaserkanone) bei Position 0|0 um 114 Schadenspunkte! PewPew(Phaserkanone) ist jetzt auf 27.` };
-    const parseResult = BuildingDamageType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

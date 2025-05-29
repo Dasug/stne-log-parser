@@ -4,18 +4,19 @@ import AvatarEnergyRecoveryType from '../../src/line-type/avatar-energy-recovery
 import AvatarJob from '../../src/enum/avatar-job.js';
 
 describe('avatar energy recovery line type', () => {
+  const lineTypeClass = AvatarEnergyRecoveryType;
   test("has correct tags", () => {
-    expect(AvatarEnergyRecoveryType.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.avatarAction, LineTag.avatarActionSuccess]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.avatarAction, LineTag.avatarActionSuccess]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Jana Muller (779455, Wartungstechniker) optimiert den Abschuss von {LV} Enyo Sakul * (2228483, Taktischer Kubus) und gewinnt dabei 0,4 Hauptenergie zurück!` };
     
-    expect(AvatarEnergyRecoveryType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Jana Muller (779455, Wartungstechniker) optimiert den Abschuss von {LV} Enyo Sakul * (2228483, Taktischer Kubus) und gewinnt dabei 0,4 Hauptenergie zurück!" };
-    const parseResult = AvatarEnergyRecoveryType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

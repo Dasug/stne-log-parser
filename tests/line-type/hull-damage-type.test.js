@@ -3,23 +3,24 @@ import LineTag from '../../src/enum/line-tag.js';
 import HullDamageType from '../../src/line-type/hull-damage-type';
 
 describe('hull damage line type', () => {
+  const lineTypeClass = HullDamageType;
   test("has correct tag", () => {
-    expect(HullDamageType.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.weaponShotResult, LineTag.damage]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.weaponShotResult, LineTag.damage]));
   }); 
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Ishol (2837352, Verlassene Bandari) nimmt 4 Schaden, Hüllenintegrität sinkt auf 398` };
     
-    expect(HullDamageType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
   test("detects English entry log line positively", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Warrior OI8497 (1658087, LX710b) takes 8 damage, hull integrity is reduced to 10` };
 
-    expect(HullDamageType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Ishol (2837352, Verlassene Bandari) nimmt 4 Schaden, Hüllenintegrität sinkt auf 398` };
-    const parseResult = HullDamageType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -41,7 +42,7 @@ describe('hull damage line type', () => {
 
   test("parses English entry log line correctly", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Warrior OI8497 (1658087, LX710b) takes 8 damage, hull integrity is reduced to 10` };
-    const parseResult = HullDamageType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -63,7 +64,7 @@ describe('hull damage line type', () => {
 
   test("parses German entry log line with overkill correctly", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`U.S.S. Dracaix (2819313, Korolev) nimmt 46(+3) Schaden, Hüllenintegrität sinkt auf 0` };
-    const parseResult = HullDamageType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -85,7 +86,7 @@ describe('hull damage line type', () => {
 
   test("parses English entry log line with overkill correctly", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Warrior OI8497 (1658087, LX710b) takes 2(+15) damage, hull integrity is reduced to 0` };
-    const parseResult = HullDamageType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

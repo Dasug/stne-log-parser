@@ -4,18 +4,19 @@ import AvatarJob from '../../src/enum/avatar-job.js';
 import AvatarEmergencyShieldActivationFailureType from '../../src/line-type/avatar-emergency-shield-activation-failure-type.js';
 
 describe('avatar emergency shield activation failure line type', () => {
+  const lineTypeClass = AvatarEmergencyShieldActivationFailureType;
   test("has correct tags", () => {
-    expect(AvatarEmergencyShieldActivationFailureType.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.avatarAction, LineTag.avatarActionFailure]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.avatarAction, LineTag.avatarActionFailure]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Patrick Greene (1093078, Verteidigungstaktiker) an Bord von =MS= Aquilon Kratos (2481039, Terran Excelsior Refit) bemerkt die drohnende Gefahr zu spät und schafft es nicht rechtzeitig die Schilde zu aktivieren!` };
     
-    expect(AvatarEmergencyShieldActivationFailureType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Patrick Greene (1093078, Verteidigungstaktiker) an Bord von =MS= Aquilon Kratos (2481039, Terran Excelsior Refit) bemerkt die drohnende Gefahr zu spät und schafft es nicht rechtzeitig die Schilde zu aktivieren!" };
-    const parseResult = AvatarEmergencyShieldActivationFailureType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

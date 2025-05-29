@@ -6,18 +6,19 @@ import ShipNameAndNccResult from '../../src/regex/parse-result/ship-name-and-ncc
 import ColonyNameAndIdResult from '../../src/regex/parse-result/colony-name-and-id-result.js';
 
 describe('avatar weapon damage increase line type', () => {
+  const lineTypeClass = AvatarWeaponDamageIncreaseType;
   test("has correct tags", () => {
-    expect(AvatarWeaponDamageIncreaseType.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.avatarAction, LineTag.avatarActionSuccess]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.avatarAction, LineTag.avatarActionSuccess]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Commander Bravestorm (797593, Waffenoffizier) zielt auf ein kritisches Untersystem wodurch der Angriff von Stormlord (2235413, Imperiale Prometheus) gegen Pluvass (2840934, Verlassene Rhino) um 28% stärker ausfällt!` };
     
-    expect(AvatarWeaponDamageIncreaseType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Commander Bravestorm (797593, Waffenoffizier) zielt auf ein kritisches Untersystem wodurch der Angriff von Stormlord (2235413, Imperiale Prometheus) gegen Pluvass (2840934, Verlassene Rhino) um 28% stärker ausfällt!" };
-    const parseResult = AvatarWeaponDamageIncreaseType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -54,7 +55,7 @@ describe('avatar weapon damage increase line type', () => {
 
   test("parses German log line with colony as target correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Philipp Baecker (1630675, Waffenoffizier) zielt auf eine Schwachstelle wodurch der Angriff von =MS= Echo Fatalis (2873452, Tamani) gegen neu-aut (69619) um 22% stärker ausfällt!" };
-    const parseResult = AvatarWeaponDamageIncreaseType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

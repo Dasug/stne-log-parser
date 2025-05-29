@@ -4,23 +4,24 @@ import ArmorAbsorptionType from '../../src/line-type/armor-absorption-type';
 import Statistics from '../../src/statistics/statistics.js';
 
 describe('armor absorption line type', () => {
+  const lineTypeClass = ArmorAbsorptionType;
   test("has battle tag", () => {
-    expect(ArmorAbsorptionType.getTags()).toEqual(expect.arrayContaining([LineTag.battle]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle]));
   }); 
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Panzerung von U.S.S. Dracaix (2819313, Korolev) schwächt Angriff um 1 Punkte` };
     
-    expect(ArmorAbsorptionType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
   test("detects English entry log line positively", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Armor of Warrior OI8497 (1658087, LX710b) weakens the attack by 1 points.` };
 
-    expect(ArmorAbsorptionType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Panzerung von U.S.S. Dracaix (2819313, Korolev) schwächt Angriff um 1 Punkte` };
-    const parseResult = ArmorAbsorptionType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -41,7 +42,7 @@ describe('armor absorption line type', () => {
   test("parses English entry log line correctly", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Armor of Warrior OI8497 (1658087, LX710b) weakens the attack by 2 points.` };
     const parseResult = ArmorAbsorptionType.parse(testLogEntry.entry, testLogEntry.lang);
-
+lineTypeClass
     // result is not null
     expect(parseResult).not.toBeNull();
     
@@ -64,9 +65,9 @@ describe('armor absorption line type', () => {
   test("registers ship in statistics", () => {
     const statistics = new Statistics;
     const testLogEntry = { "lang": "de", "entry": String.raw`Panzerung von U.S.S. Dracaix (2819313, Korolev) schwächt Angriff um 1 Punkte` };
-    const parseResult = ArmorAbsorptionType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
-    ArmorAbsorptionType.populateStatistics(statistics, parseResult);
+    lineTypeClass.populateStatistics(statistics, parseResult);
 
     expect(statistics.ships.mentionedShips.length).toBe(1);
     const ship = statistics.ships.getShipByNcc(2819313);

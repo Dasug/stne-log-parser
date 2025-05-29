@@ -3,25 +3,26 @@ import LineTag from '../../src/enum/line-tag.js';
 import EnergyDamageType from '../../src/line-type/energy-damage-type';
 
 describe('energy damage line type', () => {
+  const lineTypeClass = EnergyDamageType;
   test("has correct tag", () => {
-    expect(EnergyDamageType.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.weaponShotResult, LineTag.damage]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.weaponShotResult, LineTag.damage]));
   }); 
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Hauptenergie von Fara * (2788187, D7) sinkt um 98, von 568,18 auf 470,18` };
     
-    expect(EnergyDamageType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   // synthetic log line, replace with actual one if available!
   test("detects English entry log line positively", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Main energy of Warrior OI8497 (1658087, LX710b) sinks by 20, from 255 to 253` };
 
-    expect(EnergyDamageType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Hauptenergie von Fara * (2788187, D7) sinkt um 98, von 568,18 auf 470,18` };
-    const parseResult = EnergyDamageType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -44,7 +45,7 @@ describe('energy damage line type', () => {
 
   test("parses English entry log line correctly", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Main energy of Warrior OI8497 (1658087, LX710b) sinks by 20, from 255 to 235` };
-    const parseResult = EnergyDamageType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -67,7 +68,7 @@ describe('energy damage line type', () => {
 
   test("parses German entry log line with ship disabled as the outcome", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Hauptenergie von Fara * (2788187, D7) sinkt um 123,18, von 123,18 auf 0, und fällt aus!` };
-    const parseResult = EnergyDamageType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -90,7 +91,7 @@ describe('energy damage line type', () => {
 
   test("parses English entry log line with ship disabled as the outcome", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Warrior OI8497 (1658087, LX710b)'s main batteries lose 10 energy and fail.` };
-    const parseResult = EnergyDamageType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

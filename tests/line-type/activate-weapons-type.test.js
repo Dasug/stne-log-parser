@@ -5,24 +5,25 @@ import ActivateWeaponsType from '../../src/line-type/activate-weapons-type.js';
 import WeaponsState from '../../src/enum/weapons-state.js';
 import Statistics from '../../src/statistics/statistics.js';
 
-describe('activate overdrive line type', () => {
+describe('activate weapons line type', () => {
+  const lineTypeClass = ActivateWeaponsType;
   test("has correct tags", () => {
-    expect(ActivateWeaponsType.getTags()).toEqual(expect.arrayContaining([LineTag.shipMaintenance]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.shipMaintenance]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Drelio (2307399, Darinaya) von ||acw||PRIAM (75323) aktiviert die Waffensysteme` };
     
-    expect(ActivateWeaponsType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
   test("detects English entry log line positively", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Oxosk (1568612, Cloverfield) activates its weapons systems` };
 
-    expect(ActivateWeaponsType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Drelio (2307399, Darinaya) von ||acw||PRIAM (75323) aktiviert die Waffensysteme" };
-    const parseResult = ActivateWeaponsType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -48,7 +49,7 @@ describe('activate overdrive line type', () => {
 
   test("parses English entry log line correctly", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Oxosk (1568612, Cloverfield) activates its weapons systems` };
-    const parseResult = ActivateWeaponsType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -72,9 +73,9 @@ describe('activate overdrive line type', () => {
   test("registers ship in statistics", () => {
     const statistics = new Statistics;
     const testLogEntry = { "lang": "de", "entry": String.raw`Drelio (2307399, Darinaya) von ||acw||PRIAM (75323) aktiviert die Waffensysteme` };
-    const parseResult = ActivateWeaponsType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
-    ActivateWeaponsType.populateStatistics(statistics, parseResult);
+    lineTypeClass.populateStatistics(statistics, parseResult);
 
     expect(statistics.ships.mentionedShips.length).toBe(1);
     const ship = statistics.ships.getShipByNcc(2307399);

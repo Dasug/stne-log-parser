@@ -4,18 +4,19 @@ import AvatarJob from '../../src/enum/avatar-job.js';
 import AvatarPilotManeuverType from '../../src/line-type/avatar-pilot-maneuver-type.js';
 
 describe('avatar pilot maneuver line type', () => {
+  const lineTypeClass = AvatarPilotManeuverType;
   test("has correct tags", () => {
-    expect(AvatarPilotManeuverType.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.avatarAction]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.avatarAction]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Annett Hirsch (1140807, Pilot) fliegt ein waghalsiges Manöver gegen Vetro (2838280, Battle Carrier Wrack)!` };
     
-    expect(AvatarPilotManeuverType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Annett Hirsch (1140807, Pilot) fliegt ein waghalsiges Manöver gegen Vetro (2838280, Battle Carrier Wrack)!" };
-    const parseResult = AvatarPilotManeuverType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

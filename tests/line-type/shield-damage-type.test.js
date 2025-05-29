@@ -3,23 +3,24 @@ import LineTag from '../../src/enum/line-tag.js';
 import ShieldDamageType from '../../src/line-type/shield-damage-type';
 
 describe('shield damage line type', () => {
+  const lineTypeClass = ShieldDamageType;
   test("has correct tag", () => {
-    expect(ShieldDamageType.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.weaponShotResult, LineTag.damage]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.weaponShotResult, LineTag.damage]));
   }); 
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Schilde von Kubus 2784 (2008590, Kubus) nehmen 7 Schaden, sind jetzt auf 47` };
     
-    expect(ShieldDamageType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
   test("detects English entry log line positively", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Shields of Warrior OI8497 (1658087, LX710b) take 10 damage, shield strength is now at 47` };
 
-    expect(ShieldDamageType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Schilde von Kubus 2784 (2008590, Kubus) nehmen 7 Schaden, sind jetzt auf 47` };
-    const parseResult = ShieldDamageType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -41,7 +42,7 @@ describe('shield damage line type', () => {
 
   test("parses English entry log line correctly", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Shields of Warrior OI8497 (1658087, LX710b) take 10 damage, shield strength is now at 47` };
-    const parseResult = ShieldDamageType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -63,7 +64,7 @@ describe('shield damage line type', () => {
 
   test("parses German entry log line with collapsing shields correctly", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Schilde von Kubus 2784 (2008590, Kubus) nehmen 7 Schaden und kollabieren` };
-    const parseResult = ShieldDamageType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -85,7 +86,7 @@ describe('shield damage line type', () => {
 
   test("parses English entry log line with collapsing shields correctly", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Shields of Warrior OI8497 (1658087, LX710b) take 10 damage and collapse` };
-    const parseResult = ShieldDamageType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

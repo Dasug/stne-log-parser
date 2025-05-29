@@ -5,23 +5,24 @@ import ShipNameAndNccResult from '../../src/regex/parse-result/ship-name-and-ncc
 import ShipNameOnlyResult from '../../src/regex/parse-result/ship-name-only-result.js';
 
 describe('tractor beam drag along line type', () => {
+  const lineTypeClass = TractorBeamDragAlongType;
   test("has correct tags", () => {
-    expect(TractorBeamDragAlongType.getTags()).toEqual(expect.arrayContaining([LineTag.shipMovement, LineTag.tractorBeam]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.shipMovement, LineTag.tractorBeam]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Glanz & Gloria (2642114, Kairos) von Kôntránisches VerwaltungsAmt [PeaceInUkraine] (56813) wird im Traktorstrahl hinterhergezogen.` };
     
-    expect(TractorBeamDragAlongType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
   test("detects English entry log line positively", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Eveake is pulled by a tractor beam.` };
 
-    expect(TractorBeamDragAlongType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Glanz & Gloria (2642114, Kairos) von Kôntránisches VerwaltungsAmt [PeaceInUkraine] (56813) wird im Traktorstrahl hinterhergezogen." };
-    const parseResult = TractorBeamDragAlongType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -45,7 +46,7 @@ describe('tractor beam drag along line type', () => {
 
   test("parses English entry log line correctly", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Eveake is pulled by a tractor beam.` };
-    const parseResult = TractorBeamDragAlongType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

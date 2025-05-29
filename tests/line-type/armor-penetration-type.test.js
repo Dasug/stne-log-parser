@@ -3,23 +3,24 @@ import LineTag from '../../src/enum/line-tag.js';
 import ArmorPenetrationType from '../../src/line-type/armor-penetration-type';
 
 describe('armor penetration line type', () => {
+  const lineTypeClass = ArmorPenetrationType;
   test("has battle tag", () => {
-    expect(ArmorPenetrationType.getTags()).toEqual(expect.arrayContaining([LineTag.battle]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle]));
   }); 
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`4 Panzerung durchdrungen.` };
     
-    expect(ArmorPenetrationType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
   test("detects English entry log line positively", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Penetrated 2 points of armor.` };
 
-    expect(ArmorPenetrationType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`4 Panzerung durchdrungen.` };
-    const parseResult = ArmorPenetrationType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -29,7 +30,7 @@ describe('armor penetration line type', () => {
 
   test("parses English entry log line correctly", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Penetrated 2 points of armor.` };
-    const parseResult = ArmorPenetrationType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

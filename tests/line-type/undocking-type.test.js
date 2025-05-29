@@ -3,23 +3,24 @@ import UndockingType from '../../src/line-type/undocking-type';
 import LineTag from '../../src/enum/line-tag.js';
 
 describe('undocking line type', () => {
+  const lineTypeClass = UndockingType;
   test("has ship_movement and docking tag", () => {
-    expect(UndockingType.getTags()).toEqual(expect.arrayContaining([LineTag.shipMovement, LineTag.docking]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.shipMovement, LineTag.docking]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Jabba T\`PauPau :.: (2508216, T'Pau) von Ashanti (76192) dockt im Sektor 21|88#115 von Lerko /*\\ (2530534, Taktischer Kubus) ab` };
     
-    expect(UndockingType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
   test("detects English entry log line positively", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`RS Urax (1589926, Nova) von Loki (83929) undocks from =VIPER= Landa Station (1525125, Supply Post) in sector 555|666.` };
 
-    expect(UndockingType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Jabba T`PauPau :.: (2508216, T'Pau) von Ashanti (76192) dockt im Sektor 21|88#115 von Lerko /*\\ (2530534, Taktischer Kubus) ab" };
-    const parseResult = UndockingType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -51,7 +52,7 @@ describe('undocking line type', () => {
 
   test("parses English entry log line correctly", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`RS Urax (1589926, Nova) von Loki (83929) undocks from =VIPER= Landa Station (1525125, Supply Post) in sector 555|666.` };
-    const parseResult = UndockingType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

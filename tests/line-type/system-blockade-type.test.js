@@ -4,24 +4,25 @@ import SystemBlockadeType from '../../src/line-type/system-blockade-type.js';
 import SystemBlockadeState from '../../src/enum/system-blockade-state.js';
 
 describe('system blockade line type', () => {
+  const lineTypeClass = SystemBlockadeType;
   test("has correct tags", () => {
-    expect(SystemBlockadeType.getTags()).toEqual(expect.arrayContaining([LineTag.shipMaintenance, LineTag.systemBlockade]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.shipMaintenance, LineTag.systemBlockade]));
   });
   test("detects German raised log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": "H|K ~KS~ Wrong Way (2563440, Atel) hat im Sektor 229|423 eine Systemblockade errichtet" };
 
-    expect(SystemBlockadeType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("detects German dropped log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": "H|K ~KS~ Wrong Way (2563440, Atel) hat im Sektor 229|423 die Systemblockade aufgegeben" };
 
-    expect(SystemBlockadeType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German raise log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`H|K ~KS~ Wrong Way (2563440, Atel) hat im Sektor 229|423 eine Systemblockade errichtet` };
-    const parseResult = SystemBlockadeType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -49,7 +50,7 @@ describe('system blockade line type', () => {
 
   test("parses German drop log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`H|K ~KS~ Wrong Way (2563440, Atel) hat im Sektor 229|423 die Systemblockade aufgegeben` };
-    const parseResult = SystemBlockadeType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

@@ -4,18 +4,19 @@ import AvatarJob from '../../src/enum/avatar-job.js';
 import AvatarBoardingEpsDamageType from '../../src/line-type/avatar-boarding-eps-damage-type.js';
 
 describe('avatar boarding EPS damage line type', () => {
+  const lineTypeClass = AvatarBoardingEpsDamageType;
   test("has correct tags", () => {
-    expect(AvatarBoardingEpsDamageType.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.avatarAction, LineTag.avatarActionSuccess]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.avatarAction, LineTag.avatarActionSuccess]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Anke Meyer (365906, Sicherheitsoffizier) von SMS Friedrich der Große (1713491, Cellship) beamt sich mit einem Außenteam an Bord von Slemiagh (2838115, Battlecruiser Wrack). Dort zerstören sie wahlos EPS-Relais und verursachen 211 direkten Energieverlust, 211 für Eindämmungsaufgaben und 106 Hüllenschaden.` };
     
-    expect(AvatarBoardingEpsDamageType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Anke Meyer (365906, Sicherheitsoffizier) von SMS Friedrich der Große (1713491, Cellship) beamt sich mit einem Außenteam an Bord von Slemiagh (2838115, Battlecruiser Wrack). Dort zerstören sie wahlos EPS-Relais und verursachen 211 direkten Energieverlust, 211 für Eindämmungsaufgaben und 106 Hüllenschaden." };
-    const parseResult = AvatarBoardingEpsDamageType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

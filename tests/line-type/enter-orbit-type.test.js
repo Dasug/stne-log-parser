@@ -4,24 +4,25 @@ import EnterOrbitType from '../../src/line-type/enter-orbit-type.js';
 import Statistics from '../../src/statistics/statistics.js';
 
 describe('enter orbit line type', () => {
+  const lineTypeClass = EnterOrbitType;
   test("has ship_movement tag", () => {
-    expect(EnterOrbitType.getTags()).toEqual(expect.arrayContaining([LineTag.shipMovement]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.shipMovement]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": "8  Thorium (NX-2517288, Patrouillenschiff) von []U.C.W[] LordLicht (73167) ist in den Orbit von [Kingdom] Koweston (23307) bei @987|654 eingeflogen." };
 
-    expect(EnterOrbitType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("detects German exit log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": "SHR New Horizon (2383586, DY-500) von DavoRian82 (73324) ist aus dem Orbit von Hydrolion (80940) bei 654|247 ausgetreten." };
 
-    expect(EnterOrbitType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`8  Thorium (NX-2517288, Patrouillenschiff) von []U.C.W[] LordLicht (73167) ist in den Orbit von [Kingdom] Koweston (23307) bei @987|654 eingeflogen.` };
-    const parseResult = EnterOrbitType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -56,7 +57,7 @@ describe('enter orbit line type', () => {
 
   test("parses German exit log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`SHR New Horizon (2383586, DY-500) von DavoRian82 (73324) ist aus dem Orbit von Hydrolion (80940) bei 654|247 ausgetreten.` };
-    const parseResult = EnterOrbitType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -92,9 +93,9 @@ describe('enter orbit line type', () => {
   test("registers ship in statistics", () => {
     const statistics = new Statistics;
     const testLogEntry = { "lang": "de", "entry": String.raw`SHR New Horizon (2383586, DY-500) von DavoRian82 (73324) ist aus dem Orbit von Hydrolion (80940) bei 654|247 ausgetreten.` };
-    const parseResult = EnterOrbitType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
-    EnterOrbitType.populateStatistics(statistics, parseResult);
+    lineTypeClass.populateStatistics(statistics, parseResult);
 
     expect(statistics.ships.mentionedShips.length).toBe(1);
     const ship = statistics.ships.getShipByNcc(2383586);

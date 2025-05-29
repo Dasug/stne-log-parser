@@ -4,25 +4,26 @@ import ShipNameOnlyResult from '../../src/regex/parse-result/ship-name-only-resu
 import EnvironmentCeruleanType from '../../src/line-type/environment-cerulean-type.js';
 
 describe('environment cerulean line type', () => {
+  const lineTypeClass = EnvironmentCeruleanType;
   test("has correct tags", () => {
-    expect(EnvironmentCeruleanType.getTags()).toEqual(expect.arrayContaining([LineTag.shipMovement, LineTag.environmentEffect]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.shipMovement, LineTag.environmentEffect]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`=MS= Echo Fatalis (2873452, Tamani) verliert 375 Energie durch die Einwirkung eines Cerulanischen Nebels!` };
     
-    expect(EnvironmentCeruleanType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   // this log line does not exist in game but in case they ever fix the typo this should still detect it
   test("detects German entry log line with fixed typo positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`[Scout] Itokaa (2881610, Sonde) verliert 1,25 Energie durch die Einwirkung eines Ceruleanischen Nebels!` };
     
-    expect(EnvironmentCeruleanType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "[Scout] Itokaa (2881610, Sonde) verliert 1,25 Energie durch die Einwirkung eines Cerulanischen Nebels!" };
-    const parseResult = EnvironmentCeruleanType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

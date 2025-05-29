@@ -5,18 +5,19 @@ import ShipNameAndNccResult from '../../src/regex/parse-result/ship-name-and-ncc
 import PlayerNameAndIdResult from '../../src/regex/parse-result/player-name-and-id-result.js';
 
 describe('tractor beam struggle line type', () => {
+  const lineTypeClass = TractorBeamDirectedType;
   test("has correct tags", () => {
-    expect(TractorBeamDirectedType.getTags()).toEqual(expect.arrayContaining([LineTag.tractorBeam]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.tractorBeam]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Traktorstrahl auf [Scout] Pibag (2882829, Sonde) von []U.C.W[] Scorga Empire (34108) gerichtet` };
     
-    expect(TractorBeamDirectedType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Traktorstrahl auf [Scout] Pibag (2882829, Sonde) von []U.C.W[] Scorga Empire (34108) gerichtet" };
-    const parseResult = TractorBeamDirectedType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

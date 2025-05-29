@@ -4,18 +4,19 @@ import AvatarJob from '../../src/enum/avatar-job.js';
 import AvatarPilotManeuverSuccessType from '../../src/line-type/avatar-pilot-maneuver-success-type.js';
 
 describe('avatar pilot maneuver success line type', () => {
+  const lineTypeClass = AvatarPilotManeuverSuccessType;
   test("has correct tags", () => {
-    expect(AvatarPilotManeuverSuccessType.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.avatarActionSuccess]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.avatarActionSuccess]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Annett Hirsch (1140807, Pilot) manövriert erfolgreich in einen toten Winkel von Vetro (2838280, Battle Carrier Wrack), wodurch sich die Chance für H_Kahn des Zorn III (2662825, Tamani) ergibt kritische Schäden (x2) zu verursachen!` };
     
-    expect(AvatarPilotManeuverSuccessType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Annett Hirsch (1140807, Pilot) manövriert erfolgreich in einen toten Winkel von Vetro (2838280, Battle Carrier Wrack), wodurch sich die Chance für H_Kahn des Zorn III (2662825, Tamani) ergibt kritische Schäden (x2) zu verursachen!" };
-    const parseResult = AvatarPilotManeuverSuccessType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

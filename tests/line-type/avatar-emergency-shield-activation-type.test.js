@@ -4,18 +4,19 @@ import AvatarJob from '../../src/enum/avatar-job.js';
 import AvatarEmergencyShieldActivationType from '../../src/line-type/avatar-emergency-shield-activation-type.js';
 
 describe('avatar emergency shield actvation line type', () => {
+  const lineTypeClass = AvatarEmergencyShieldActivationType;
   test("has correct tags", () => {
-    expect(AvatarEmergencyShieldActivationType.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.avatarAction, LineTag.avatarActionSuccess]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.avatarAction, LineTag.avatarActionSuccess]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Maria Weiss (1124429, Verteidigungstaktiker) an Bord von =MS= Euros Deimos (2558180, Terran Excelsior Refit) reagiert blitzschnell und schafft es in buchstäblich letzter Sekunde den Schildauslöser zu erreichen!` };
     
-    expect(AvatarEmergencyShieldActivationType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Maria Weiss (1124429, Verteidigungstaktiker) an Bord von =MS= Euros Deimos (2558180, Terran Excelsior Refit) reagiert blitzschnell und schafft es in buchstäblich letzter Sekunde den Schildauslöser zu erreichen!" };
-    const parseResult = AvatarEmergencyShieldActivationType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

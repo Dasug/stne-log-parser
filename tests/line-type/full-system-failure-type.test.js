@@ -3,23 +3,24 @@ import LineTag from '../../src/enum/line-tag.js';
 import FullSystemFailureType from '../../src/line-type/full-system-failure-type.js';
 
 describe('full system failure line type', () => {
+  const lineTypeClass = FullSystemFailureType;
   test("has battle, ship disabled and redundant tag", () => {
-    expect(FullSystemFailureType.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.shipDisabled, LineTag.redundant]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.shipDisabled, LineTag.redundant]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": "Paiso (2831277, Verlassenes Tug) erleidet einen Ausfall aller Systeme, das Schiff wird Starthilfe brauchen um wieder flott gemacht zu werden!" };
 
-    expect(FullSystemFailureType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
   test("detects English entry log line positively", () => {
     const testLogEntry = { "lang": "en", "entry": "Warrior OI8497 (1658087, LX710b) suffers a full system failure. The ship will need assistance before it can start back up!" };
 
-    expect(FullSystemFailureType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Paiso (2831277, Verlassenes Tug) erleidet einen Ausfall aller Systeme, das Schiff wird Starthilfe brauchen um wieder flott gemacht zu werden!` };
-    const parseResult = FullSystemFailureType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -37,7 +38,7 @@ describe('full system failure line type', () => {
 
   test("parses English entry log line correctly", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Warrior OI8497 (1658087, LX710b) suffers a full system failure. The ship will need assistance before it can start back up!` };
-    const parseResult = FullSystemFailureType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

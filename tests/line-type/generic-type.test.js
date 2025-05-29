@@ -3,8 +3,9 @@ import GenericType from '../../src/line-type/generic-type';
 import LineTag from '../../src/enum/line-tag.js';
 
 describe('generic log line type', () => {
+  const lineTypeClass = GenericType;
   test("has generic tag", () => {
-    expect(GenericType.getTags()).toEqual(expect.arrayContaining([LineTag.generic]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.generic]));
   });
   test("doesn't detect positively", () => {
     const testLogEntries = [
@@ -14,7 +15,7 @@ describe('generic log line type', () => {
       { "lang": "en", "entry": "IMoovStufToo (1593773, Silverstar) beams goods in sector 111|111 to {=BSC=} Morning Glory (1590093, Large Subspace Gate): Antimatter: 737. Isolinear Chips: 883. Tritanium: 97. Sorium: 1532." },
     ];
     testLogEntries.forEach(entry => {
-      expect(GenericType.detect(entry.entry, entry.lang)).toBe(false);
+      expect(lineTypeClass.detect(entry.entry, entry.lang)).toBe(false);
     });
 
   });

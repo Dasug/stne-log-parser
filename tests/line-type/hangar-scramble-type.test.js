@@ -3,18 +3,19 @@ import LineTag from '../../src/enum/line-tag.js';
 import HangarScrambleType from '../../src/line-type/hangar-scramble-type.js';
 
 describe('hangar scramble line type', () => {
+  const lineTypeClass = HangarScrambleType;
   test("has correct tags", () => {
-    expect(HangarScrambleType.getTags()).toEqual(expect.arrayContaining([LineTag.hangar, LineTag.battle]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.hangar, LineTag.battle]));
   });
   test("detects German log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": "Graf-Zeppelin (2180645, Rei´Kon) löst in Sektor @79|539 Angriffsalarm im Hangarbereich aus!" };
 
-    expect(HangarScrambleType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Graf-Zeppelin (2180645, Rei´Kon) löst in Sektor @79|539 Angriffsalarm im Hangarbereich aus!` };
-    const parseResult = HangarScrambleType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

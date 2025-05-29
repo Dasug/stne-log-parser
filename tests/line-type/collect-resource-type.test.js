@@ -4,18 +4,19 @@ import CollectResourceType from '../../src/line-type/collect-resource-type.js';
 import Resource from '../../src/enum/resource.js';
 
 describe('collect resources line type', () => {
+  const lineTypeClass = CollectResourceType;
   test("has correct tags", () => {
-    expect(CollectResourceType.getTags()).toEqual(expect.arrayContaining([LineTag.economy]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.economy]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`=TX0XT= DrEADsTAR (NX-1867924, Iowa Typ Z) von []U.C.W[] DeMaNDrED (72439) hat 838 Deuterium eingesaugt` };
     
-    expect(CollectResourceType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "=TX0XT= DrEADsTAR (NX-1867924, Iowa Typ Z) von []U.C.W[] DeMaNDrED (72439) hat 838 Deuterium eingesaugt" };
-    const parseResult = CollectResourceType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -47,7 +48,7 @@ describe('collect resources line type', () => {
 
   test("parses ore line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Erzsammler (71835, Erewhon) von Dasug1 (NPC-2183) hat 1728 Iridium-Erz gesammelt" };
-    const parseResult = CollectResourceType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

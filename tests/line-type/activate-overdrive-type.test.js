@@ -4,23 +4,24 @@ import LineTag from '../../src/enum/line-tag.js';
 import Statistics from '../../src/statistics/statistics.js';
 
 describe('activate overdrive line type', () => {
+  const lineTypeClass = ActivateOverdriveType;
   test("has correct tags", () => {
-    expect(ActivateOverdriveType.getTags()).toEqual(expect.arrayContaining([LineTag.shipMaintenance]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.shipMaintenance]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`[CV] Jäger 24 (2817833, Klaestron) von Bayerisches Imperium [SJV] (76856) aktiviert den Overdrive und kann nun, trotz überhitzter Triebwerke, weiterfliegen!` };
     
-    expect(ActivateOverdriveType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
   test("detects English entry log line positively", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Colonisation ship (1497763, DY-500) activates its overdrive and can now, in spite of its overheated engines, continue flight!` };
 
-    expect(ActivateOverdriveType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "[CV] Jäger 24 (2817833, Klaestron) von Bayerisches Imperium [SJV] (76856) aktiviert den Overdrive und kann nun, trotz überhitzter Triebwerke, weiterfliegen!" };
-    const parseResult = ActivateOverdriveType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -43,7 +44,7 @@ describe('activate overdrive line type', () => {
 
   test("parses English entry log line correctly", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Colonisation ship (1497763, DY-500) activates its overdrive and can now, in spite of its overheated engines, continue flight!` };
-    const parseResult = ActivateOverdriveType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -63,9 +64,9 @@ describe('activate overdrive line type', () => {
   test("registers ship in statistics", () => {
     const statistics = new Statistics;
     const testLogEntry = { "lang": "de", "entry": String.raw`[CV] Jäger 24 (2817833, Klaestron) von Bayerisches Imperium [SJV] (76856) aktiviert den Overdrive und kann nun, trotz überhitzter Triebwerke, weiterfliegen!` };
-    const parseResult = ActivateOverdriveType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
-    ActivateOverdriveType.populateStatistics(statistics, parseResult);
+    lineTypeClass.populateStatistics(statistics, parseResult);
 
     expect(statistics.ships.mentionedShips.length).toBe(1);
     const ship = statistics.ships.getShipByNcc(2817833);

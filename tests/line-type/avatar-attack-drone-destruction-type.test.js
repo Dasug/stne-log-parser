@@ -4,18 +4,19 @@ import AvatarJob from '../../src/enum/avatar-job.js';
 import AvatarAttackDroneDestructionType from '../../src/line-type/avatar-attack-drone-destruction-type.js';
 
 describe('avatar attack drone destruction line type', () => {
+  const lineTypeClass = AvatarAttackDroneDestructionType;
   test("has correct tags", () => {
-    expect(AvatarAttackDroneDestructionType.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.avatarActionFailure]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.avatarActionFailure]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Dikees (2826794, Verlassene Adrec) zerstört die Angriffsdrohne von Petra Kappel (570216, Drohnenpilot) durch gezieltes Abwehrfeuer!` };
     
-    expect(AvatarAttackDroneDestructionType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Dikees (2826794, Verlassene Adrec) zerstört die Angriffsdrohne von Petra Kappel (570216, Drohnenpilot) durch gezieltes Abwehrfeuer!" };
-    const parseResult = AvatarAttackDroneDestructionType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

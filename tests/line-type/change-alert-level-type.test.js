@@ -4,23 +4,24 @@ import LineTag from '../../src/enum/line-tag.js';
 import AlertLevel from '../../src/enum/alert-level.js';
 
 describe('change aleret level line type', () => {
+  const lineTypeClass = ChangeAlertLevelType;
   test("has correct tags", () => {
-    expect(ChangeAlertLevelType.getTags()).toEqual(expect.arrayContaining([LineTag.shipMaintenance]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.shipMaintenance]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`[CV] Jäger 20 (2817829, Klaestron) von Bayerisches Imperium [SJV] (76856) geht auf gelben Alarm` };
     
-    expect(ChangeAlertLevelType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
   test("detects English entry log line positively", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Nitisa Expressway (1499439, Small Subspace Gate) goes to Green Alert` };
 
-    expect(ChangeAlertLevelType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "[CV] Jäger 20 (2817829, Klaestron) von Bayerisches Imperium [SJV] (76856) geht auf gelben Alarm" };
-    const parseResult = ChangeAlertLevelType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -46,7 +47,7 @@ describe('change aleret level line type', () => {
 
   test("parses English entry log line correctly", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Nitisa Expressway (1499439, Small Subspace Gate) goes to Green Alert` };
-    const parseResult = ChangeAlertLevelType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

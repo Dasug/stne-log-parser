@@ -4,18 +4,19 @@ import AvatarJob from '../../src/enum/avatar-job.js';
 import AvatarWeakPointMissType from '../../src/line-type/avatar-weak-point-miss-type.js';
 
 describe('avatar weak point miss line type', () => {
+  const lineTypeClass = AvatarWeakPointMissType;
   test("has correct tags", () => {
-    expect(AvatarWeakPointMissType.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.avatarAction, LineTag.avatarActionFailure]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.avatarAction, LineTag.avatarActionFailure]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Tim Becker (801516, Waffenoffizier) verfehlt die anvisierte Schwachstelle von Vetro (2838280, Battle Carrier Wrack)!` };
     
-    expect(AvatarWeakPointMissType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Tim Becker (801516, Waffenoffizier) verfehlt die anvisierte Schwachstelle von Vetro (2838280, Battle Carrier Wrack)!" };
-    const parseResult = AvatarWeakPointMissType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

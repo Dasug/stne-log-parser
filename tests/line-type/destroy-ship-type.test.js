@@ -3,23 +3,24 @@ import LineTag from '../../src/enum/line-tag.js';
 import DestroyShipType from '../../src/line-type/destroy-ship-type.js';
 
 describe('destroy ship line type', () => {
+  const lineTypeClass = DestroyShipType;
   test("has battle and ship destruction tag", () => {
-    expect(DestroyShipType.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.shipDestruction]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.shipDestruction]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": "Kontakt zu Claevi (2842096, Verlassene Cloverfield) von Die Verdammten (NPC-76936) verloren! Letzte bekannte Position: 88|38#115" };
 
-    expect(DestroyShipType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
   test("detects English entry log line positively", () => {
     const testLogEntry = { "lang": "en", "entry": "Warrior OI8497 (1658087, LX710b) from Orion Syndicate (SNPC-15) was destroyed at 639|290" };
 
-    expect(DestroyShipType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Kontakt zu Claevi (2842096, Verlassene Cloverfield) von Die Verdammten (NPC-76936) verloren! Letzte bekannte Position: 88|38#115` };
-    const parseResult = DestroyShipType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -49,7 +50,7 @@ describe('destroy ship line type', () => {
 
   test("parses English entry log line correctly", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Warrior OI8497 (1658087, LX710b) from Orion Syndicate (SNPC-15) was destroyed at 639|290` };
-    const parseResult = DestroyShipType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

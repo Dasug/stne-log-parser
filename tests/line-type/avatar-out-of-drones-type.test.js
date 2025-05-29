@@ -7,18 +7,19 @@ import ColonyNameAndIdResult from '../../src/regex/parse-result/colony-name-and-
 import ShipNameAndNccResult from '../../src/regex/parse-result/ship-name-and-ncc-result.js';
 
 describe('avatar out of drones line type', () => {
+  const lineTypeClass = AvatarOutOfDronesType;
   test("has correct tags", () => {
-    expect(AvatarOutOfDronesType.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.avatarAction, LineTag.avatarActionFailure]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.avatarAction, LineTag.avatarActionFailure]));
   });
   test("detects German decoy drone entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Stefan Gottschalk (1163078, Drohnenpilot) hat keine Köderdrohnen mehr zur Verfügung und kann deshalb nichts für [I.R.W.] Praetor II (2666412, Praetor) tun um dem Angriff von Susco (2822078, Spektrales Portal) zu engehen!` };
     
-    expect(AvatarOutOfDronesType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German decoy drone entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Stefan Gottschalk (1163078, Drohnenpilot) hat keine Köderdrohnen mehr zur Verfügung und kann deshalb nichts für [I.R.W.] Praetor II (2666412, Praetor) tun um dem Angriff von Susco (2822078, Spektrales Portal) zu engehen!" };
-    const parseResult = AvatarOutOfDronesType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -53,7 +54,7 @@ describe('avatar out of drones line type', () => {
 
   test("parses German decoy drone log line against colony correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Jürgen Abendroth (1492415, Drohnenpilot) hat keine Köderdrohnen mehr zur Verfügung und kann deshalb nichts für =MS= Panthera Nebulos (2441662, Iowa Typ Z) tun um dem Angriff von Asuras (85945) zu engehen!" };
-    const parseResult = AvatarOutOfDronesType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -87,12 +88,12 @@ describe('avatar out of drones line type', () => {
   test("detects German attack drone entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Melanie Fenstermacher (1378997, Drohnenpilot) hat keine Angriffsdrohnen mehr zur Verfügung und kann deshalb nichts für Sidonia (1812900, Co'Rask) tun um den Angriff gegen Oonaowu (2841463, Verlassene Cloverfield) zu verstärken!` };
     
-    expect(AvatarOutOfDronesType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German attack drone entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Melanie Fenstermacher (1378997, Drohnenpilot) hat keine Angriffsdrohnen mehr zur Verfügung und kann deshalb nichts für Sidonia (1812900, Co'Rask) tun um den Angriff gegen Oonaowu (2841463, Verlassene Cloverfield) zu verstärken!" };
-    const parseResult = AvatarOutOfDronesType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

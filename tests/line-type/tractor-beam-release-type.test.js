@@ -4,18 +4,19 @@ import ShipNameOnlyResult from '../../src/regex/parse-result/ship-name-only-resu
 import TractorBeamReleaseType from '../../src/line-type/tractor-beam-release-type.js';
 
 describe('tractor beam release line type', () => {
+  const lineTypeClass = TractorBeamReleaseType;
   test("has correct tags", () => {
-    expect(TractorBeamReleaseType.getTags()).toEqual(expect.arrayContaining([LineTag.tractorBeam]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.tractorBeam]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`=MS= Hivemother Hexara löst in Sektor(141|526) bei [Scout] Deudi den Traktorstrahl.` };
     
-    expect(TractorBeamReleaseType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "=MS= Hivemother Hexara löst in Sektor(141|526) bei [Scout] Deudi den Traktorstrahl." };
-    const parseResult = TractorBeamReleaseType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

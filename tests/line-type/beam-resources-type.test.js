@@ -6,18 +6,19 @@ import BeamDirection from '../../src/enum/beam-direction.js';
 import BeamResource from '../../src/enum/beam-resource.js';
 
 describe('beam resources line type', () => {
+  const lineTypeClass = BeamResourcesType;
   test("has correct tags", () => {
-    expect(BeamResourcesType.getTags()).toEqual(expect.arrayContaining([LineTag.transport]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.transport]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Sprungkosten (69307, Sovereign Refit) beamt in Sektor 45|16 Waren von Huasiurk (71828, AntaresB): Deuterium: 200. Sorium: 10. Latinum: 10.` };
     
-    expect(BeamResourcesType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Sprungkosten (69307, Sovereign Refit) beamt in Sektor 45|16 Waren von Huasiurk (71828, AntaresB): Deuterium: 200. Sorium: 10. Latinum: 20." };
-    const parseResult = BeamResourcesType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -76,7 +77,7 @@ describe('beam resources line type', () => {
 
   test("parses unkown resource correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Sprungkosten (69307, Sovereign Refit) beamt in Sektor 45|16 Waren zu Huasiurk (71828, AntaresB): Steuererklärungen: 20." };
-    const parseResult = BeamResourcesType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

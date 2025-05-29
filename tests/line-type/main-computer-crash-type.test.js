@@ -3,23 +3,24 @@ import LineTag from '../../src/enum/line-tag.js';
 import MainComputerCrashType from '../../src/line-type/main-computer-crash-type.js';
 
 describe('main computer crash line type', () => {
+  const lineTypeClass = MainComputerCrashType;
   test("has battle and ship disabled tag", () => {
-    expect(MainComputerCrashType.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.shipDisabled]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.shipDisabled]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": "Paiso (2831277, Verlassenes Tug) von Die Verdammten (NPC-76936) ist der Hauptcomputer abgestürzt!" };
 
-    expect(MainComputerCrashType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
   test("detects English entry log line positively", () => {
     const testLogEntry = { "lang": "en", "entry": "Warrior OI8497 (1658087, LX710b) experiences a system crash, causing the main computer to go down!" };
 
-    expect(MainComputerCrashType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Paiso (2831277, Verlassenes Tug) von Die Verdammten (NPC-76936) ist der Hauptcomputer abgestürzt!` };
-    const parseResult = MainComputerCrashType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -43,7 +44,7 @@ describe('main computer crash line type', () => {
 
   test("parses English entry log line correctly", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Warrior OI8497 (1658087, LX710b) experiences a system crash, causing the main computer to go down!` };
-    const parseResult = MainComputerCrashType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

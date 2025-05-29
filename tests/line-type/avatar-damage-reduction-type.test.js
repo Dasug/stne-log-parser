@@ -6,18 +6,19 @@ import ShipNameAndNccResult from '../../src/regex/parse-result/ship-name-and-ncc
 import ColonyNameAndIdResult from '../../src/regex/parse-result/colony-name-and-id-result.js';
 
 describe('avatar damage reduction line type', () => {
+  const lineTypeClass = AvatarDamageReductionType;
   test("has correct tags", () => {
-    expect(AvatarDamageReductionType.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.avatarAction, LineTag.avatarActionSuccess]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.avatarAction, LineTag.avatarActionSuccess]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Adept XT-571 (905722, Verteidigungstaktiker) stört die Zielerfassung von Kofes (2839350, Verlassene Adrec), wodurch dessen Angriff auf Storm of Retribution (2551448, Prometheus) um 42% schwächer ausfällt!` };
     
-    expect(AvatarDamageReductionType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Adept XT-571 (905722, Verteidigungstaktiker) stört die Zielerfassung von Kofes (2839350, Verlassene Adrec), wodurch dessen Angriff auf Storm of Retribution (2551448, Prometheus) um 42% schwächer ausfällt!" };
-    const parseResult = AvatarDamageReductionType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -53,7 +54,7 @@ describe('avatar damage reduction line type', () => {
 
   test("parses German log line against colony correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Pilatius Obelyn Swain (943193, Verteidigungstaktiker) stört die Zielerfassung von Tropico (46961), wodurch dessen Angriff auf =MS= Hivemother Hexara (2531302, Rei´Kon) um 31% schwächer ausfällt!" };
-    const parseResult = AvatarDamageReductionType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

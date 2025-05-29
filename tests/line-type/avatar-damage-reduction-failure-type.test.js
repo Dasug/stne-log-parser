@@ -5,18 +5,19 @@ import AvatarDamageReductionFailureType from '../../src/line-type/avatar-damage-
 import ShipNameAndNccResult from '../../src/regex/parse-result/ship-name-and-ncc-result.js';
 import ColonyNameAndIdResult from '../../src/regex/parse-result/colony-name-and-id-result.js';
 describe('avatar damage reduction failure line type', () => {
+  const lineTypeClass = AvatarDamageReductionFailureType;
   test("has correct tags", () => {
-    expect(AvatarDamageReductionFailureType.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.avatarAction, LineTag.avatarActionFailure]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.avatarAction, LineTag.avatarActionFailure]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Juliane Reiniger (1336742, Verteidigungstaktiker) versucht die Zielerfassung von Egriuvu (2841450, Verlassener Außenposten) zu stören, hat damit aber keinerlei Erfolg!` };
     
-    expect(AvatarDamageReductionFailureType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Juliane Reiniger (1336742, Verteidigungstaktiker) versucht die Zielerfassung von Egriuvu (2841450, Verlassener Außenposten) zu stören, hat damit aber keinerlei Erfolg!" };
-    const parseResult = AvatarDamageReductionFailureType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -42,7 +43,7 @@ describe('avatar damage reduction failure line type', () => {
 
   test("parses German log line against colony correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Patrick Fitzgerald (943185, Verteidigungstaktiker) versucht die Zielerfassung von Tropico (46961) zu stören, hat damit aber keinerlei Erfolg!" };
-    const parseResult = AvatarDamageReductionFailureType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

@@ -4,23 +4,24 @@ import LineTag from '../../src/enum/line-tag.js';
 import Statistics from '../../src/statistics/statistics.js';
 
 describe('activate shields line type', () => {
+  const lineTypeClass = ActivateShieldsType;
   test("has correct tags", () => {
-    expect(ActivateShieldsType.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.shipMaintenance]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.shipMaintenance]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`TS-4465-O-6465 (1372249, -) von Mortarion [OBV] * * * (28076) aktiviert die Schilde` };
     
-    expect(ActivateShieldsType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
   test("detects English entry log line positively", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`TRES Sarajevo (1577151, Crossfield) von ROBYN BANKS Mad Tyrant of {=BSC=} (72133) raises shields` };
 
-    expect(ActivateShieldsType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "TS-4465-O-6465 (1372249, -) von Mortarion [OBV] * * * (28076) aktiviert die Schilde" };
-    const parseResult = ActivateShieldsType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -43,7 +44,7 @@ describe('activate shields line type', () => {
 
   test("parses English entry log line correctly", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`TRES Sarajevo (1577151, Crossfield) von ROBYN BANKS Mad Tyrant of {=BSC=} (72133) raises shields` };
-    const parseResult = ActivateShieldsType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -66,9 +67,9 @@ describe('activate shields line type', () => {
   test("registers ship in statistics", () => {
     const statistics = new Statistics;
     const testLogEntry = { "lang": "de", "entry": String.raw`TS-4465-O-6465 (1372249, -) von Mortarion [OBV] * * * (28076) aktiviert die Schilde` };
-    const parseResult = ActivateShieldsType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
-    ActivateShieldsType.populateStatistics(statistics, parseResult);
+    lineTypeClass.populateStatistics(statistics, parseResult);
 
     expect(statistics.ships.mentionedShips.length).toBe(1);
     const ship = statistics.ships.getShipByNcc(1372249);

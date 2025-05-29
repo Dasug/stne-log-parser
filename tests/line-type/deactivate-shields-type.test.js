@@ -3,23 +3,24 @@ import DeactivateShieldsType from '../../src/line-type/deactivate-shields-type';
 import LineTag from '../../src/enum/line-tag.js';
 
 describe('deactivate shields line type', () => {
+  const lineTypeClass = DeactivateShieldsType;
   test("has correct tags", () => {
-    expect(DeactivateShieldsType.getTags()).toEqual(expect.arrayContaining([LineTag.battle]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`[IRV] Odysseus (2509111, Hurricane) von Tal’Shiar (75203) deaktiviert die Schilde` };
     
-    expect(DeactivateShieldsType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
   test("detects English entry log line positively", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`TRES Sarajevo (1577151, Crossfield) von ROBYN BANKS Mad Tyrant of {=BSC=} (72133) deactivates the shields` };
 
-    expect(DeactivateShieldsType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "[IRV] Odysseus (2509111, Hurricane) von Tal’Shiar (75203) deaktiviert die Schilde" };
-    const parseResult = DeactivateShieldsType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -42,7 +43,7 @@ describe('deactivate shields line type', () => {
 
   test("parses English entry log line correctly", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`TRES Sarajevo (1577151, Crossfield) von ROBYN BANKS Mad Tyrant of {=BSC=} (72133) deactivates the shields` };
-    const parseResult = DeactivateShieldsType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

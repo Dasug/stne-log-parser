@@ -3,23 +3,24 @@ import DockingType from '../../src/line-type/docking-type';
 import LineTag from '../../src/enum/line-tag.js';
 
 describe('docking line type', () => {
+  const lineTypeClass = DockingType;
   test("has ship_movement and docking tag", () => {
-    expect(DockingType.getTags()).toEqual(expect.arrayContaining([LineTag.shipMovement, LineTag.docking]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.shipMovement, LineTag.docking]));
   }); 
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`[Support] Kapir (2450112, Assimilator) dockt im Sektor @888|777 an [Starbase] New Koweston an` };
     
-    expect(DockingType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
   test("detects English entry log line positively", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`IMoovStufToo (1593773, Silverstar) von Loki (83929) docks to =VIPER= Landa Station in sector 555|666` };
 
-    expect(DockingType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`[Support] Kapir (2450112, Assimilator) dockt im Sektor @888|777 an [Starbase] New Koweston an` };
-    const parseResult = DockingType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -49,7 +50,7 @@ describe('docking line type', () => {
 
   test("parses English entry log line correctly", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`IMoovStufToo (1593773, Silverstar) von Loki (83929) docks to =VIPER= Landa Station in sector 555|666` };
-    const parseResult = DockingType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

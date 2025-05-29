@@ -3,23 +3,24 @@ import SectorEntryType from '../../src/line-type/sector-entry-type';
 import LineTag from '../../src/enum/line-tag.js';
 
 describe('sector entry line type', () => {
+  const lineTypeClass = SectorEntryType;
   test("has ship_movement tag", () => {
-    expect(SectorEntryType.getTags()).toEqual(expect.arrayContaining([LineTag.shipMovement]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.shipMovement]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": "Rohrfliege (2683217, Pegasus) von Systemlord Apophis (75604) ist in Sektor 123|456 eingeflogen" };
 
-    expect(SectorEntryType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
   test("detects English entry log line positively", () => {
     const testLogEntry = { "lang": "en", "entry": "IMoovStufToo (1593773, Silverstar) von Loki (83929) has entered sector 999|999" };
 
-    expect(SectorEntryType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Konrika [Friedensmission (2191321, Nova) von Ikonianer [NOK] (21335) ist in Sektor 345|215 eingeflogen` };
-    const parseResult = SectorEntryType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -44,7 +45,7 @@ describe('sector entry line type', () => {
 
   test("parses English entry log line correctly", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Colonisation ship (1589269, DY-500) von Loki (83929) has entered sector 111|222` };
-    const parseResult = SectorEntryType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

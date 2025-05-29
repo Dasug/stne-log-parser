@@ -6,24 +6,25 @@ import HideStatus from '../../src/enum/hide-status.js';
 import MapFieldType from '../../src/enum/map-field-type.js';
 
 describe('hide line type', () => {
+  const lineTypeClass = HideType;
   test("has correct tags", () => {
-    expect(HideType.getTags()).toEqual(expect.arrayContaining([LineTag.shipMaintenance]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.shipMaintenance]));
   });
   test("detects German hiding log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": "KS CLE'HAC 23 12 1 (NX-2517644, Adrec) von Uvig | Dr. T. Roll (73628) versteckt sich bei 176|175 in Großes Asteroidenfeld" };
 
-    expect(HideType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("detects German reappearing log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": "Rex Apes XVII (2871412, Adrec) von S||Mâreth McDèrmot (75738) taucht aus dem Versteck bei @176|175 in Großes Asteroidenfeld auf" };
 
-    expect(HideType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German hiding log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`KS CLE'HAC 23 12 1 (NX-2517644, Adrec) von Uvig | Dr. T. Roll (73628) versteckt sich bei 176|175 in Großes Asteroidenfeld` };
-    const parseResult = HideType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -60,7 +61,7 @@ describe('hide line type', () => {
 
   test("parses German reappearing log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Rex Apes XVII (2871412, Adrec) von S||Mâreth McDèrmot (75738) taucht aus dem Versteck bei @176|175 in Dichter Deuterium-Nebel auf` };
-    const parseResult = HideType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

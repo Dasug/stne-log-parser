@@ -3,23 +3,24 @@ import LineTag from '../../src/enum/line-tag.js';
 import EnterHangarType from '../../src/line-type/enter-hangar-type.js';
 
 describe('enter hangar line type', () => {
+  const lineTypeClass = EnterHangarType;
   test("has ship_movement and hangar tag", () => {
-    expect(EnterHangarType.getTags()).toEqual(expect.arrayContaining([LineTag.shipMovement, LineTag.hangar]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.shipMovement, LineTag.hangar]));
   }); 
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Wrath of the Lord 17 (2523448, Klaestron) von Nemesis (17803) fliegt im Sektor 33|66#115 in den Hangar von Sidonia ein` };
     
-    expect(EnterHangarType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
   test("detects English entry log line positively", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Tuahe (1501545, Atel) enters the hangar of {=BSC=} Energy Vault A in sector @333|666` };
 
-    expect(EnterHangarType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Wrath of the Lord 17 (2523448, Klaestron) von Nemesis (17803) fliegt im Sektor 33|66#115 in den Hangar von Sidonia ein` };
-    const parseResult = EnterHangarType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -56,7 +57,7 @@ describe('enter hangar line type', () => {
 
   test("parses English entry log line correctly", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Tuahe (1501545, Atel) enters the hangar of {=BSC=} Energy Vault A in sector @783|146` };
-    const parseResult = EnterHangarType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

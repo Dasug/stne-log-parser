@@ -6,23 +6,24 @@ import BuildingResult from '../../src/regex/parse-result/building-result.js';
 import BuildingType from '../../src/enum/building-type.js';
 
 describe('shot missed line type', () => {
+  const lineTypeClass = ShotMissedType;
   test("has battle tag", () => {
-    expect(ShotMissedType.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.weaponShotResult]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.weaponShotResult]));
   }); 
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Ifuat (2837138, Verlassene Klaestron) verfehlt das Ziel!` };
     
-    expect(ShotMissedType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
   test("detects English entry log line positively", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Warrior OI8497 (1658087, LX710b) misses its target!` };
 
-    expect(ShotMissedType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Ifuat (2837138, Verlassene Klaestron) verfehlt das Ziel!` };
-    const parseResult = ShotMissedType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -41,7 +42,7 @@ describe('shot missed line type', () => {
 
   test("parses English entry log line correctly", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Warrior OI8497 (1658087, LX710b) misses its target!` };
-    const parseResult = ShotMissedType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -63,7 +64,7 @@ describe('shot missed line type', () => {
 
   test("parses German building log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Disruptorbatterie verfehlt das Ziel!` };
-    const parseResult = ShotMissedType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

@@ -4,18 +4,19 @@ import ShipNameOnlyResult from '../../src/regex/parse-result/ship-name-only-resu
 import TractorBeamStruggleCostType from '../../src/line-type/tractor-beam-struggle-cost-type.js';
 
 describe('tractor beam struggle cost line type', () => {
+  const lineTypeClass = TractorBeamStruggleCostType;
   test("has correct tags", () => {
-    expect(TractorBeamStruggleCostType.getTags()).toEqual(expect.arrayContaining([LineTag.tractorBeam]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.tractorBeam]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Beim Versuch sich vom Traktorstrahl von =MS= Aquilon Kratos loszureißen verbraucht [Scout] Deudi 1 Energie und 8,33 Gondeln!` };
     
-    expect(TractorBeamStruggleCostType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Beim Versuch sich vom Traktorstrahl von =MS= Aquilon Kratos loszureißen verbraucht [Scout] Deudi 1 Energie und 8,33 Gondeln!" };
-    const parseResult = TractorBeamStruggleCostType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

@@ -6,23 +6,24 @@ import BuildingResult from '../../src/regex/parse-result/building-result.js';
 import BuildingType from '../../src/enum/building-type.js';
 
 describe('fire weapon type line type', () => {
+  const lineTypeClass = FireWeaponType;
   test("has battle tag", () => {
-    expect(FireWeaponType.getTags()).toEqual(expect.arrayContaining([LineTag.battle]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Pegasus Hood (2360134, Pegasus) von Tanithisches Imperium (74379) greift Verlassene Adrec Pilli (2837151, Verlassene Adrec) mit Verteronphasenkanone und Stärke 76/72/0 an` };
     
-    expect(FireWeaponType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
   test("detects English entry log line positively", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Tamani [FIST] Unknown Classified (1500023, Tamani) from Dasug Nowagor {=BSC=} (24) attacks Vadwaur probe Probe 1663682 (1663682, Vadwaur probe) with Phaser, Strength 20/20/0` };
 
-    expect(FireWeaponType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Pegasus Hood (2360134, Pegasus) von Tanithisches Imperium (74379) greift Verlassene Adrec Pilli (2837151, Verlassene Adrec) mit Verteronphasenkanone und Stärke 76/72/0 an" };
-    const parseResult = FireWeaponType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -65,7 +66,7 @@ describe('fire weapon type line type', () => {
 
   test("parses defensive German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Vor'Cha Sverð (2353095, Vor'Cha) von ]=SLC=[ Halgar von Tronje --Sky-Vicings - (65330) schlägt Korolev U.S.S. Dracaix (2819313, Korolev) mit klingonischer Disruptor Typ chorgh und Stärke 84/94/0 zurück" };
-    const parseResult = FireWeaponType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -107,7 +108,7 @@ describe('fire weapon type line type', () => {
 
   test("parses English entry log line correctly", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Tamani [FIST] Unknown Classified (1500023, Tamani) from Dasug Nowagor {=BSC=} (24) attacks Vadwaur probe Probe 1663682 (1663682, Vadwaur probe) with Phaser, Strength 20/20/0` };
-    const parseResult = FireWeaponType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -148,7 +149,7 @@ describe('fire weapon type line type', () => {
 
   test("parses somewhat old defensive English entry log line correctly", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Klaestron =s0x=SaLaMaNDeR 55 (1395455, Klaestron) of CoRMaC (76135) retaliates Adeos =TDS= J - 361 (1488361, Adeos) with Plasma Torpedo, Strength 24/24/0` };
-    const parseResult = FireWeaponType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -191,12 +192,12 @@ describe('fire weapon type line type', () => {
   test("detects somewhat broken German entry log line positively (Dahel)", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Verlassener Außenposten Egriuvu (2841450, Verlassener Außenposten) von Die Verdammten (NPC-76936) schlägt Dahel Strafe Poseidons 29 (2658963, Dahel) mit Kürbiskern und Stärke 8/0/16 ` };
     
-    expect(FireWeaponType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses somewhat broken German entry log line correctly (Dahel)", () => {
     const testLogEntry = { "lang": "de", "entry": "Verlassener Außenposten Egriuvu (2841450, Verlassener Außenposten) von Die Verdammten (NPC-76936) schlägt Dahel Strafe Poseidons 29 (2658963, Dahel) mit Kürbiskern und Stärke 8/0/16 " };
-    const parseResult = FireWeaponType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -238,7 +239,7 @@ describe('fire weapon type line type', () => {
 
   test("parses German attack on colony log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Tamani =MS= Echo Fatalis (2873452, Tamani) greift mit Phaser und Stärke 20/20/0 an" };
-    const parseResult = FireWeaponType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -274,7 +275,7 @@ describe('fire weapon type line type', () => {
 
   test("parses German attack on colony with named building log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Sovereign Refit Sprungkosten (69307, Sovereign Refit) greift PewPew mit Quantentorpedo MK 2 und Stärke 130/120/0 an" };
-    const parseResult = FireWeaponType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -310,7 +311,7 @@ describe('fire weapon type line type', () => {
 
   test("parses German colony defense log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Disruptorbatterie von captain dajetschko (67572) schlägt Tamani =MS= Echo Fatalis (2873452, Tamani) mit Disruptor und Stärke 22/22/0 zurück" };
-    const parseResult = FireWeaponType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

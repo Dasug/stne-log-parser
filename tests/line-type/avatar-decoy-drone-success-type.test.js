@@ -6,18 +6,19 @@ import ShipNameAndNccResult from '../../src/regex/parse-result/ship-name-and-ncc
 import ColonyNameAndIdResult from '../../src/regex/parse-result/colony-name-and-id-result.js';
 
 describe('avatar decoy drone success line type', () => {
+  const lineTypeClass = AvatarDecoyDroneSuccessType;
   test("has correct tags", () => {
-    expect(AvatarDecoyDroneSuccessType.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.avatarAction, LineTag.avatarActionSuccess]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.avatarAction, LineTag.avatarActionSuccess]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Frothu (2841749, Battle Carrier Wrack) trifft die Köderdrohne von Kerstin Zimmermann (1492409, Drohnenpilot) auf =MS= Panthera Nebulos (2441662, Iowa Typ Z) mit Geistlanze und zerstört sie!` };
     
-    expect(AvatarDecoyDroneSuccessType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Frothu (2841749, Battle Carrier Wrack) trifft die Köderdrohne von Kerstin Zimmermann (1492409, Drohnenpilot) auf =MS= Panthera Nebulos (2441662, Iowa Typ Z) mit Geistlanze und zerstört sie!" };
-    const parseResult = AvatarDecoyDroneSuccessType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -52,7 +53,7 @@ describe('avatar decoy drone success line type', () => {
 
   test("parses German log line against colony correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Asuras (85945) trifft die Köderdrohne von Jürgen Abendroth (1492415, Drohnenpilot) auf =MS= Panthera Nebulos (2441662, Iowa Typ Z) mit Phaser und zerstört sie!" };
-    const parseResult = AvatarDecoyDroneSuccessType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

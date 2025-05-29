@@ -1,23 +1,22 @@
 import { describe, expect, test } from '@jest/globals';
-import TractorBeamDragAlongType from '../../src/line-type/tractor-beam-drag-along-type.js';
 import LineTag from '../../src/enum/line-tag.js';
-import ShipNameAndNccResult from '../../src/regex/parse-result/ship-name-and-ncc-result.js';
 import ShipNameOnlyResult from '../../src/regex/parse-result/ship-name-only-result.js';
 import TractorBeamLockType from '../../src/line-type/tractor-beam-lock-type.js';
 
 describe('tractor beam lock line type', () => {
+  const lineTypeClass = TractorBeamLockType;
   test("has correct tags", () => {
-    expect(TractorBeamLockType.getTags()).toEqual(expect.arrayContaining([LineTag.tractorBeam]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.tractorBeam]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`=MS= Hivemother Hexara erfasst in Sektor(141|526) die [Scout] Deudi mit einem Traktorstrahl.` };
     
-    expect(TractorBeamLockType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "=MS= Hivemother Hexara erfasst in Sektor(141|526) die [Scout] Deudi mit einem Traktorstrahl." };
-    const parseResult = TractorBeamLockType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

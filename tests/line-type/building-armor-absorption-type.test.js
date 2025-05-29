@@ -3,18 +3,19 @@ import LineTag from '../../src/enum/line-tag.js';
 import BuildingArmorAbsorptionType from '../../src/line-type/building-armor-absorption-type.js';
 
 describe('building armor absorption line type', () => {
+  const lineTypeClass = BuildingArmorAbsorptionType;
   test("has correct tags", () => {
-    expect(BuildingArmorAbsorptionType.getTags()).toEqual(expect.arrayContaining([LineTag.battle]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": "Die Panzerung des Gebäudes an Position 0|0 schwächt die Stärke der Phaser Typ 12 um 6 auf 73 Punkte ab." };
 
-    expect(BuildingArmorAbsorptionType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Die Panzerung des Gebäudes an Position 12|1 schwächt die Stärke der Quantentorpedo MK 2 um 6 auf 114 Punkte ab.` };
-    const parseResult = BuildingArmorAbsorptionType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

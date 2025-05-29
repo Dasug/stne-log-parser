@@ -5,23 +5,24 @@ import ShipNameAndNccResult from '../../src/regex/parse-result/ship-name-and-ncc
 import ShipNameOnlyResult from '../../src/regex/parse-result/ship-name-only-result.js';
 
 describe('initialize main computer line type', () => {
+  const lineTypeClass = InitializeMainComputerType;
   test("has correct tags", () => {
-    expect(InitializeMainComputerType.getTags()).toEqual(expect.arrayContaining([LineTag.shipMaintenance]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.shipMaintenance]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`[CV] Jäger 99 (2818116, Klaestron) von Bayerisches Imperium [SJV] (76856) initialisiert die Startsequenz des Hauptcomputers!` };
     
-    expect(InitializeMainComputerType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
   test("detects English entry log line positively", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Eveake initialises the boot sequence of the main computer!` };
 
-    expect(InitializeMainComputerType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "[CV] Jäger 99 (2818116, Klaestron) von Bayerisches Imperium [SJV] (76856) initialisiert die Startsequenz des Hauptcomputers!" };
-    const parseResult = InitializeMainComputerType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -45,7 +46,7 @@ describe('initialize main computer line type', () => {
 
   test("parses English entry log line correctly", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Eveake initialises the boot sequence of the main computer!` };
-    const parseResult = InitializeMainComputerType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

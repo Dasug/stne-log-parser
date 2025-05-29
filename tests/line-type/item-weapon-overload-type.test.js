@@ -4,18 +4,19 @@ import ItemWeaponOverloadType from '../../src/line-type/item-weapon-overload-typ
 import ShipNameAndNccResult from '../../src/regex/parse-result/ship-name-and-ncc-result.js';
 
 describe('item weapon overload type', () => {
+  const lineTypeClass = ItemWeaponOverloadType;
   test("has correct tags", () => {
-    expect(ItemWeaponOverloadType.getTags()).toEqual(expect.arrayContaining([LineTag.item, LineTag.battle]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.item, LineTag.battle]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Waffenüberladung überlädt die Waffensysteme mit einem kurzen Energiestoß, wodurch sich die Angriffskraft gegen =MS= Echo Fatalis (2873452, Tamani) um 35% erhöht!` };
     
-    expect(ItemWeaponOverloadType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Waffenüberladung überlädt die Waffensysteme mit einem kurzen Energiestoß, wodurch sich die Angriffskraft gegen =MS= Echo Fatalis (2873452, Tamani) um 35% erhöht!" };
-    const parseResult = ItemWeaponOverloadType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();

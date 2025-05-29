@@ -3,23 +3,24 @@ import ChargeWarpcoreType from '../../src/line-type/charge-warpcore-type';
 import LineTag from '../../src/enum/line-tag.js';
 
 describe('charge warpcore line type', () => {
+  const lineTypeClass = ChargeWarpcoreType;
   test("has correct tags", () => {
-    expect(ChargeWarpcoreType.getTags()).toEqual(expect.arrayContaining([LineTag.shipMaintenance]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.shipMaintenance]));
   });
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Juscag* (2583692, Vertiga) von Ikonianer [NOK] (21335) hat den Warpkern um 100 auf 9701,56 aufgeladen` };
     
-    expect(ChargeWarpcoreType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
   test("detects English entry log line positively", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Oheob (1577125, Pal Volra Refit) has charged its warp core by 1876 up to 6481.17` };
 
-    expect(ChargeWarpcoreType.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
 
   test("parses German entry log line correctly", () => {
     const testLogEntry = { "lang": "de", "entry": "Juscag* (2583692, Vertiga) von Ikonianer [NOK] (21335) hat den Warpkern um 100 auf 9701,56 aufgeladen" };
-    const parseResult = ChargeWarpcoreType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
@@ -45,7 +46,7 @@ describe('charge warpcore line type', () => {
 
   test("parses English entry log line correctly", () => {
     const testLogEntry = { "lang": "en", "entry": String.raw`Oheob (1577125, Pal Volra Refit) has charged its warp core by 1876 up to 6481.17` };
-    const parseResult = ChargeWarpcoreType.parse(testLogEntry.entry, testLogEntry.lang);
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
 
     // result is not null
     expect(parseResult).not.toBeNull();
