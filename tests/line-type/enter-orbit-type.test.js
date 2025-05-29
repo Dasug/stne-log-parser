@@ -1,6 +1,7 @@
 import { describe, expect, test } from '@jest/globals';
 import LineTag from '../../src/enum/line-tag.js';
 import EnterOrbitType from '../../src/line-type/enter-orbit-type.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('enter orbit line type', () => {
   test("has ship_movement tag", () => {
@@ -86,5 +87,19 @@ describe('enter orbit line type', () => {
     expect(parseResult.sector.x).toBe(654);
     expect(parseResult.sector.y).toBe(247);
     expect(parseResult.sector.orbit).toBe(false);
+  });
+
+  test("registers ship in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`SHR New Horizon (2383586, DY-500) von DavoRian82 (73324) ist aus dem Orbit von Hydrolion (80940) bei 654|247 ausgetreten.` };
+    const parseResult = EnterOrbitType.parse(testLogEntry.entry, testLogEntry.lang);
+
+    EnterOrbitType.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(1);
+    const ship = statistics.ships.getShipByNcc(2383586);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2383586);
+    expect(ship.name).toBe("SHR New Horizon");
   });
 })

@@ -12,6 +12,7 @@ import ShipNameOnly from "../regex/subroutine/ship-name-only.js";
 import ColonyNameAndId from "../regex/subroutine/colony-name-and-id.js";
 import EnterOrbitResult from "./parse-result/enter-orbit-result.js";
 import OrbitEntryDirection from "../enum/orbit-entry-direction.js";
+import Statistics from "../statistics/statistics.js";
 
 class EnterOrbitType extends GenericType {
   static _regexByLanguage = {
@@ -60,6 +61,17 @@ class EnterOrbitType extends GenericType {
     resultObject.direction = ["ausgetreten"].includes(matches.groups.direction) ? OrbitEntryDirection.exit : OrbitEntryDirection.entry;
 
     return resultObject;
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ship
+    statistics.ships.registerShip(parseResult.ship);
+    
+    return statistics;
   }
 
   static getTags() {
