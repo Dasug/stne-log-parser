@@ -3,6 +3,7 @@ import ActivateOverdriveType from '../../src/line-type/activate-overdrive-type.j
 import LineTag from '../../src/enum/line-tag.js';
 import ActivateWeaponsType from '../../src/line-type/activate-weapons-type.js';
 import WeaponsState from '../../src/enum/weapons-state.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('activate overdrive line type', () => {
   test("has correct tags", () => {
@@ -66,5 +67,19 @@ describe('activate overdrive line type', () => {
     
     // state
     expect(parseResult.state).toBe(WeaponsState.active);
+  });
+
+  test("registers ship in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Drelio (2307399, Darinaya) von ||acw||PRIAM (75323) aktiviert die Waffensysteme` };
+    const parseResult = ActivateWeaponsType.parse(testLogEntry.entry, testLogEntry.lang);
+
+    ActivateWeaponsType.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(1);
+    const ship = statistics.ships.getShipByNcc(2307399);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2307399);
+    expect(ship.name).toBe("Drelio");
   });
 })
