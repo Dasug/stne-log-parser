@@ -5,6 +5,7 @@ import LogLine from "./log-line.js";
 import LogHeadParser from "./regex/log-head-parser.js";
 import LogMessage from "./regex/parse-result/log-message.js";
 import PlayerNameAndId from "./regex/subroutine/player-name-and-id.js";
+import Statistics from "./statistics/statistics.js";
 
 class LogEntry {
   /**
@@ -16,6 +17,11 @@ class LogEntry {
    * @param {LogLine[]} parsedLines Array of parsed log lines
    */
   #parsedLines = [];
+
+  /**
+   * @var {?Statistics} statistics object for this log entry
+   */
+  #statistics;
 
   /**
    * the header of this log entry
@@ -52,6 +58,36 @@ class LogEntry {
    * @type {LogLine[]}
    */
   get parsedLines() { return this.#parsedLines; }
+
+  /**
+   * the statistics for this log entry only. Only available if buildStatistics has been called beforehand
+   * @type {?Statistics}
+   */
+  get statistics() { return this.#statistics ?? null; }
+
+  /**
+   * Builds a statistics object containing only this log entry's data.
+   * Also makes the object available in the statistics attribute.
+   * @returns {Statistics} created statistics object 
+   */
+  buildStatistics() {
+    const statistics = new Statistics;
+    this.parsedLines.forEach(/** @var {LogLine} */ line => line.populateStatistics(statistics));
+
+    this.#statistics = statistics;
+
+    return statistics;
+  }
+
+  /**
+   * populates the statistics object with this log entry's statistics
+   * @param {Statistics} statistics statistics object
+   * @returns {Statistics} statistics object populated with this log entry's statistics
+   */
+  populateStatistics(statistics) {
+    this.parsedLines.forEach(/** @var {LogLine} */ line => line.populateStatistics(statistics));
+    return statistics;
+  }
 
   /**
    * Parses one or more log messages

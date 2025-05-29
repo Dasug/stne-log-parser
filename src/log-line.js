@@ -3,6 +3,7 @@
 import { lineTypes } from "./line-types.js";
 import GenericType from "./line-type/generic-type.js";
 import LineTag from "./enum/line-tag.js";
+import Statistics from "./statistics/statistics.js";
 
 class LogLine {
   #language = null;
@@ -46,6 +47,20 @@ class LogLine {
    * @returns {LineTag[]}
    */
   get tags() { return this.#lineParser?.getTags() ?? []; }
+
+  /**
+   * populates the given statistics object with this log line's data
+   * @param {Statistics} statistics statistics object
+   * @returns {Statistics} statistics object populated with this log line's data
+   */
+  populateStatistics(statistics) {
+    if(this.lineParser === null) {
+      return statistics;
+    }
+
+    this.lineParser.populateStatistics(statistics);
+    return statistics;
+  }
 
   /**
    * Parse a given log line

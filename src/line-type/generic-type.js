@@ -1,6 +1,7 @@
 "use strict";
 
 import LineTag from "../../src/enum/line-tag.js";
+import Statistics from "../statistics/statistics.js";
 
 class GenericType {
   static _regexByLanguage = {};
@@ -75,6 +76,17 @@ class GenericType {
     return [
       LineTag.generic,
     ];
+  }
+
+  /**
+   * 
+   * @param {Statistics} statistics statistics object
+   * @param {Object} parseResult parse result object obtained from parse method
+   * @returns {Statistics} statistics object extended to include statistics for this log line
+   */
+  static populateStatistics(statistics, parseResult) {
+    // stub, needs to be extended in implementations
+    return statistics;
   }
 }
 
