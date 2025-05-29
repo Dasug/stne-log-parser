@@ -9,6 +9,7 @@ import LineTag from "../../src/enum/line-tag.js";
 import Avatar from "../regex/subroutine/avatar.js";
 import AvatarDamageReductionFailureResult from "./parse-result/avatar-damage-resuction-failure-result.js";
 import ColonyNameAndId from "../regex/subroutine/colony-name-and-id.js";
+import ShipNameAndNccResult from "../regex/parse-result/ship-name-and-ncc-result.js";
 
 class AvatarDamageReductionFailureType extends GenericType {
   static _regexByLanguage = {
@@ -44,6 +45,19 @@ class AvatarDamageReductionFailureType extends GenericType {
     resultObject.avatar = avatar;
 
     return resultObject;
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ship
+    if(parseResult.origin instanceof ShipNameAndNccResult) {
+      statistics.ships.registerShip(parseResult.origin);
+    }
+    
+    return statistics;
   }
 
   static getTags() {

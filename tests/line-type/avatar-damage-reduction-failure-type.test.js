@@ -4,6 +4,7 @@ import AvatarJob from '../../src/enum/avatar-job.js';
 import AvatarDamageReductionFailureType from '../../src/line-type/avatar-damage-reduction-failure-type.js';
 import ShipNameAndNccResult from '../../src/regex/parse-result/ship-name-and-ncc-result.js';
 import ColonyNameAndIdResult from '../../src/regex/parse-result/colony-name-and-id-result.js';
+import Statistics from '../../src/statistics/statistics.js';
 describe('avatar damage reduction failure line type', () => {
   const lineTypeClass = AvatarDamageReductionFailureType;
   test("has correct tags", () => {
@@ -63,5 +64,19 @@ describe('avatar damage reduction failure line type', () => {
     expect(parseResult.origin.id).toBe(46961);
     expect(parseResult.origin.name).toBe("Tropico");
     
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Juliane Reiniger (1336742, Verteidigungstaktiker) versucht die Zielerfassung von Egriuvu (2841450, Verlassener Außenposten) zu stören, hat damit aber keinerlei Erfolg!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(1);
+    const ship = statistics.ships.getShipByNcc(2841450);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2841450);
+    expect(ship.name).toBe("Egriuvu");
   });
 })
