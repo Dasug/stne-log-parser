@@ -2,6 +2,7 @@ import { describe, expect, test } from '@jest/globals';
 import LineTag from '../../src/enum/line-tag.js';
 import AvatarJob from '../../src/enum/avatar-job.js';
 import AvatarBoardingEpsDamageType from '../../src/line-type/avatar-boarding-eps-damage-type.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('avatar boarding EPS damage line type', () => {
   const lineTypeClass = AvatarBoardingEpsDamageType;
@@ -49,5 +50,23 @@ describe('avatar boarding EPS damage line type', () => {
     expect(parseResult.countermeasuresEnergyDamage).toBe(211);
     expect(parseResult.hullDamage).toBe(106);
     
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Anke Meyer (365906, Sicherheitsoffizier) von SMS Friedrich der Große (1713491, Cellship) beamt sich mit einem Außenteam an Bord von Slemiagh (2838115, Battlecruiser Wrack). Dort zerstören sie wahlos EPS-Relais und verursachen 211 direkten Energieverlust, 211 für Eindämmungsaufgaben und 106 Hüllenschaden.` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(2);
+    const ship = statistics.ships.getShipByNcc(1713491);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(1713491);
+    expect(ship.name).toBe("SMS Friedrich der Große");
+    const targetShip = statistics.ships.getShipByNcc(2838115);
+    expect(targetShip).not.toBeNull();
+    expect(targetShip.ncc).toBe(2838115);
+    expect(targetShip.name).toBe("Slemiagh");
   });
 })
