@@ -56,6 +56,17 @@ class ActivateShieldsType extends GenericType {
     return resultObject;
   }
 
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ship
+    statistics.ships.registerShip(parseResult.ship);
+    
+    return statistics;
+  }
+
   static getTags() {
     return [
       LineTag.battle,
