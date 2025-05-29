@@ -1,6 +1,7 @@
 import { describe, expect, test } from '@jest/globals';
 import ActivateOverdriveType from '../../src/line-type/activate-overdrive-type.js';
 import LineTag from '../../src/enum/line-tag.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('activate overdrive line type', () => {
   test("has correct tags", () => {
@@ -57,5 +58,19 @@ describe('activate overdrive line type', () => {
     expect(parseResult.ship.name).toBe("Colonisation ship");
     expect(parseResult.ship.nccPrefix).toBeNull();
     expect(parseResult.ship.shipClass).toBe("DY-500");
+  });
+
+  test("registers ship in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`[CV] Jäger 24 (2817833, Klaestron) von Bayerisches Imperium [SJV] (76856) aktiviert den Overdrive und kann nun, trotz überhitzter Triebwerke, weiterfliegen!` };
+    const parseResult = ActivateOverdriveType.parse(testLogEntry.entry, testLogEntry.lang);
+
+    ActivateOverdriveType.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(1);
+    const ship = statistics.ships.getShipByNcc(2817833);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2817833);
+    expect(ship.name).toBe("[CV] Jäger 24");
   });
 })
