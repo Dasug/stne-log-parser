@@ -43,6 +43,18 @@ class TractorBeamReleaseType extends GenericType {
     return resultObject;
   }
 
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ships
+    statistics.ships.registerShip(parseResult.ship);
+    statistics.ships.registerShip(parseResult.target);
+    
+    return statistics;
+  }
+
   static getTags() {
     return [
       LineTag.tractorBeam,
