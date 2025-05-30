@@ -10,6 +10,8 @@ import Avatar from "../regex/subroutine/avatar.js";
 import AvatarOutOfDronesResult from "./parse-result/avatar-out-of-drones-result.js";
 import DronePilotDroneType from "../enum/drone-pilot-drone-type.js";
 import ColonyNameAndId from "../regex/subroutine/colony-name-and-id.js";
+import Statistics from "../statistics/statistics.js";
+import ShipNameAndNccResult from "../regex/parse-result/ship-name-and-ncc-result.js";
 
 class AvatarOutOfDronesType extends GenericType {
   static _regexByLanguage = {
@@ -64,6 +66,22 @@ class AvatarOutOfDronesType extends GenericType {
     }
 
     return resultObject;
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ships
+    if(parseResult.ship instanceof ShipNameAndNccResult) {
+      statistics.ships.registerShip(parseResult.ship);
+    }
+    if(parseResult.opponent instanceof ShipNameAndNccResult) {
+      statistics.ships.registerShip(parseResult.opponent);
+    }
+    
+    return statistics;
   }
 
   static getTags() {

@@ -5,6 +5,7 @@ import AvatarOutOfDronesType from '../../src/line-type/avatar-out-of-drones-type
 import DronePilotDroneType from '../../src/enum/drone-pilot-drone-type.js';
 import ColonyNameAndIdResult from '../../src/regex/parse-result/colony-name-and-id-result.js';
 import ShipNameAndNccResult from '../../src/regex/parse-result/ship-name-and-ncc-result.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('avatar out of drones line type', () => {
   const lineTypeClass = AvatarOutOfDronesType;
@@ -124,5 +125,23 @@ describe('avatar out of drones line type', () => {
     expect(parseResult.ship.nccPrefix).toBeNull();
     expect(parseResult.ship.shipClass).toBe("Co'Rask");
     
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Stefan Gottschalk (1163078, Drohnenpilot) hat keine Köderdrohnen mehr zur Verfügung und kann deshalb nichts für [I.R.W.] Praetor II (2666412, Praetor) tun um dem Angriff von Susco (2822078, Spektrales Portal) zu engehen!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(2);
+    const ship = statistics.ships.getShipByNcc(2666412);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2666412);
+    expect(ship.name).toBe("[I.R.W.] Praetor II");
+    const ship2 = statistics.ships.getShipByNcc(2822078);
+    expect(ship2).not.toBeNull();
+    expect(ship2.ncc).toBe(2822078);
+    expect(ship2.name).toBe("Susco");
   });
 })
