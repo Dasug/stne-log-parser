@@ -7,6 +7,7 @@ import GenericType from "./generic-type.js";
 import { pattern } from "regex";
 import LineTag from "../../src/enum/line-tag.js";
 import TractorBeamStruggleSuccessResult from './parse-result/tractor-beam-struggle-success-results.js';
+import Statistics from '../statistics/statistics.js';
 
 class TractorBeamStruggleSuccessType extends GenericType {
   static _regexByLanguage = {
@@ -31,6 +32,17 @@ class TractorBeamStruggleSuccessType extends GenericType {
     resultObject.target = target;
 
     return resultObject;
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ship
+    statistics.ships.registerShip(parseResult.target);
+    
+    return statistics;
   }
 
   static getTags() {
