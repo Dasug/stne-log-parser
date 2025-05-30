@@ -2,6 +2,7 @@ import { describe, expect, test } from '@jest/globals';
 import PortalJumpType from '../../src/line-type/portal-jump-type.js';
 import LineTag from '../../src/enum/line-tag.js';
 import SalvageType from '../../src/line-type/salvage-type.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('portal jump line type', () => {
   const lineTypeClass = SalvageType;
@@ -32,5 +33,19 @@ describe('portal jump line type', () => {
     
     expect(parseResult.resourcesExtracted).toBe(288);
     expect(parseResult.energyUsed).toBeCloseTo(65.5);
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Es wurden 288 Waren von Gilgamesh II :::: (zerstört) (2513106, Trümmerfeld) für 65,5 Energie extrahiert!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(1);
+    const ship = statistics.ships.getShipByNcc(2513106);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2513106);
+    expect(ship.name).toBe("Gilgamesh II :::: (zerstört)");
   });
 })

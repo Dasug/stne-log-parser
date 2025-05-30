@@ -7,6 +7,7 @@ import GenericType from "./generic-type.js";
 import { pattern } from "regex";
 import LineTag from "../../src/enum/line-tag.js";
 import SalvageResult from "./parse-result/salvage-result.js";
+import Statistics from "../statistics/statistics.js";
 
 class SalvageType extends GenericType {
   static _regexByLanguage = {
@@ -40,6 +41,17 @@ class SalvageType extends GenericType {
     resultObject.energyUsed = energy;
     
     return resultObject;
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ship
+    statistics.ships.registerShip(parseResult.debrisField);
+    
+    return statistics;
   }
 
   static getTags() {
