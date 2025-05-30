@@ -8,6 +8,7 @@ import { pattern } from "regex";
 import LineTag from "../../src/enum/line-tag.js";
 import MapCoordinates from "../regex/subroutine/map-coordinates.js";
 import TractorBeamResult from "./parse-result/tractor-beam-result.js";
+import Statistics from '../statistics/statistics.js';
 
 class TractorBeamLockType extends GenericType {
   static _regexByLanguage = {
@@ -41,6 +42,18 @@ class TractorBeamLockType extends GenericType {
     resultObject.sector = sector;
 
     return resultObject;
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ships
+    statistics.ships.registerShip(parseResult.ship);
+    statistics.ships.registerShip(parseResult.target);
+    
+    return statistics;
   }
 
   static getTags() {
