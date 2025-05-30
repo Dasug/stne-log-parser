@@ -8,6 +8,8 @@ import { pattern } from "regex";
 import LineTag from "../../src/enum/line-tag.js";
 import Avatar from "../regex/subroutine/avatar.js";
 import AvatarEnergyRecoveryResult from "./parse-result/avatar-energy-recovery-result.js";
+import Statistics from "../statistics/statistics.js";
+import ShipNameAndNccResult from "../regex/parse-result/ship-name-and-ncc-result.js";
 
 class AvatarEnergyRecoveryType extends GenericType {
   static _regexByLanguage = {
@@ -41,6 +43,19 @@ class AvatarEnergyRecoveryType extends GenericType {
     resultObject.energy = mainEnergy;
 
     return resultObject;
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ship
+    if(parseResult.ship instanceof ShipNameAndNccResult) {
+      statistics.ships.registerShip(parseResult.ship);
+    }
+    
+    return statistics;
   }
 
   static getTags() {
