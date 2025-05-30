@@ -90,7 +90,7 @@ class ShipStatistics {
 
     let shipStatisticsObject = this.#getShipByParseResult(ship) ?? new IndividualShipStatistics;
     if(!shipStatisticsObject.hasBasicData()) {
-      shipStatisticsObject.updateShipDataFromParseResult(ship);
+      shipStatisticsObject._updateShipDataFromParseResult(ship);
     }
 
     if(ship instanceof ShipNameAndNccResult) {
@@ -101,6 +101,19 @@ class ShipStatistics {
     this.#ships.push(shipStatisticsObject);
 
     return shipStatisticsObject;
+  }
+
+  /**
+   * Updates a ship object with an externally collected NCC number and adjust ship dictionary
+   * @param {IndividualShipStatistics} shipStatisticsObject ship object to update
+   * @param {Number} ncc NCC number to add to ship
+   */
+  updateShipNcc(shipStatisticsObject, ncc) {
+    if(shipStatisticsObject.ncc !== null) {
+      delete this.#shipsByNcc[shipStatisticsObject.ncc];
+    }
+    this.#shipsByNcc[ncc] = shipStatisticsObject;
+    shipStatisticsObject._updateNcc(ncc);
   }
 
   constructor() {
