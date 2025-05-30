@@ -1,6 +1,7 @@
 import { describe, expect, test } from '@jest/globals';
 import LineTag from '../../src/enum/line-tag.js';
 import EnergyDamageType from '../../src/line-type/energy-damage-type';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('energy damage line type', () => {
   const lineTypeClass = EnergyDamageType;
@@ -110,5 +111,19 @@ describe('energy damage line type', () => {
     expect(parseResult.energyBefore).toBeCloseTo(10);
     expect(parseResult.remainingEnergy).toBeCloseTo(0);
     expect(parseResult.shipDisabled).toBe(true);
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Hauptenergie von Fara * (2788187, D7) sinkt um 98, von 568,18 auf 470,18` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(1);
+    const ship = statistics.ships.getShipByNcc(2788187);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2788187);
+    expect(ship.name).toBe("Fara *");
   });
 })
