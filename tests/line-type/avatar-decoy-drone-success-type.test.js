@@ -4,6 +4,7 @@ import AvatarJob from '../../src/enum/avatar-job.js';
 import AvatarDecoyDroneSuccessType from '../../src/line-type/avatar-decoy-drone-success-type.js';
 import ShipNameAndNccResult from '../../src/regex/parse-result/ship-name-and-ncc-result.js';
 import ColonyNameAndIdResult from '../../src/regex/parse-result/colony-name-and-id-result.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('avatar decoy drone success line type', () => {
   const lineTypeClass = AvatarDecoyDroneSuccessType;
@@ -82,5 +83,23 @@ describe('avatar decoy drone success line type', () => {
 
     expect(parseResult.weaponName).toBe("Phaser");
     
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Frothu (2841749, Battle Carrier Wrack) trifft die Köderdrohne von Kerstin Zimmermann (1492409, Drohnenpilot) auf =MS= Panthera Nebulos (2441662, Iowa Typ Z) mit Geistlanze und zerstört sie!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(2);
+    const ship = statistics.ships.getShipByNcc(2839350);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2839350);
+    expect(ship.name).toBe("Kofes");
+    const targetShip = statistics.ships.getShipByNcc(2551448);
+    expect(targetShip).not.toBeNull();
+    expect(targetShip.ncc).toBe(2551448);
+    expect(targetShip.name).toBe("Storm of Retribution");
   });
 })

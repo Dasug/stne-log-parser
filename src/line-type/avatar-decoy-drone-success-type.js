@@ -9,6 +9,8 @@ import LineTag from "../../src/enum/line-tag.js";
 import Avatar from "../regex/subroutine/avatar.js";
 import AvatarDecoyDroneSuccessResult from "./parse-result/avatar-decoy-drone-success-result.js";
 import ColonyNameAndId from "../regex/subroutine/colony-name-and-id.js";
+import Statistics from "../statistics/statistics.js";
+import ShipNameAndNccResult from "../regex/parse-result/ship-name-and-ncc-result.js";
 
 class AvatarDecoyDroneSuccessType extends GenericType {
   static _regexByLanguage = {
@@ -48,6 +50,22 @@ class AvatarDecoyDroneSuccessType extends GenericType {
     resultObject.weaponName = weaponName;
     
     return resultObject;
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ship
+    if(parseResult.origin instanceof ShipNameAndNccResult) {
+      statistics.ships.registerShip(parseResult.origin);
+    }
+    if(parseResult.target instanceof ShipNameAndNccResult) {
+      statistics.ships.registerShip(parseResult.target);
+    }
+    
+    return statistics;
   }
 
   static getTags() {
