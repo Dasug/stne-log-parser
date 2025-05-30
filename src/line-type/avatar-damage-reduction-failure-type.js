@@ -10,6 +10,7 @@ import Avatar from "../regex/subroutine/avatar.js";
 import AvatarDamageReductionFailureResult from "./parse-result/avatar-damage-resuction-failure-result.js";
 import ColonyNameAndId from "../regex/subroutine/colony-name-and-id.js";
 import ShipNameAndNccResult from "../regex/parse-result/ship-name-and-ncc-result.js";
+import Statistics from "../statistics/statistics.js";
 
 class AvatarDamageReductionFailureType extends GenericType {
   static _regexByLanguage = {

@@ -10,6 +10,7 @@ import LineTag from "../../src/enum/line-tag.js";
 import Avatar from "../regex/subroutine/avatar.js";
 import AvatarDecoyDroneFailureResult from "./parse-result/avatar-decoy-drone-failure-result.js";
 import ShipNameAndNccResult from "../regex/parse-result/ship-name-and-ncc-result.js";
+import Statistics from "../statistics/statistics.js";
 
 class AvatarDecoyDroneFailureType extends GenericType {
   static _regexByLanguage = {

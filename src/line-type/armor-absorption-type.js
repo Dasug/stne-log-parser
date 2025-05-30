@@ -7,6 +7,7 @@ import GenericType from "./generic-type.js";
 import { pattern } from "regex";
 import LineTag from "../../src/enum/line-tag.js";
 import ArmorAbsorptionResult from "./parse-result/armor-absorption-result.js";
+import Statistics from "../statistics/statistics.js";
 
 class ArmorAbsorptionType extends GenericType {
   static _regexByLanguage = {

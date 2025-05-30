@@ -9,6 +9,7 @@ import LineTag from "../../src/enum/line-tag.js";
 import Avatar from "../regex/subroutine/avatar.js";
 import AvatarDamageReductionResult from "./parse-result/avatar-damage-reduction-result.js";
 import ShipNameAndNccResult from "../regex/parse-result/ship-name-and-ncc-result.js";
+import Statistics from "../statistics/statistics.js";
 
 class AvatarDamageReductionType extends GenericType {
   static _regexByLanguage = {

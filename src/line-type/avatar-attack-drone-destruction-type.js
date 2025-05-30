@@ -8,6 +8,7 @@ import { pattern } from "regex";
 import LineTag from "../../src/enum/line-tag.js";
 import Avatar from "../regex/subroutine/avatar.js";
 import AvatarAttackDroneDestructionResult from "./parse-result/avatar-attack-drone-destruction-result.js";
+import Statistics from "../statistics/statistics.js";
 
 class AvatarAttackDroneDestructionType extends GenericType {
   static _regexByLanguage = {
