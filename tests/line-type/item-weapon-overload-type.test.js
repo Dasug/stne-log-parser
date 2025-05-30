@@ -2,6 +2,7 @@ import { describe, expect, test } from '@jest/globals';
 import LineTag from '../../src/enum/line-tag.js';
 import ItemWeaponOverloadType from '../../src/line-type/item-weapon-overload-type.js';
 import ShipNameAndNccResult from '../../src/regex/parse-result/ship-name-and-ncc-result.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('item weapon overload type', () => {
   const lineTypeClass = ItemWeaponOverloadType;
@@ -35,5 +36,19 @@ describe('item weapon overload type', () => {
     
     // strength increase
     expect(parseResult.damageIncrease).toBeCloseTo(35);
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Waffenüberladung überlädt die Waffensysteme mit einem kurzen Energiestoß, wodurch sich die Angriffskraft gegen =MS= Echo Fatalis (2873452, Tamani) um 35% erhöht!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(1);
+    const ship = statistics.ships.getShipByNcc(2873452);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2873452);
+    expect(ship.name).toBe("=MS= Echo Fatalis");
   });
 })

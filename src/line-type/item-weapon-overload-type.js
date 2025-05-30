@@ -6,6 +6,8 @@ import GenericType from "./generic-type.js";
 import { pattern } from "regex";
 import LineTag from "../../src/enum/line-tag.js";
 import ItemWeaponOverloadResult from "./parse-result/item-weapon-overload-result.js";
+import ShipNameAndNccResult from "../regex/parse-result/ship-name-and-ncc-result.js";
+import Statistics from "../statistics/statistics.js";
 
 class ItemWeaponOverloadType extends GenericType {
   static _regexByLanguage = {
@@ -36,6 +38,19 @@ class ItemWeaponOverloadType extends GenericType {
     resultObject.damageIncrease = damageIncrease;
 
     return resultObject;
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ship
+    if(parseResult.target instanceof ShipNameAndNccResult) {
+      statistics.ships.registerShip(parseResult.target);
+    }
+    
+    return statistics;
   }
 
   static getTags() {
