@@ -2,6 +2,7 @@ import { describe, expect, test } from '@jest/globals';
 import LineTag from '../../src/enum/line-tag.js';
 import AvatarJob from '../../src/enum/avatar-job.js';
 import AvatarPilotManeuverCooldownType from '../../src/line-type/avatar-pilot-maneuver-cooldown-type.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('avatar pilot maneuver cooldown line type', () => {
   const lineTypeClass = AvatarPilotManeuverCooldownType;
@@ -37,5 +38,19 @@ describe('avatar pilot maneuver cooldown line type', () => {
     expect(parseResult.target.nccPrefix).toBeNull();
     expect(parseResult.target.shipClass).toBe("Battle Carrier Wrack");
     
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Annett Hirsch (1140807, Pilot) kann kein 2. Manöver, so kurz nach dem 1. durchführen. Er kann jetzt nichts tun um den Angriff gegen Vetro (2838280, Battle Carrier Wrack) zu verstärken!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(1);
+    const ship = statistics.ships.getShipByNcc(2838280);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2838280);
+    expect(ship.name).toBe("Vetro");
   });
 })
