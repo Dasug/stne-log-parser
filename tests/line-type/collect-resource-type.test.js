@@ -2,6 +2,7 @@ import { describe, expect, test } from '@jest/globals';
 import LineTag from '../../src/enum/line-tag.js';
 import CollectResourceType from '../../src/line-type/collect-resource-type.js';
 import Resource from '../../src/enum/resource.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('collect resources line type', () => {
   const lineTypeClass = CollectResourceType;
@@ -76,5 +77,19 @@ describe('collect resources line type', () => {
     
     // amount
     expect(parseResult.amount).toBe(1728);
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`TX0XT= DrEADsTAR (NX-1867924, Iowa Typ Z) von []U.C.W[] DeMaNDrED (72439) hat 838 Deuterium eingesaugt` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(1);
+    const ship = statistics.ships.getShipByNcc(1867924);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(1867924);
+    expect(ship.name).toBe("TX0XT= DrEADsTAR");
   });
 });

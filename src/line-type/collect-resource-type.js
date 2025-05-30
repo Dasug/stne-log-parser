@@ -10,6 +10,8 @@ import LineTag from "../../src/enum/line-tag.js";
 import ShipNameOnly from "../regex/subroutine/ship-name-only.js";
 import CollectResourceResult from "./parse-result/collect-resource-result.js";
 import Resource from "../enum/resource.js";
+import Statistics from "../statistics/statistics.js";
+import ShipNameAndNccResult from "../regex/parse-result/ship-name-and-ncc-result.js";
 
 class CollectResourceType extends GenericType {
   static _regexByLanguage = {
@@ -60,6 +62,19 @@ class CollectResourceType extends GenericType {
     resultObject.resource = resource;
 
     return resultObject;
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ship
+    if(parseResult.ship instanceof ShipNameAndNccResult) {
+      statistics.ships.registerShip(parseResult.ship);
+    }
+    
+    return statistics;
   }
 
   static getTags() {
