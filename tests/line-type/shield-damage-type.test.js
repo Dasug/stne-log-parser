@@ -1,6 +1,7 @@
 import { describe, expect, test } from '@jest/globals';
 import LineTag from '../../src/enum/line-tag.js';
 import ShieldDamageType from '../../src/line-type/shield-damage-type';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('shield damage line type', () => {
   const lineTypeClass = ShieldDamageType;
@@ -104,5 +105,19 @@ describe('shield damage line type', () => {
     expect(parseResult.shieldDamage).toBe(10);
     expect(parseResult.remainingShieldStrength).toBe(0);
     expect(parseResult.shieldsCollapsed).toBe(true);
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Schilde von Kubus 2784 (2008590, Kubus) nehmen 7 Schaden, sind jetzt auf 47` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(1);
+    const ship = statistics.ships.getShipByNcc(2008590);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2008590);
+    expect(ship.name).toBe("Kubus 2784");
   });
 })
