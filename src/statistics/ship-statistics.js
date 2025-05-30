@@ -88,6 +88,7 @@ class ShipStatistics {
       throw new TypeError("ship is not a valid ship type");
     }
 
+    const shipAlreadyExists = this.#getShipByParseResult(ship) !== null;
     let shipStatisticsObject = this.#getShipByParseResult(ship) ?? new IndividualShipStatistics;
     if(!shipStatisticsObject.hasBasicData()) {
       shipStatisticsObject._updateShipDataFromParseResult(ship);
@@ -98,7 +99,9 @@ class ShipStatistics {
     }
     
     this.#shipsByName[ship.name] = shipStatisticsObject;
-    this.#ships.push(shipStatisticsObject);
+    if(!shipAlreadyExists) {
+      this.#ships.push(shipStatisticsObject);
+    }
 
     return shipStatisticsObject;
   }
