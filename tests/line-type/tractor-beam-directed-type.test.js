@@ -3,6 +3,7 @@ import LineTag from '../../src/enum/line-tag.js';
 import TractorBeamDirectedType from '../../src/line-type/tractor-beam-directed-type.js';
 import ShipNameAndNccResult from '../../src/regex/parse-result/ship-name-and-ncc-result.js';
 import PlayerNameAndIdResult from '../../src/regex/parse-result/player-name-and-id-result.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('tractor beam struggle line type', () => {
   const lineTypeClass = TractorBeamDirectedType;
@@ -38,5 +39,19 @@ describe('tractor beam struggle line type', () => {
     expect(parseResult.targetOwner.name).toBe("[]U.C.W[] Scorga Empire");
     expect(parseResult.targetOwner.idPrefix).toBeNull();
     expect(parseResult.targetOwner.id).toBe(34108);
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Traktorstrahl auf [Scout] Pibag (2882829, Sonde) von []U.C.W[] Scorga Empire (34108) gerichtet` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(1);
+    const ship = statistics.ships.getShipByNcc(2882829);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2882829);
+    expect(ship.name).toBe("[Scout] Pibag");
   });
 })

@@ -7,6 +7,7 @@ import LineTag from "../../src/enum/line-tag.js";
 import ShipNameAndNcc from '../regex/subroutine/ship-name-and-ncc.js';
 import PlayerNameAndId from '../regex/subroutine/player-name-and-id.js';
 import TractorBeamDirectedResult from './parse-result/tractor-beam-directed-result.js';
+import Statistics from "../statistics/statistics.js";
 
 class TractorBeamDirectedType extends GenericType {
   static _regexByLanguage = {
@@ -37,6 +38,17 @@ class TractorBeamDirectedType extends GenericType {
     resultObject.targetOwner = targetOwner;
 
     return resultObject;
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ship
+    statistics.ships.registerShip(parseResult.target);
+    
+    return statistics;
   }
 
   static getTags() {
