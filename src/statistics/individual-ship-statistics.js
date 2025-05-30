@@ -36,7 +36,7 @@ class IndividualShipStatistics {
       this.#ncc = shipParseResult.ncc;
       this.#nccPrefix = shipParseResult.nccPrefix;
       this.#shipClass = shipParseResult.shipClass;
-    } else if(shipParseResult instanceof ShipNameAndNccResult) {
+    } else if(shipParseResult instanceof ShipNameOnlyResult) {
       this.#name = shipParseResult.name;
     }
   }
