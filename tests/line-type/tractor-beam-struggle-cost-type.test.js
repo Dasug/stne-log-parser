@@ -2,6 +2,7 @@ import { describe, expect, test } from '@jest/globals';
 import LineTag from '../../src/enum/line-tag.js';
 import ShipNameOnlyResult from '../../src/regex/parse-result/ship-name-only-result.js';
 import TractorBeamStruggleCostType from '../../src/line-type/tractor-beam-struggle-cost-type.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('tractor beam struggle cost line type', () => {
   const lineTypeClass = TractorBeamStruggleCostType;
@@ -36,5 +37,23 @@ describe('tractor beam struggle cost line type', () => {
 
     expect(parseResult.energyCost).toBeCloseTo(1);
     expect(parseResult.flightRangeCost).toBeCloseTo(8.33);
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Beim Versuch sich vom Traktorstrahl von =MS= Aquilon Kratos loszureißen verbraucht [Scout] Deudi 1 Energie und 8,33 Gondeln!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(2);
+    const ship = statistics.ships.getShipByName("=MS= Aquilon Kratos");
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBeNull();
+    expect(ship.name).toBe("=MS= Aquilon Kratos");
+    const ship2 = statistics.ships.getShipByName("[Scout] Deudi");
+    expect(ship2).not.toBeNull();
+    expect(ship2.ncc).toBeNull();
+    expect(ship2.name).toBe("[Scout] Deudi");
   });
 })
