@@ -3,6 +3,7 @@ import InitializeMainComputerType from '../../src/line-type/initialize-main-comp
 import LineTag from '../../src/enum/line-tag.js';
 import ShipNameAndNccResult from '../../src/regex/parse-result/ship-name-and-ncc-result.js';
 import ShipNameOnlyResult from '../../src/regex/parse-result/ship-name-only-result.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('initialize main computer line type', () => {
   const lineTypeClass = InitializeMainComputerType;
@@ -59,5 +60,19 @@ describe('initialize main computer line type', () => {
     // parts are set correctly
     // ship
     expect(parseResult.ship.name).toBe("Eveake");
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`[CV] Jäger 99 (2818116, Klaestron) von Bayerisches Imperium [SJV] (76856) initialisiert die Startsequenz des Hauptcomputers!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(1);
+    const ship = statistics.ships.getShipByNcc(2818116);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2818116);
+    expect(ship.name).toBe("[CV] Jäger 99");
   });
 })

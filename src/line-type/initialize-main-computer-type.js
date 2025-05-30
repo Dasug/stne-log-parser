@@ -9,6 +9,7 @@ import GenericType from "./generic-type.js";
 import { pattern } from "regex";
 import InitializeMainComputerResult from "./parse-result/initialize-main-computer-result.js";
 import LineTag from "../../src/enum/line-tag.js";
+import Statistics from "../statistics/statistics.js";
 
 class InitializeMainComputerType extends GenericType {
   static _regexByLanguage = {
@@ -58,6 +59,17 @@ class InitializeMainComputerType extends GenericType {
     resultObject.owner = owner;
 
     return resultObject;
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ship
+    statistics.ships.registerShip(parseResult.ship);
+  
+    return statistics;
   }
 
   static getTags() {
