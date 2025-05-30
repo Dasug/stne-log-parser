@@ -10,6 +10,8 @@ import GenericType from "./generic-type.js";
 import { pattern } from "regex";
 import LineTag from "../../src/enum/line-tag.js";
 import HangarMovementResult from "./parse-result/hangar-movement-result.js";
+import ShipNameAndNccResult from "../regex/parse-result/ship-name-and-ncc-result.js";
+import ShipNameOnlyResult from "../regex/parse-result/ship-name-only-result.js";
 
 class EnterHangarType extends GenericType {
   static _regexByLanguage = {
@@ -72,6 +74,22 @@ class EnterHangarType extends GenericType {
     resultObject.isEntry = true;
 
     return resultObject;
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ships
+    if(parseResult.ship instanceof ShipNameAndNccResult) {
+      statistics.ships.registerShip(parseResult.ship);
+    }
+    if(parseResult.carrier instanceof ShipNameAndNccResult || parseResult.carrier instanceof ShipNameOnlyResult) {
+      statistics.ships.registerShip(parseResult.carrier);
+    }
+    
+    return statistics;
   }
 
   static getTags() {

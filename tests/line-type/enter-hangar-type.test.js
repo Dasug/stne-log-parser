@@ -1,6 +1,7 @@
 import { describe, expect, test } from '@jest/globals';
 import LineTag from '../../src/enum/line-tag.js';
 import EnterHangarType from '../../src/line-type/enter-hangar-type.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('enter hangar line type', () => {
   const lineTypeClass = EnterHangarType;
@@ -78,5 +79,23 @@ describe('enter hangar line type', () => {
     expect(parseResult.carrier.name).toBe("{=BSC=} Energy Vault A");
 
     expect(parseResult.isEntry).toBe(true);
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Wrath of the Lord 17 (2523448, Klaestron) von Nemesis (17803) fliegt im Sektor 33|66#115 in den Hangar von Sidonia ein` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(2);
+    const ship = statistics.ships.getShipByNcc(2523448);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2523448);
+    expect(ship.name).toBe("Wrath of the Lord 17");
+    const ship2 = statistics.ships.getShipByName("Sidonia");
+    expect(ship2).not.toBeNull();
+    expect(ship2.ncc).toBeNull();
+    expect(ship2.name).toBe("Sidonia");
   });
 })
