@@ -5,6 +5,7 @@ import BeamDirection from '../../src/enum/beam-direction.js';
 import BeamResource from '../../src/enum/beam-resource.js';
 import BeamEnergyType from '../../src/line-type/beam-energy-type.js';
 import ShipNameOnlyResult from '../../src/regex/parse-result/ship-name-only-result.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('beam energy line type', () => {
   const lineTypeClass = BeamEnergyType;
@@ -62,5 +63,23 @@ describe('beam energy line type', () => {
 
     expect(warpCore.resource).toBe(BeamResource.warpCore);
     expect(warpCore.amount).toBeCloseTo(7355.44);
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`[Support] Amaryll NCC 1678153 transportiert in Sektor 0|0 7355,44 Warpkern zu =UDR= GanYMeD` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(2);
+    const ship = statistics.ships.getShipByNcc(1678153);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(1678153);
+    expect(ship.name).toBe("[Support] Amaryll");
+    const ship2 = statistics.ships.getShipByName("=UDR= GanYMeD");
+    expect(ship2).not.toBeNull();
+    expect(ship2.ncc).toBeNull();
+    expect(ship2.name).toBe("=UDR= GanYMeD");
   });
 })

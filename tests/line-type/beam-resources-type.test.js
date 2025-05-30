@@ -4,6 +4,7 @@ import BeamResourcesType from '../../src/line-type/beam-resources-type.js';
 import BeamTransportType from '../../src/enum/beam-transport-type.js';
 import BeamDirection from '../../src/enum/beam-direction.js';
 import BeamResource from '../../src/enum/beam-resource.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('beam resources line type', () => {
   const lineTypeClass = BeamResourcesType;
@@ -114,5 +115,23 @@ describe('beam resources line type', () => {
 
     expect(resource.resource).toBe(BeamResource.unknown);
     expect(resource.amount).toBe(20);
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Sprungkosten (69307, Sovereign Refit) beamt in Sektor 45|16 Waren von Huasiurk (71828, AntaresB): Deuterium: 200. Sorium: 10. Latinum: 10.` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(2);
+    const ship = statistics.ships.getShipByNcc(69307);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(69307);
+    expect(ship.name).toBe("Sprungkosten");
+    const ship2 = statistics.ships.getShipByNcc(71828);
+    expect(ship2).not.toBeNull();
+    expect(ship2.ncc).toBe(71828);
+    expect(ship2.name).toBe("Huasiurk");
   });
 })

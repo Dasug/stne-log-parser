@@ -16,6 +16,8 @@ import BeamResult from "./parse-result/beam-result.js";
 import ShipNameAndNccResult from "../regex/parse-result/ship-name-and-ncc-result.js";
 import BeamResourceResult from "../regex/parse-result/beam-resource-result.js";
 import BeamResource from "../enum/beam-resource.js";
+import Statistics from "../statistics/statistics.js";
+import ShipNameOnlyResult from "../regex/parse-result/ship-name-only-result.js";
 
 class BeamResourcesType extends GenericType {
   static _regexByLanguage = {
@@ -98,6 +100,25 @@ class BeamResourcesType extends GenericType {
     resultObject.items = [];
 
     return resultObject;
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ships
+    if(parseResult.ship instanceof ShipNameAndNccResult || parseResult.beamTarget instanceof ShipNameOnlyResult) {
+      const registeredShip = statistics.ships.registerShip(parseResult.ship);
+      if(registeredShip.ncc === null && parseResult.ncc !== null) {
+        statistics.ships.updateShipNcc(registeredShip, parseResult.ncc);
+      }
+    }
+    if(parseResult.beamTarget instanceof ShipNameAndNccResult || parseResult.beamTarget instanceof ShipNameOnlyResult) {
+      statistics.ships.registerShip(parseResult.beamTarget);
+    }
+    
+    return statistics;
   }
 
   static getTags() {
