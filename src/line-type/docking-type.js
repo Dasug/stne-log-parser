@@ -10,6 +10,7 @@ import GenericType from "./generic-type.js";
 import { pattern } from "regex";
 import DockingResult from "./parse-result/docking-result.js";
 import LineTag from "../../src/enum/line-tag.js";
+import Statistics from "../statistics/statistics.js";
 
 class DockingType extends GenericType {
   static _regexByLanguage = {
@@ -70,6 +71,18 @@ class DockingType extends GenericType {
     resultObject.station = station;
 
     return resultObject;
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ships
+    statistics.ships.registerShip(parseResult.ship);
+    statistics.ships.registerShip(parseResult.station);
+    
+    return statistics;
   }
 
   static getTags() {

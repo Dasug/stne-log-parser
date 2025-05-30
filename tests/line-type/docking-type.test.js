@@ -1,6 +1,7 @@
 import { describe, expect, test } from '@jest/globals';
 import DockingType from '../../src/line-type/docking-type';
 import LineTag from '../../src/enum/line-tag.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('docking line type', () => {
   const lineTypeClass = DockingType;
@@ -72,5 +73,23 @@ describe('docking line type', () => {
     expect(parseResult.owner.id).toBe(83929);
     expect(parseResult.owner.name).toBe("Loki");
     expect(parseResult.owner.idPrefix).toBeNull();
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`[Support] Kapir (2450112, Assimilator) dockt im Sektor @888|777 an [Starbase] New Koweston an` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(2);
+    const ship = statistics.ships.getShipByNcc(2450112);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2450112);
+    expect(ship.name).toBe("[Support] Kapir");
+    const ship2 = statistics.ships.getShipByName("[Starbase] New Koweston");
+    expect(ship2).not.toBeNull();
+    expect(ship2.ncc).toBeNull();
+    expect(ship2.name).toBe("[Starbase] New Koweston");
   });
 })
