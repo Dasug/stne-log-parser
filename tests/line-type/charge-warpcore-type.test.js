@@ -1,6 +1,7 @@
 import { describe, expect, test } from '@jest/globals';
 import ChargeWarpcoreType from '../../src/line-type/charge-warpcore-type';
 import LineTag from '../../src/enum/line-tag.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('charge warpcore line type', () => {
   const lineTypeClass = ChargeWarpcoreType;
@@ -64,5 +65,19 @@ describe('charge warpcore line type', () => {
     
     expect(parseResult.chargeAmount).toBeCloseTo(1876);
     expect(parseResult.warpcoreState).toBeCloseTo(6481.17);
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Juscag* (2583692, Vertiga) von Ikonianer [NOK] (21335) hat den Warpkern um 100 auf 9701,56 aufgeladen` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(1);
+    const ship = statistics.ships.getShipByNcc(2583692);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2583692);
+    expect(ship.name).toBe("Juscag*");
   });
 })
