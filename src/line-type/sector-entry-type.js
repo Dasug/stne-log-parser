@@ -10,6 +10,7 @@ import { pattern } from "regex";
 import SectorEntryResult from "./parse-result/sector-entry-result.js";
 import LineTag from "../../src/enum/line-tag.js";
 import ShipNameOnly from "../regex/subroutine/ship-name-only.js";
+import Statistics from "../statistics/statistics.js";
 
 class SectorEntryType extends GenericType {
   static _regexByLanguage = {
@@ -65,6 +66,17 @@ class SectorEntryType extends GenericType {
     resultObject.sector = sector;
 
     return resultObject;
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ship
+    statistics.ships.registerShip(parseResult.ship);
+    
+    return statistics;
   }
 
   static getTags() {

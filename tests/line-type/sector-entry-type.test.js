@@ -1,6 +1,7 @@
 import { describe, expect, test } from '@jest/globals';
 import SectorEntryType from '../../src/line-type/sector-entry-type';
 import LineTag from '../../src/enum/line-tag.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('sector entry line type', () => {
   const lineTypeClass = SectorEntryType;
@@ -66,5 +67,19 @@ describe('sector entry line type', () => {
     expect(parseResult.owner.id).toBe(83929);
     expect(parseResult.owner.name).toBe("Loki");
     expect(parseResult.owner.idPrefix).toBeNull();
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Rohrfliege (2683217, Pegasus) von Systemlord Apophis (75604) ist in Sektor 123|456 eingeflogen` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(1);
+    const ship = statistics.ships.getShipByNcc(2683217);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2683217);
+    expect(ship.name).toBe("Rohrfliege");
   });
 })
