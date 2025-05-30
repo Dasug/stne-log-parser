@@ -2,6 +2,7 @@ import { describe, expect, test } from '@jest/globals';
 import LineTag from '../../src/enum/line-tag.js';
 import AvatarJob from '../../src/enum/avatar-job.js';
 import AvatarPilotManeuverFailureType from '../../src/line-type/avatar-pilot-maneuver-failure-type.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('avatar pilot maneuver failure line type', () => {
   const lineTypeClass = AvatarPilotManeuverFailureType;
@@ -37,5 +38,19 @@ describe('avatar pilot maneuver failure line type', () => {
     expect(parseResult.target.nccPrefix).toBeNull();
     expect(parseResult.target.shipClass).toBe("Battle Carrier Wrack");
     
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Vetro (2838280, Battle Carrier Wrack) kontert das Manöver von Annett Hirsch (1140807, Pilot) geschickt und schützt erfolgreich die verwundbaren Stellen!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(1);
+    const ship = statistics.ships.getShipByNcc(2838280);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2838280);
+    expect(ship.name).toBe("Vetro");
   });
 })
