@@ -4,6 +4,7 @@ import AvatarJob from '../../src/enum/avatar-job.js';
 import AvatarWeaponDamageIncreaseType from '../../src/line-type/avatar-weapon-damage-increase-type.js';
 import ShipNameAndNccResult from '../../src/regex/parse-result/ship-name-and-ncc-result.js';
 import ColonyNameAndIdResult from '../../src/regex/parse-result/colony-name-and-id-result.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('avatar weapon damage increase line type', () => {
   const lineTypeClass = AvatarWeaponDamageIncreaseType;
@@ -86,5 +87,23 @@ describe('avatar weapon damage increase line type', () => {
     // damage increase
     expect(parseResult.damageIncrease).toBe(22);
     
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Commander Bravestorm (797593, Waffenoffizier) zielt auf ein kritisches Untersystem wodurch der Angriff von Stormlord (2235413, Imperiale Prometheus) gegen Pluvass (2840934, Verlassene Rhino) um 28% stärker ausfällt!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(2);
+    const ship = statistics.ships.getShipByNcc(2235413);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2235413);
+    expect(ship.name).toBe("Stormlord");
+    const ship2 = statistics.ships.getShipByNcc(2840934);
+    expect(ship2).not.toBeNull();
+    expect(ship2.ncc).toBe(2840934);
+    expect(ship2.name).toBe("Pluvass");
   });
 })
