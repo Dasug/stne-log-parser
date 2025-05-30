@@ -75,4 +75,18 @@ describe('tractor beam drag along line type', () => {
     expect(ship.ncc).toBe(2642114);
     expect(ship.name).toBe("Glanz & Gloria");
   });
+
+  test("registers player character in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Glanz & Gloria (2642114, Kairos) von Kôntránisches VerwaltungsAmt [PeaceInUkraine] (56813) wird im Traktorstrahl hinterhergezogen.` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.playerCharacters.mentionedPlayerCharacters.length).toBe(1);
+    const playerCharacter = statistics.playerCharacters.getPlayerCharacterById(56813);
+    expect(playerCharacter).not.toBeNull();
+    expect(playerCharacter.id).toBe(56813);
+    expect(playerCharacter.name).toBe("Kôntránisches VerwaltungsAmt [PeaceInUkraine]");
+  });
 })

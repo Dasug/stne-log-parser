@@ -99,4 +99,18 @@ describe('undocking line type', () => {
     expect(ship2.ncc).toBe(1525125);
     expect(ship2.name).toBe("=VIPER= Landa Station");
   });
+
+  test("registers player character in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "en", "entry": String.raw`RS Urax (1589926, Nova) von Loki (83929) undocks from =VIPER= Landa Station (1525125, Supply Post) in sector 555|666.` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.playerCharacters.mentionedPlayerCharacters.length).toBe(1);
+    const playerCharacter = statistics.playerCharacters.getPlayerCharacterById(83929);
+    expect(playerCharacter).not.toBeNull();
+    expect(playerCharacter.id).toBe(83929);
+    expect(playerCharacter.name).toBe("Loki");
+  });
 })

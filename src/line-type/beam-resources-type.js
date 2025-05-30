@@ -118,6 +118,10 @@ class BeamResourcesType extends GenericType {
       statistics.ships.registerShip(parseResult.beamTarget);
     }
     
+    if(parseResult.owner !== null) {
+      statistics.playerCharacters.registerPlayerCharacter(parseResult.owner);
+    }
+    
     return statistics;
   }
 

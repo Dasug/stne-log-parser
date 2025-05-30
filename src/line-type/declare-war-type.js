@@ -7,6 +7,7 @@ import GenericType from "./generic-type.js";
 import { pattern } from "regex";
 import LineTag from "../../src/enum/line-tag.js";
 import DeclareWarResult from "./parse-result/declare-war-result.js";
+import Statistics from "../statistics/statistics.js";
 
 class DeclareWarType extends GenericType {
   static _regexByLanguage = {
@@ -31,6 +32,17 @@ class DeclareWarType extends GenericType {
     resultObject.player = player;
 
     return resultObject;
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register player
+    statistics.playerCharacters.registerPlayerCharacter(parseResult.player);
+    
+    return statistics;
   }
 
   static getTags() {

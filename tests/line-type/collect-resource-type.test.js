@@ -92,4 +92,18 @@ describe('collect resources line type', () => {
     expect(ship.ncc).toBe(1867924);
     expect(ship.name).toBe("TX0XT= DrEADsTAR");
   });
+
+  test("registers player character in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`TX0XT= DrEADsTAR (NX-1867924, Iowa Typ Z) von []U.C.W[] DeMaNDrED (72439) hat 838 Deuterium eingesaugt` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.playerCharacters.mentionedPlayerCharacters.length).toBe(1);
+    const playerCharacter = statistics.playerCharacters.getPlayerCharacterById(72439);
+    expect(playerCharacter).not.toBeNull();
+    expect(playerCharacter.id).toBe(72439);
+    expect(playerCharacter.name).toBe("[]U.C.W[] DeMaNDrED");
+  });
 });

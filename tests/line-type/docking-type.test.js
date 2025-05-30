@@ -92,4 +92,18 @@ describe('docking line type', () => {
     expect(ship2.ncc).toBeNull();
     expect(ship2.name).toBe("[Starbase] New Koweston");
   });
+
+  test("registers player character in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "en", "entry": String.raw`IMoovStufToo (1593773, Silverstar) von Loki (83929) docks to =VIPER= Landa Station in sector 555|666` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.playerCharacters.mentionedPlayerCharacters.length).toBe(1);
+    const playerCharacter = statistics.playerCharacters.getPlayerCharacterById(83929);
+    expect(playerCharacter).not.toBeNull();
+    expect(playerCharacter.id).toBe(83929);
+    expect(playerCharacter.name).toBe("Loki");
+  });
 })

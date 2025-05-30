@@ -100,4 +100,18 @@ describe('exit hangar line type', () => {
     expect(ship2.ncc).toBe(1956264);
     expect(ship2.name).toBe("SMS Kaiser Karl der Große");
   });
+
+  test("registers player character in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Jasta 11 XI (2671415, Assertive) von Flotten-Admiral Shean (19372) fliegt im Sektor 33|64#115 aus dem Hangar von SMS Kaiser Karl der Große (1956264, Cellship)` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.playerCharacters.mentionedPlayerCharacters.length).toBe(1);
+    const playerCharacter = statistics.playerCharacters.getPlayerCharacterById(19372);
+    expect(playerCharacter).not.toBeNull();
+    expect(playerCharacter.id).toBe(19372);
+    expect(playerCharacter.name).toBe("Flotten-Admiral Shean");
+  });
 })

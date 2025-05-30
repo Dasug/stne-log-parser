@@ -88,6 +88,10 @@ class EnterHangarType extends GenericType {
     if(parseResult.carrier instanceof ShipNameAndNccResult || parseResult.carrier instanceof ShipNameOnlyResult) {
       statistics.ships.registerShip(parseResult.carrier);
     }
+
+    if(parseResult.owner !== null) {
+      statistics.playerCharacters.registerPlayerCharacter(parseResult.owner);
+    }
     
     return statistics;
   }

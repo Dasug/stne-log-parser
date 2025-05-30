@@ -81,4 +81,18 @@ describe('change aleret level line type', () => {
     expect(ship.ncc).toBe(2817829);
     expect(ship.name).toBe("[CV] Jäger 20");
   });
+
+  test("registers player character in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`[CV] Jäger 20 (2817829, Klaestron) von Bayerisches Imperium [SJV] (76856) geht auf gelben Alarm` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.playerCharacters.mentionedPlayerCharacters.length).toBe(1);
+    const playerCharacter = statistics.playerCharacters.getPlayerCharacterById(76856);
+    expect(playerCharacter).not.toBeNull();
+    expect(playerCharacter.id).toBe(76856);
+    expect(playerCharacter.name).toBe("Bayerisches Imperium [SJV]");
+  });
 })

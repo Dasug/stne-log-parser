@@ -81,6 +81,10 @@ class DockingType extends GenericType {
     // register ships
     statistics.ships.registerShip(parseResult.ship);
     statistics.ships.registerShip(parseResult.station);
+
+    if(parseResult.owner !== null) {
+      statistics.playerCharacters.registerPlayerCharacter(parseResult.owner);
+    }
     
     return statistics;
   }

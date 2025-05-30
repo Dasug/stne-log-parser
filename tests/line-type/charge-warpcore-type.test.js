@@ -80,4 +80,18 @@ describe('charge warpcore line type', () => {
     expect(ship.ncc).toBe(2583692);
     expect(ship.name).toBe("Juscag*");
   });
+
+  test("registers player character in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Juscag* (2583692, Vertiga) von Ikonianer [NOK] (21335) hat den Warpkern um 100 auf 9701,56 aufgeladen` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.playerCharacters.mentionedPlayerCharacters.length).toBe(1);
+    const playerCharacter = statistics.playerCharacters.getPlayerCharacterById(21335);
+    expect(playerCharacter).not.toBeNull();
+    expect(playerCharacter.id).toBe(21335);
+    expect(playerCharacter.name).toBe("Ikonianer [NOK]");
+  });
 })

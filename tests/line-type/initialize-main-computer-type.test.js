@@ -75,4 +75,18 @@ describe('initialize main computer line type', () => {
     expect(ship.ncc).toBe(2818116);
     expect(ship.name).toBe("[CV] Jäger 99");
   });
+
+  test("registers player character in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`[CV] Jäger 99 (2818116, Klaestron) von Bayerisches Imperium [SJV] (76856) initialisiert die Startsequenz des Hauptcomputers!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.playerCharacters.mentionedPlayerCharacters.length).toBe(1);
+    const playerCharacter = statistics.playerCharacters.getPlayerCharacterById(76856);
+    expect(playerCharacter).not.toBeNull();
+    expect(playerCharacter.id).toBe(76856);
+    expect(playerCharacter.name).toBe("Bayerisches Imperium [SJV]");
+  });
 })

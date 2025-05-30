@@ -368,4 +368,18 @@ describe('fire weapon type line type', () => {
     expect(ship2.name).toBe("U.S.S. Dracaix");
   });
 
+  test("registers player character in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Vor'Cha Sverð (2353095, Vor'Cha) von ]=SLC=[ Halgar von Tronje --Sky-Vicings - (65330) schlägt Korolev U.S.S. Dracaix (2819313, Korolev) mit klingonischer Disruptor Typ chorgh und Stärke 84/94/0 zurück` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.playerCharacters.mentionedPlayerCharacters.length).toBe(1);
+    const playerCharacter = statistics.playerCharacters.getPlayerCharacterById(65330);
+    expect(playerCharacter).not.toBeNull();
+    expect(playerCharacter.id).toBe(65330);
+    expect(playerCharacter.name).toBe("]=SLC=[ Halgar von Tronje --Sky-Vicings -");
+  });
+
 })

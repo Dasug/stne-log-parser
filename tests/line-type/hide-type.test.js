@@ -110,4 +110,18 @@ describe('hide line type', () => {
     expect(ship.ncc).toBe(2517644);
     expect(ship.name).toBe("KS CLE'HAC 23 12 1");
   });
+
+  test("registers player character in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`KS CLE'HAC 23 12 1 (NX-2517644, Adrec) von Uvig | Dr. T. Roll (73628) versteckt sich bei 176|175 in Großes Asteroidenfeld` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.playerCharacters.mentionedPlayerCharacters.length).toBe(1);
+    const playerCharacter = statistics.playerCharacters.getPlayerCharacterById(73628);
+    expect(playerCharacter).not.toBeNull();
+    expect(playerCharacter.id).toBe(73628);
+    expect(playerCharacter.name).toBe("Uvig | Dr. T. Roll");
+  });
 })

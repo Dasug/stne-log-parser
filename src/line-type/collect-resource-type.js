@@ -73,6 +73,10 @@ class CollectResourceType extends GenericType {
     if(parseResult.ship instanceof ShipNameAndNccResult) {
       statistics.ships.registerShip(parseResult.ship);
     }
+
+    if(parseResult.owner !== null) {
+      statistics.playerCharacters.registerPlayerCharacter(parseResult.owner);
+    }
     
     return statistics;
   }

@@ -98,4 +98,18 @@ describe('enter hangar line type', () => {
     expect(ship2.ncc).toBeNull();
     expect(ship2.name).toBe("Sidonia");
   });
+
+  test("registers player character in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Wrath of the Lord 17 (2523448, Klaestron) von Nemesis (17803) fliegt im Sektor 33|66#115 in den Hangar von Sidonia ein` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.playerCharacters.mentionedPlayerCharacters.length).toBe(1);
+    const playerCharacter = statistics.playerCharacters.getPlayerCharacterById(17803);
+    expect(playerCharacter).not.toBeNull();
+    expect(playerCharacter.id).toBe(17803);
+    expect(playerCharacter.name).toBe("Nemesis");
+  });
 })

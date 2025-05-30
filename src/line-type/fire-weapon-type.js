@@ -195,6 +195,10 @@ class FireWeaponType extends GenericType {
     if(parseResult.target instanceof ShipNameAndNccResult) {
       statistics.ships.registerShip(parseResult.target);
     }
+
+    if(parseResult.owner !== null) {
+      statistics.playerCharacters.registerPlayerCharacter(parseResult.owner);
+    }
     
     return statistics;
   }

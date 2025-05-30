@@ -1,6 +1,7 @@
 import { describe, expect, test } from '@jest/globals';
 import LineTag from '../../src/enum/line-tag.js';
 import DeclareWarType from '../../src/line-type/declare-war-type.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('declare war line type', () => {
   const lineTypeClass = DeclareWarType;
@@ -28,5 +29,19 @@ describe('declare war line type', () => {
     expect(parseResult.player.id).toBe(76856);
     expect(parseResult.player.name).toBe("Bayerisches Imperium [SJV]");
     expect(parseResult.player.idPrefix).toBeNull();
+  });
+
+  test("registers player character in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Siedler Bayerisches Imperium [SJV] (76856) hat dir den Krieg erklärt.` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.playerCharacters.mentionedPlayerCharacters.length).toBe(1);
+    const playerCharacter = statistics.playerCharacters.getPlayerCharacterById(76856);
+    expect(playerCharacter).not.toBeNull();
+    expect(playerCharacter.id).toBe(76856);
+    expect(playerCharacter.name).toBe("Bayerisches Imperium [SJV]");
   });
 })

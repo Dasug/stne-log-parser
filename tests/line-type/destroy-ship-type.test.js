@@ -92,4 +92,18 @@ describe('destroy ship line type', () => {
     expect(ship.ncc).toBe(2842096);
     expect(ship.name).toBe("Claevi");
   });
+
+  test("registers player character in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Kontakt zu Claevi (2842096, Verlassene Cloverfield) von Die Verdammten (NPC-76936) verloren! Letzte bekannte Position: 88|38#115` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.playerCharacters.mentionedPlayerCharacters.length).toBe(1);
+    const playerCharacter = statistics.playerCharacters.getPlayerCharacterById(76936);
+    expect(playerCharacter).not.toBeNull();
+    expect(playerCharacter.id).toBe(76936);
+    expect(playerCharacter.name).toBe("Die Verdammten");
+  });
 })

@@ -77,4 +77,18 @@ describe('deactivate shields line type', () => {
     expect(ship.ncc).toBe(2509111);
     expect(ship.name).toBe("[IRV] Odysseus");
   });
+
+  test("registers player character in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`[IRV] Odysseus (2509111, Hurricane) von Tal’Shiar (75203) deaktiviert die Schilde` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.playerCharacters.mentionedPlayerCharacters.length).toBe(1);
+    const playerCharacter = statistics.playerCharacters.getPlayerCharacterById(75203);
+    expect(playerCharacter).not.toBeNull();
+    expect(playerCharacter.id).toBe(75203);
+    expect(playerCharacter.name).toBe("Tal’Shiar");
+  });
 })

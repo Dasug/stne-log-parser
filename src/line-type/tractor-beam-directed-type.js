@@ -47,6 +47,10 @@ class TractorBeamDirectedType extends GenericType {
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
     // register ship
     statistics.ships.registerShip(parseResult.target);
+
+    if(parseResult.targetOwner !== null) {
+      statistics.playerCharacters.registerPlayerCharacter(parseResult.targetOwner);
+    }
     
     return statistics;
   }
