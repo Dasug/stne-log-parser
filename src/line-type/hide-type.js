@@ -11,6 +11,7 @@ import PlayerNameAndId from "../regex/subroutine/player-name-and-id.js";
 import HideStatus from "../enum/hide-status.js";
 import HideResult from "./parse-result/hide-result.js";
 import MapFieldType from "../enum/map-field-type.js";
+import Statistics from "../statistics/statistics.js";
 
 class HideType extends GenericType {
   static _regexByLanguage = {
@@ -63,6 +64,17 @@ class HideType extends GenericType {
     resultObject.fieldType = fieldType;
 
     return resultObject;
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ship
+    statistics.ships.registerShip(parseResult.ship);
+    
+    return statistics;
   }
 
   static getTags() {

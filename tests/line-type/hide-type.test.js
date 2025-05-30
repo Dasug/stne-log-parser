@@ -4,6 +4,7 @@ import SystemBlockadeState from '../../src/enum/system-blockade-state.js';
 import HideType from '../../src/line-type/hide-type.js';
 import HideStatus from '../../src/enum/hide-status.js';
 import MapFieldType from '../../src/enum/map-field-type.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('hide line type', () => {
   const lineTypeClass = HideType;
@@ -94,5 +95,19 @@ describe('hide line type', () => {
 
     // fieldType
     expect(parseResult.fieldType).toBe(MapFieldType.denseDeuteriumNebula);
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`KS CLE'HAC 23 12 1 (NX-2517644, Adrec) von Uvig | Dr. T. Roll (73628) versteckt sich bei 176|175 in Großes Asteroidenfeld` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(1);
+    const ship = statistics.ships.getShipByNcc(2517644);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2517644);
+    expect(ship.name).toBe("KS CLE'HAC 23 12 1");
   });
 })
