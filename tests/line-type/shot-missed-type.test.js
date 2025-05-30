@@ -4,6 +4,7 @@ import ShotMissedType from '../../src/line-type/shot-missed-type';
 import ShipNameAndNccResult from '../../src/regex/parse-result/ship-name-and-ncc-result.js';
 import BuildingResult from '../../src/regex/parse-result/building-result.js';
 import BuildingType from '../../src/enum/building-type.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('shot missed line type', () => {
   const lineTypeClass = ShotMissedType;
@@ -77,5 +78,19 @@ describe('shot missed line type', () => {
     expect(parseResult.origin).toBeInstanceOf(BuildingResult);
     expect(parseResult.origin.name).toBeNull();
     expect(parseResult.origin.type).toBe(BuildingType.disruptorBattery);
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Ifuat (2837138, Verlassene Klaestron) verfehlt das Ziel!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(1);
+    const ship = statistics.ships.getShipByNcc(2837138);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2837138);
+    expect(ship.name).toBe("Ifuat");
   });
 })

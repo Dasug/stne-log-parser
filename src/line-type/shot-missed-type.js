@@ -8,6 +8,8 @@ import { pattern } from "regex";
 import LineTag from "../../src/enum/line-tag.js";
 import ShotMissedResult from "./parse-result/shot-missed-result.js";
 import Building from "../regex/subroutine/building.js";
+import Statistics from "../statistics/statistics.js";
+import ShipNameAndNccResult from "../regex/parse-result/ship-name-and-ncc-result.js";
 
 class ShotMissedType extends GenericType {
   static _regexByLanguage = {
@@ -53,6 +55,19 @@ class ShotMissedType extends GenericType {
     resultObject.origin = ship ?? building; 
 
     return resultObject;
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ship
+    if(parseResult.origin instanceof ShipNameAndNccResult) {
+      statistics.ships.registerShip(parseResult.origin);
+    }
+    
+    return statistics;
   }
 
   static getTags() {
