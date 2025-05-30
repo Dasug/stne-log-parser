@@ -7,6 +7,7 @@ import GenericType from "./generic-type.js";
 import { pattern } from "regex";
 import LineTag from "../../src/enum/line-tag.js";
 import SystemBlockadeCaughtResult from "./parse-result/system-blockade-caught-result.js";
+import Statistics from "../statistics/statistics.js";
 
 class SystemBlockadeCaughtType extends GenericType {
   static _regexByLanguage = {
@@ -36,6 +37,17 @@ class SystemBlockadeCaughtType extends GenericType {
     resultObject.flightRangeLoss = flightRangeLoss;
 
     return resultObject;
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ship
+    statistics.ships.registerShip(parseResult.ship);
+    
+    return statistics;
   }
 
   static getTags() {
