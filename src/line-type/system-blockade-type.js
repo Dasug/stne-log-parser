@@ -9,6 +9,7 @@ import { pattern } from "regex";
 import LineTag from "../../src/enum/line-tag.js";
 import SystemBlockadeResult from "./parse-result/system-blockade-result.js";
 import SystemBlockadeState from "../enum/system-blockade-state.js";
+import Statistics from "../statistics/statistics.js";
 
 class SystemBlockadeType extends GenericType {
   static _regexByLanguage = {
@@ -42,6 +43,17 @@ class SystemBlockadeType extends GenericType {
     resultObject.state = state;
 
     return resultObject;
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ship
+    statistics.ships.registerShip(parseResult.ship);
+    
+    return statistics;
   }
 
   static getTags() {

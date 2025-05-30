@@ -2,6 +2,7 @@ import { describe, expect, test } from '@jest/globals';
 import LineTag from '../../src/enum/line-tag.js';
 import SystemBlockadeType from '../../src/line-type/system-blockade-type.js';
 import SystemBlockadeState from '../../src/enum/system-blockade-state.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('system blockade line type', () => {
   const lineTypeClass = SystemBlockadeType;
@@ -74,5 +75,19 @@ describe('system blockade line type', () => {
 
     // state
     expect(parseResult.state).toBe(SystemBlockadeState.dropped);
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`H|K ~KS~ Wrong Way (2563440, Atel) hat im Sektor 229|423 die Systemblockade aufgegeben` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(1);
+    const ship = statistics.ships.getShipByNcc(2563440);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2563440);
+    expect(ship.name).toBe("H|K ~KS~ Wrong Way");
   });
 })
