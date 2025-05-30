@@ -7,6 +7,7 @@ import { pattern } from "regex";
 import LineTag from "../../src/enum/line-tag.js";
 import MapCoordinates from "../regex/subroutine/map-coordinates.js";
 import HangarScrambleResult from "./parse-result/hangar-scramble-result.js";
+import Statistics from "../statistics/statistics.js";
 
 class HangarScrambleType extends GenericType {
   static _regexByLanguage = {
@@ -36,6 +37,17 @@ class HangarScrambleType extends GenericType {
     resultObject.sector = sector;
 
     return resultObject;
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ship
+    statistics.ships.registerShip(parseResult.ship);
+    
+    return statistics;
   }
 
   static getTags() {
