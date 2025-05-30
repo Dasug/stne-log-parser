@@ -1,5 +1,6 @@
 "use strict";
 
+import PlayerCharacterStatistics from "./player-character-statistics.js";
 import ShipStatistics from "./ship-statistics.js";
 
 class Statistics {
@@ -9,8 +10,15 @@ class Statistics {
    */
   ships;
 
+  /**
+   * Contains statistics related to player characters mentioned in the log(s)
+   * @type {PlayerCharacterStatistics}
+   */
+  playerCharacters;
+
   constructor() {
     this.ships = new ShipStatistics;
+    this.playerCharacters = new PlayerCharacterStatistics;
   }
 }
 
