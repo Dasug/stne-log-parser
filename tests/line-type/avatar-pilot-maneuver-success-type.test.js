@@ -2,6 +2,7 @@ import { describe, expect, test } from '@jest/globals';
 import LineTag from '../../src/enum/line-tag.js';
 import AvatarJob from '../../src/enum/avatar-job.js';
 import AvatarPilotManeuverSuccessType from '../../src/line-type/avatar-pilot-maneuver-success-type.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('avatar pilot maneuver success line type', () => {
   const lineTypeClass = AvatarPilotManeuverSuccessType;
@@ -44,5 +45,23 @@ describe('avatar pilot maneuver success line type', () => {
     expect(parseResult.ship.nccPrefix).toBeNull();
     expect(parseResult.ship.shipClass).toBe("Tamani");
     
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Annett Hirsch (1140807, Pilot) manövriert erfolgreich in einen toten Winkel von Vetro (2838280, Battle Carrier Wrack), wodurch sich die Chance für H_Kahn des Zorn III (2662825, Tamani) ergibt kritische Schäden (x2) zu verursachen!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(2);
+    const ship = statistics.ships.getShipByNcc(2838280);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2838280);
+    expect(ship.name).toBe("Vetro");
+    const ship2 = statistics.ships.getShipByNcc(2662825);
+    expect(ship2).not.toBeNull();
+    expect(ship2.ncc).toBe(2662825);
+    expect(ship2.name).toBe("H_Kahn des Zorn III");
   });
 })
