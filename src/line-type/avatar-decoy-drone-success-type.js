@@ -58,11 +58,11 @@ class AvatarDecoyDroneSuccessType extends GenericType {
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
     // register ship
-    if(parseResult.origin instanceof ShipNameAndNccResult) {
-      statistics.ships.registerShip(parseResult.origin);
+    if(parseResult.ship instanceof ShipNameAndNccResult) {
+      statistics.ships.registerShip(parseResult.ship);
     }
-    if(parseResult.target instanceof ShipNameAndNccResult) {
-      statistics.ships.registerShip(parseResult.target);
+    if(parseResult.opponent instanceof ShipNameAndNccResult) {
+      statistics.ships.registerShip(parseResult.opponent);
     }
     
     return statistics;

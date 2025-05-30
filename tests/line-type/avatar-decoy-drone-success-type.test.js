@@ -93,13 +93,13 @@ describe('avatar decoy drone success line type', () => {
     lineTypeClass.populateStatistics(statistics, parseResult);
 
     expect(statistics.ships.mentionedShips.length).toBe(2);
-    const ship = statistics.ships.getShipByNcc(2839350);
+    const ship = statistics.ships.getShipByNcc(2841749);
     expect(ship).not.toBeNull();
-    expect(ship.ncc).toBe(2839350);
-    expect(ship.name).toBe("Kofes");
-    const targetShip = statistics.ships.getShipByNcc(2551448);
-    expect(targetShip).not.toBeNull();
-    expect(targetShip.ncc).toBe(2551448);
-    expect(targetShip.name).toBe("Storm of Retribution");
+    expect(ship.ncc).toBe(2841749);
+    expect(ship.name).toBe("Frothu");
+    const ship2 = statistics.ships.getShipByNcc(2441662);
+    expect(ship2).not.toBeNull();
+    expect(ship2.ncc).toBe(2441662);
+    expect(ship2.name).toBe("=MS= Panthera Nebulos");
   });
 })
