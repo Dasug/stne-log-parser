@@ -9,6 +9,8 @@ import GenericType from "./generic-type.js";
 import { pattern } from "regex";
 import LineTag from "../../src/enum/line-tag.js";
 import DestroyShipResult from "./parse-result/destroy-ship-result.js";
+import Statistics from "../statistics/statistics.js";
+import ShipNameAndNccResult from "../regex/parse-result/ship-name-and-ncc-result.js";
 
 class DestroyShipType extends GenericType {
   static _regexByLanguage = {
@@ -59,6 +61,19 @@ class DestroyShipType extends GenericType {
 
 
     return resultObject;
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ship
+    if(parseResult.ship instanceof ShipNameAndNccResult) {
+      statistics.ships.registerShip(parseResult.ship);
+    }
+    
+    return statistics;
   }
 
   static getTags() {
