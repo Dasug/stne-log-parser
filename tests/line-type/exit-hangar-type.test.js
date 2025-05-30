@@ -1,6 +1,7 @@
 import { describe, expect, test } from '@jest/globals';
 import LineTag from '../../src/enum/line-tag.js';
 import ExitHangarType from '../../src/line-type/exit-hangar-type.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('exit hangar line type', () => {
   const lineTypeClass = ExitHangarType;
@@ -80,5 +81,23 @@ describe('exit hangar line type', () => {
     expect(parseResult.carrier.name).toBe("{=BSC=} Energy Vault A");
 
     expect(parseResult.isEntry).toBe(false);
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Jasta 11 XI (2671415, Assertive) von Flotten-Admiral Shean (19372) fliegt im Sektor 33|64#115 aus dem Hangar von SMS Kaiser Karl der Große (1956264, Cellship)` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(2);
+    const ship = statistics.ships.getShipByNcc(2671415);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2671415);
+    expect(ship.name).toBe("Jasta 11 XI");
+    const ship2 = statistics.ships.getShipByNcc(1956264);
+    expect(ship2).not.toBeNull();
+    expect(ship2.ncc).toBe(1956264);
+    expect(ship2.name).toBe("SMS Kaiser Karl der Große");
   });
 })
