@@ -10,6 +10,8 @@ import { pattern } from "regex";
 import ChangeAlertLevelResult from "./parse-result/change-alert-level-result.js";
 import LineTag from "../../src/enum/line-tag.js";
 import AlertLevel from "../enum/alert-level.js";
+import Statistics from "../statistics/statistics.js";
+import ShipNameAndNccResult from "../regex/parse-result/ship-name-and-ncc-result.js";
 
 class ChangeAlertLevelType extends GenericType {
   static _regexByLanguage = {
@@ -78,6 +80,19 @@ class ChangeAlertLevelType extends GenericType {
     }
 
     return resultObject;
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ship
+    if(parseResult.ship instanceof ShipNameAndNccResult) {
+      statistics.ships.registerShip(parseResult.ship);
+    }
+    
+    return statistics;
   }
 
   static getTags() {
