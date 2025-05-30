@@ -74,4 +74,18 @@ describe('activate overdrive line type', () => {
     expect(ship.ncc).toBe(2817833);
     expect(ship.name).toBe("[CV] Jäger 24");
   });
+
+  test("registers player character in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`[CV] Jäger 24 (2817833, Klaestron) von Bayerisches Imperium [SJV] (76856) aktiviert den Overdrive und kann nun, trotz überhitzter Triebwerke, weiterfliegen!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.playerCharacters.mentionedPlayerCharacters.length).toBe(1);
+    const playerCharacter = statistics.playerCharacters.getPlayerCharacterById(76856);
+    expect(playerCharacter).not.toBeNull();
+    expect(playerCharacter.id).toBe(76856);
+    expect(playerCharacter.name).toBe("Bayerisches Imperium [SJV]");
+  });
 })

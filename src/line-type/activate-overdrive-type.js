@@ -8,6 +8,7 @@ import GenericType from "./generic-type.js";
 import { pattern } from "regex";
 import ActivateOverdriveResult from "./parse-result/activate-overdrive-result.js";
 import LineTag from "../../src/enum/line-tag.js";
+import Statistics from "../statistics/statistics.js";
 
 class ActivateOverdriveType extends GenericType {
   static _regexByLanguage = {
@@ -63,6 +64,9 @@ class ActivateOverdriveType extends GenericType {
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
     // register ship
     statistics.ships.registerShip(parseResult.ship);
+    if(parseResult.owner !== null) {
+      statistics.playerCharacters.registerPlayerCharacter(parseResult.owner);
+    }
     
     return statistics;
   }
