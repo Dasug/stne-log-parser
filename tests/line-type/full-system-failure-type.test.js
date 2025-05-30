@@ -1,6 +1,7 @@
 import { describe, expect, test } from '@jest/globals';
 import LineTag from '../../src/enum/line-tag.js';
 import FullSystemFailureType from '../../src/line-type/full-system-failure-type.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('full system failure line type', () => {
   const lineTypeClass = FullSystemFailureType;
@@ -52,5 +53,19 @@ describe('full system failure line type', () => {
     expect(parseResult.ship.name).toBe("Warrior OI8497");
     expect(parseResult.ship.nccPrefix).toBeNull();
     expect(parseResult.ship.shipClass).toBe("LX710b");
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Paiso (2831277, Verlassenes Tug) erleidet einen Ausfall aller Systeme, das Schiff wird Starthilfe brauchen um wieder flott gemacht zu werden!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(1);
+    const ship = statistics.ships.getShipByNcc(2831277);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2831277);
+    expect(ship.name).toBe("Paiso");
   });
 })
