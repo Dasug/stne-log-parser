@@ -1,6 +1,7 @@
 import { describe, expect, test } from '@jest/globals';
 import DeactivateShieldsType from '../../src/line-type/deactivate-shields-type';
 import LineTag from '../../src/enum/line-tag.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('deactivate shields line type', () => {
   const lineTypeClass = DeactivateShieldsType;
@@ -61,5 +62,19 @@ describe('deactivate shields line type', () => {
     expect(parseResult.ship.name).toBe("TRES Sarajevo");
     expect(parseResult.ship.nccPrefix).toBeNull();
     expect(parseResult.ship.shipClass).toBe("Crossfield");
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`[IRV] Odysseus (2509111, Hurricane) von Tal’Shiar (75203) deaktiviert die Schilde` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(1);
+    const ship = statistics.ships.getShipByNcc(2509111);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2509111);
+    expect(ship.name).toBe("[IRV] Odysseus");
   });
 })
