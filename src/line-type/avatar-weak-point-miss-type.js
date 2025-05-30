@@ -8,6 +8,8 @@ import { pattern } from "regex";
 import LineTag from "../../src/enum/line-tag.js";
 import Avatar from "../regex/subroutine/avatar.js";
 import AvatarWeakPointMissResult from "./parse-result/avatar-weak-point-miss-result.js";
+import Statistics from "../statistics/statistics.js";
+import ShipNameAndNccResult from "../regex/parse-result/ship-name-and-ncc-result.js";
 
 class AvatarWeakPointMissType extends GenericType {
   static _regexByLanguage = {
@@ -37,6 +39,19 @@ class AvatarWeakPointMissType extends GenericType {
     resultObject.avatar = avatar;
     
     return resultObject;
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ship
+    if(parseResult.target instanceof ShipNameAndNccResult) {
+      statistics.ships.registerShip(parseResult.target);
+    }
+    
+    return statistics;
   }
 
   static getTags() {
