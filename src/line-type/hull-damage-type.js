@@ -7,6 +7,7 @@ import GenericType from "./generic-type.js";
 import { pattern } from "regex";
 import LineTag from "../../src/enum/line-tag.js";
 import HullDamageResult from "./parse-result/hull-damage-result.js";
+import Statistics from "../statistics/statistics.js";
 
 class HullDamageType extends GenericType {
   static _regexByLanguage = {
@@ -57,6 +58,17 @@ class HullDamageType extends GenericType {
     resultObject.overkillDamage = overkillDamage;
 
     return resultObject;
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ship
+    statistics.ships.registerShip(parseResult.ship);
+    
+    return statistics;
   }
 
   static getTags() {

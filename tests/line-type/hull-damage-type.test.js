@@ -1,6 +1,7 @@
 import { describe, expect, test } from '@jest/globals';
 import LineTag from '../../src/enum/line-tag.js';
 import HullDamageType from '../../src/line-type/hull-damage-type';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('hull damage line type', () => {
   const lineTypeClass = HullDamageType;
@@ -104,5 +105,21 @@ describe('hull damage line type', () => {
     expect(parseResult.hullDamage).toBe(2);
     expect(parseResult.remainingHullStrength).toBe(0);
     expect(parseResult.overkillDamage).toBe(15);
+  });
+
+
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Ishol (2837352, Verlassene Bandari) nimmt 4 Schaden, Hüllenintegrität sinkt auf 398` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(1);
+    const ship = statistics.ships.getShipByNcc(2837352);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2837352);
+    expect(ship.name).toBe("Ishol");
   });
 })
