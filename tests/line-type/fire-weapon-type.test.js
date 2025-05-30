@@ -4,6 +4,7 @@ import LineTag from '../../src/enum/line-tag.js';
 import ShipNameAndNccResult from '../../src/regex/parse-result/ship-name-and-ncc-result.js';
 import BuildingResult from '../../src/regex/parse-result/building-result.js';
 import BuildingType from '../../src/enum/building-type.js';
+import Statistics from '../../src/statistics/statistics.js';
 
 describe('fire weapon type line type', () => {
   const lineTypeClass = FireWeaponType;
@@ -347,6 +348,24 @@ describe('fire weapon type line type', () => {
     expect(parseResult.weaponStrength.hullDamage).toBe(22);
     expect(parseResult.weaponStrength.energyDamage).toBe(0);
     
+  });
+
+  test("registers ships in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Vor'Cha Sverð (2353095, Vor'Cha) von ]=SLC=[ Halgar von Tronje --Sky-Vicings - (65330) schlägt Korolev U.S.S. Dracaix (2819313, Korolev) mit klingonischer Disruptor Typ chorgh und Stärke 84/94/0 zurück` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.ships.mentionedShips.length).toBe(2);
+    const ship = statistics.ships.getShipByNcc(2353095);
+    expect(ship).not.toBeNull();
+    expect(ship.ncc).toBe(2353095);
+    expect(ship.name).toBe("Sverð");
+    const ship2 = statistics.ships.getShipByNcc(2819313);
+    expect(ship2).not.toBeNull();
+    expect(ship2.ncc).toBe(2819313);
+    expect(ship2.name).toBe("U.S.S. Dracaix");
   });
 
 })

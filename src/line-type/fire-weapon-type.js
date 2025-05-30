@@ -10,6 +10,8 @@ import { pattern } from "regex";
 import FireWeaponResult from "./parse-result/fire-weapon-result.js";
 import LineTag from "../../src/enum/line-tag.js";
 import Building from "../regex/subroutine/building.js";
+import Statistics from "../statistics/statistics.js";
+import ShipNameAndNccResult from "../regex/parse-result/ship-name-and-ncc-result.js";
 
 class FireWeaponType extends GenericType {
   static _regexByLanguage = {
@@ -179,6 +181,22 @@ class FireWeaponType extends GenericType {
     resultObject.isOffensive = ["attacks", "greift"].includes(attackType);
 
     return resultObject;
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
+    // register ships
+    if(parseResult.origin instanceof ShipNameAndNccResult) {
+      statistics.ships.registerShip(parseResult.origin);
+    }
+    if(parseResult.target instanceof ShipNameAndNccResult) {
+      statistics.ships.registerShip(parseResult.target);
+    }
+    
+    return statistics;
   }
 
   static getTags() {
