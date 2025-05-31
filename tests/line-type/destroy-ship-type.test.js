@@ -13,6 +13,11 @@ describe('destroy ship line type', () => {
 
     expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
   });
+  test("detects German log line without owner positively", () => {
+    const testLogEntry = { "lang": "de", "entry": "Kontakt zu [Laburec] Trap (2306607, Klaestron) verloren! Letzte bekannte Position: 239|404" };
+
+    expect(lineTypeClass.detect(testLogEntry.entry, testLogEntry.lang)).toBe(true);
+  });
   test("detects English entry log line positively", () => {
     const testLogEntry = { "lang": "en", "entry": "Warrior OI8497 (1658087, LX710b) from Orion Syndicate (SNPC-15) was destroyed at 639|290" };
 

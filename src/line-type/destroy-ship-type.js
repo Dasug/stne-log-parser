@@ -19,8 +19,10 @@ class DestroyShipType extends GenericType {
       ^
       Kontakt\ zu\ 
       (?<ship> \g<shipAndNcc>)
-      \ von \ 
-      (?<owner> \g<playerAndId>)
+      (
+        \ von\ 
+        (?<owner> \g<playerAndId>)
+      )?
       \ verloren!\ Letzte\ bekannte\ Position:\ 
       (?<sector> \g<sectorCoordinates>)
       $
@@ -35,8 +37,10 @@ class DestroyShipType extends GenericType {
       pattern`
       ^
       (?<ship> \g<shipAndNcc>)
-      \ (?:from|by) \ 
-      (?<owner> \g<playerAndId>)
+      (
+        \ (?:from|by)\ 
+        (?<owner> \g<playerAndId>)
+      )?
       \ was\ destroyed\ at\ 
       (?<sector> \g<sectorCoordinates>)
       $
@@ -51,7 +55,7 @@ class DestroyShipType extends GenericType {
 
   static _buildResultObject(matches) {
     const ship = ShipNameAndNcc.matchResult(matches.groups.ship);
-    const owner = PlayerNameAndId.matchResult(matches.groups.owner);
+    const owner = PlayerNameAndId.matchResult(matches.groups.owner) ?? null;
     const position = MapCoordinates.matchResult(matches.groups.sector);
 
     const resultObject = new DestroyShipResult;
