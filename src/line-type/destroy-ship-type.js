@@ -72,7 +72,8 @@ class DestroyShipType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    statistics.registerShipAndOwner(parseResult.ship, parseResult.owner);
+    const {ship: ship} = statistics.registerShipAndOwner(parseResult.ship, parseResult.owner);
+    ship.destroyShip();
     
     return statistics;
   }

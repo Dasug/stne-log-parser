@@ -25,6 +25,11 @@ class IndividualShipStatistics {
    * @type {?IndividualPlayerCharacterStatistics}
    */
   #owner;
+  /**
+   * is the ship destroyed
+   * @type {boolean}
+   */
+  #isDestroyed = false;
   
   get name() {
     return this.#name ?? null;
@@ -41,9 +46,19 @@ class IndividualShipStatistics {
   get owner() {
     return this.#owner ?? null;
   }
+  get isDestroyed() {
+    return this.#isDestroyed;
+  }
 
   hasBasicData() {
     return this.name !== null && this.ncc !== null && this.shipClass !== null; 
+  }
+
+  /**
+   * mark the ship as destroyed
+   */
+  destroyShip() {
+    this.#isDestroyed = true;
   }
 
   /**

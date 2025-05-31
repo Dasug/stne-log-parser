@@ -104,4 +104,22 @@ describe('ship statistics', () => {
     expect(owner.ships.length).toBe(1);
     expect(owner.ships).toContain(ship1Statistics);
   });
+
+  test("ship destruction", () => {
+    const shipStatistics = new ShipStatistics;
+    const ship1 = new ShipNameAndNccResult;
+    ship1.name = "MyFirstShip";
+    ship1.ncc = 123456;
+    ship1.shipClass = "DY-500";
+
+    const ship2 = new ShipNameOnlyResult;
+    ship2.name = "MySecondShip";
+    
+    const ship1Stats = shipStatistics.registerShip(ship1);
+    const ship2Stats = shipStatistics.registerShip(ship2);
+
+    ship1Stats.destroyShip();
+    expect(shipStatistics.destroyedShips).toContain(ship1Stats);
+    expect(shipStatistics.destroyedShips).not.toContain(ship2Stats);
+  });
 });

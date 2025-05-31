@@ -27,6 +27,10 @@ class ShipStatistics {
     return this.#ships.slice();
   }
 
+  get destroyedShips() {
+    return this.#ships.filter(ship => ship.isDestroyed);
+  }
+
   /**
    * checks if ship with given NCC is known
    * @param {Number} ncc the ship's NCC number
