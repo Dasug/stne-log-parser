@@ -12,6 +12,7 @@ import LineTag from "../../src/enum/line-tag.js";
 import HangarMovementResult from "./parse-result/hangar-movement-result.js";
 import ShipNameAndNccResult from "../regex/parse-result/ship-name-and-ncc-result.js";
 import ShipNameOnlyResult from "../regex/parse-result/ship-name-only-result.js";
+import Statistics from "../statistics/statistics.js";
 
 class EnterHangarType extends GenericType {
   static _regexByLanguage = {
@@ -81,17 +82,8 @@ class EnterHangarType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    // register ships
-    if(parseResult.ship instanceof ShipNameAndNccResult) {
-      statistics.ships.registerShip(parseResult.ship);
-    }
-    if(parseResult.carrier instanceof ShipNameAndNccResult || parseResult.carrier instanceof ShipNameOnlyResult) {
-      statistics.ships.registerShip(parseResult.carrier);
-    }
-
-    if(parseResult.owner !== null) {
-      statistics.playerCharacters.registerPlayerCharacter(parseResult.owner);
-    }
+    statistics.registerShipAndOwner(parseResult.ship, parseResult.owner);
+    statistics.ships.registerShip(parseResult.carrier);
     
     return statistics;
   }

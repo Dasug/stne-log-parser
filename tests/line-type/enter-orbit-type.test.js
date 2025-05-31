@@ -117,4 +117,17 @@ describe('enter orbit line type', () => {
     expect(playerCharacter.id).toBe(73324);
     expect(playerCharacter.name).toBe("DavoRian82");
   });
+
+  test("registers ship ownership in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`SHR New Horizon (2383586, DY-500) von DavoRian82 (73324) ist aus dem Orbit von Hydrolion (80940) bei 654|247 ausgetreten.` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    const ship = statistics.ships.getShipByNcc(2383586);
+    const player = statistics.playerCharacters.getPlayerCharacterById(73324);
+    expect(ship.owner).toBe(player);
+    expect(player.ships).toContain(ship);
+  });
 })

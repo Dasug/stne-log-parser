@@ -75,14 +75,9 @@ class UndockingType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    // register ships
-    statistics.ships.registerShip(parseResult.ship);
+    statistics.registerShipAndOwner(parseResult.ship, parseResult.owner);
     statistics.ships.registerShip(parseResult.station);
 
-    if(parseResult.owner !== null) {
-      statistics.playerCharacters.registerPlayerCharacter(parseResult.owner);
-    }
-    
     return statistics;
   }
 

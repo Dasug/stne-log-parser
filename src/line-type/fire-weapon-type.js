@@ -188,17 +188,8 @@ class FireWeaponType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    // register ships
-    if(parseResult.origin instanceof ShipNameAndNccResult) {
-      statistics.ships.registerShip(parseResult.origin);
-    }
-    if(parseResult.target instanceof ShipNameAndNccResult) {
-      statistics.ships.registerShip(parseResult.target);
-    }
-
-    if(parseResult.owner !== null) {
-      statistics.playerCharacters.registerPlayerCharacter(parseResult.owner);
-    }
+    statistics.registerShipAndOwner(parseResult.origin, parseResult.owner);
+    statistics.ships.registerShip(parseResult.target);
     
     return statistics;
   }

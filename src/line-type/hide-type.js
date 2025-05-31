@@ -71,12 +71,7 @@ class HideType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    // register ship
-    statistics.ships.registerShip(parseResult.ship);
-
-    if(parseResult.owner !== null) {
-      statistics.playerCharacters.registerPlayerCharacter(parseResult.owner);
-    }
+    statistics.registerShipAndOwner(parseResult.ship, parseResult.owner);
     
     return statistics;
   }

@@ -106,4 +106,17 @@ describe('collect resources line type', () => {
     expect(playerCharacter.id).toBe(72439);
     expect(playerCharacter.name).toBe("[]U.C.W[] DeMaNDrED");
   });
+
+  test("registers ship ownership in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`TX0XT= DrEADsTAR (NX-1867924, Iowa Typ Z) von []U.C.W[] DeMaNDrED (72439) hat 838 Deuterium eingesaugt` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    const ship = statistics.ships.getShipByNcc(1867924);
+    const player = statistics.playerCharacters.getPlayerCharacterById(72439);
+    expect(ship.owner).toBe(player);
+    expect(player.ships).toContain(ship);
+  });
 });

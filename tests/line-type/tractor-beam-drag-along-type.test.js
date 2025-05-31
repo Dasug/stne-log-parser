@@ -89,4 +89,17 @@ describe('tractor beam drag along line type', () => {
     expect(playerCharacter.id).toBe(56813);
     expect(playerCharacter.name).toBe("Kôntránisches VerwaltungsAmt [PeaceInUkraine]");
   });
+
+  test("registers ship ownership in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Glanz & Gloria (2642114, Kairos) von Kôntránisches VerwaltungsAmt [PeaceInUkraine] (56813) wird im Traktorstrahl hinterhergezogen.` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    const ship = statistics.ships.getShipByNcc(2642114);
+    const player = statistics.playerCharacters.getPlayerCharacterById(56813);
+    expect(ship.owner).toBe(player);
+    expect(player.ships).toContain(ship);
+  });
 })

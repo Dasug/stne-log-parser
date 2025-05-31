@@ -97,4 +97,17 @@ describe('activate weapons line type', () => {
     expect(playerCharacter.id).toBe(75323);
     expect(playerCharacter.name).toBe("||acw||PRIAM");
   });
+
+  test("registers ship ownership in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Drelio (2307399, Darinaya) von ||acw||PRIAM (75323) aktiviert die Waffensysteme` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    const ship = statistics.ships.getShipByNcc(2307399);
+    const player = statistics.playerCharacters.getPlayerCharacterById(75323);
+    expect(ship.owner).toBe(player);
+    expect(player.ships).toContain(ship);
+  });
 })

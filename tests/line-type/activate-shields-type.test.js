@@ -91,4 +91,17 @@ describe('activate shields line type', () => {
     expect(playerCharacter.id).toBe(28076);
     expect(playerCharacter.name).toBe("Mortarion [OBV] * * *");
   });
+
+  test("registers ship ownership in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`TS-4465-O-6465 (1372249, -) von Mortarion [OBV] * * * (28076) aktiviert die Schilde` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    const ship = statistics.ships.getShipByNcc(1372249);
+    const player = statistics.playerCharacters.getPlayerCharacterById(28076);
+    expect(ship.owner).toBe(player);
+    expect(player.ships).toContain(ship);
+  });
 })

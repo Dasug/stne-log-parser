@@ -96,4 +96,17 @@ describe('sector entry line type', () => {
     expect(playerCharacter.id).toBe(75604);
     expect(playerCharacter.name).toBe("Systemlord Apophis");
   });
+
+  test("registers ship ownership in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Rohrfliege (2683217, Pegasus) von Systemlord Apophis (75604) ist in Sektor 123|456 eingeflogen` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    const ship = statistics.ships.getShipByNcc(2683217);
+    const player = statistics.playerCharacters.getPlayerCharacterById(75604);
+    expect(ship.owner).toBe(player);
+    expect(player.ships).toContain(ship);
+  });
 })

@@ -89,4 +89,17 @@ describe('main computer crash line type', () => {
     expect(playerCharacter.id).toBe(76936);
     expect(playerCharacter.name).toBe("Die Verdammten");
   });
+
+  test("registers ship ownership in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Paiso (2831277, Verlassenes Tug) von Die Verdammten (NPC-76936) ist der Hauptcomputer abgestürzt!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    const ship = statistics.ships.getShipByNcc(2831277);
+    const player = statistics.playerCharacters.getPlayerCharacterById(76936);
+    expect(ship.owner).toBe(player);
+    expect(player.ships).toContain(ship);
+  });
 })

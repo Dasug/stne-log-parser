@@ -108,19 +108,12 @@ class BeamResourcesType extends GenericType {
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
     // register ships
-    if(parseResult.ship instanceof ShipNameAndNccResult || parseResult.beamTarget instanceof ShipNameOnlyResult) {
-      const registeredShip = statistics.ships.registerShip(parseResult.ship);
-      if(registeredShip.ncc === null && parseResult.ncc !== null) {
-        statistics.ships.updateShipNcc(registeredShip, parseResult.ncc);
-      }
-    }
-    if(parseResult.beamTarget instanceof ShipNameAndNccResult || parseResult.beamTarget instanceof ShipNameOnlyResult) {
-      statistics.ships.registerShip(parseResult.beamTarget);
+    const {ship: registeredShip} = statistics.registerShipAndOwner(parseResult.ship, parseResult.owner);
+    if(registeredShip.ncc === null && parseResult.ncc !== null) {
+      statistics.ships.updateShipNcc(registeredShip, parseResult.ncc);
     }
     
-    if(parseResult.owner !== null) {
-      statistics.playerCharacters.registerPlayerCharacter(parseResult.owner);
-    }
+    statistics.ships.registerShip(parseResult.beamTarget);
     
     return statistics;
   }

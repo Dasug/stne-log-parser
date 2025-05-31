@@ -68,4 +68,17 @@ describe('tractor beam struggle line type', () => {
     expect(playerCharacter.id).toBe(34108);
     expect(playerCharacter.name).toBe("[]U.C.W[] Scorga Empire");
   });
+
+  test("registers ship ownership in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Traktorstrahl auf [Scout] Pibag (2882829, Sonde) von []U.C.W[] Scorga Empire (34108) gerichtet` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    const ship = statistics.ships.getShipByNcc(2882829);
+    const player = statistics.playerCharacters.getPlayerCharacterById(34108);
+    expect(ship.owner).toBe(player);
+    expect(player.ships).toContain(ship);
+  });
 })

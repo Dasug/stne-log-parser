@@ -9,6 +9,7 @@ import { pattern } from "regex";
 import LineTag from "../../src/enum/line-tag.js";
 import ActivateWeaponsResult from "./parse-result/activate-weapons-result.js";
 import WeaponsState from "../enum/weapons-state.js";
+import Statistics from "../statistics/statistics.js";
 
 class ActivateWeaponsType extends GenericType {
   static _regexByLanguage = {
@@ -68,11 +69,7 @@ class ActivateWeaponsType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    // register ship
-    statistics.ships.registerShip(parseResult.ship);
-    if(parseResult.owner !== null) {
-      statistics.playerCharacters.registerPlayerCharacter(parseResult.owner);
-    }
+    statistics.registerShipAndOwner(parseResult.ship, parseResult.owner);
     
     return statistics;
   }
