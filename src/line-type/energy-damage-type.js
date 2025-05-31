@@ -9,6 +9,7 @@ import LineTag from "../../src/enum/line-tag.js";
 import EnergyDamageResult from "./parse-result/energy-damage-result.js";
 import Statistics from "../statistics/statistics.js";
 import ShipNameAndNccResult from "../regex/parse-result/ship-name-and-ncc-result.js";
+import IndividualShipStatistics from "../statistics/individual-ship-statistics.js";
 
 class EnergyDamageType extends GenericType {
   static _regexByLanguage = {
@@ -90,7 +91,12 @@ class EnergyDamageType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    statistics.register(parseResult.ship);
+    /**
+    * @type {[IndividualShipStatistics]}
+    */
+    const [ship] = statistics.register(parseResult.ship);
+
+    ship.applyEnergyDamage(parseResult.energyDamage);
         
     return statistics;
   }

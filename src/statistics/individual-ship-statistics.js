@@ -30,6 +30,26 @@ class IndividualShipStatistics {
    * @type {boolean}
    */
   #isDestroyed = false;
+  /**
+   * how much shield damage has the ship received?
+   * @type {Number}
+   */
+  #hullDamageReceived = 0;
+  /**
+   * how much energy damage has the ship received?
+   * @type {Number}
+   */
+  #energyDamageReceived = 0;
+  /**
+   * how much shield damage has the ship received?
+   * @type {Number}
+   */
+  #shieldDamageReceived = 0;
+  /**
+   * how much damage was wasted by overkilling the ship?
+   * @type {Number}
+   */
+  #overkillDamageReceived = 0;
   
   get name() {
     return this.#name ?? null;
@@ -49,6 +69,18 @@ class IndividualShipStatistics {
   get isDestroyed() {
     return this.#isDestroyed;
   }
+  get hullDamageReceived() {
+    return this.#hullDamageReceived;
+  }
+  get energyDamageReceived() {
+    return this.#energyDamageReceived;
+  }
+  get shieldDamageReceived() {
+    return this.#shieldDamageReceived;
+  }
+  get overkillDamageReceived() {
+    return this.#overkillDamageReceived;
+  }
 
   hasBasicData() {
     return this.name !== null && this.ncc !== null && this.shipClass !== null; 
@@ -59,6 +91,38 @@ class IndividualShipStatistics {
    */
   destroyShip() {
     this.#isDestroyed = true;
+  }
+
+  /**
+   * apply hull damage to a ship
+   * @param {Number} damage amount of hull damage received
+   */
+  applyHullDamage(damage) {
+    this.#hullDamageReceived += damage;
+  }
+
+  /**
+   * apply shield damage to a ship
+   * @param {Number} damage amount of shield damage received
+   */
+  applyShieldDamage(damage) {
+    this.#shieldDamageReceived += damage;
+  }
+
+  /**
+   * apply energy damage to a ship
+   * @param {Number} damage amount of energy damage received
+   */
+  applyEnergyDamage(damage) {
+    this.#energyDamageReceived += damage;
+  }
+
+  /**
+   * apply overkill damage to a ship
+   * @param {Number} damage amount of overkill damage received
+   */
+  applyOverkillDamage(damage) {
+    this.#overkillDamageReceived += damage;
   }
 
   /**

@@ -8,6 +8,7 @@ import { pattern } from "regex";
 import LineTag from "../../src/enum/line-tag.js";
 import HullDamageResult from "./parse-result/hull-damage-result.js";
 import Statistics from "../statistics/statistics.js";
+import IndividualShipStatistics from "../statistics/individual-ship-statistics.js";
 
 class HullDamageType extends GenericType {
   static _regexByLanguage = {
@@ -65,7 +66,13 @@ class HullDamageType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    statistics.register(parseResult.ship);
+    /**
+    * @type {[IndividualShipStatistics]}
+    */
+    const [ship] = statistics.register(parseResult.ship);
+
+    ship.applyHullDamage(parseResult.hullDamage);
+    ship.applyOverkillDamage(parseResult.overkillDamage);
     
     return statistics;
   }
