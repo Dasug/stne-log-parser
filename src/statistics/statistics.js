@@ -7,6 +7,20 @@ import IndividualPlayerCharacterStatistics from "./individual-player-character-s
 import IndividualShipStatistics from "./individual-ship-statistics.js";
 import PlayerCharacterStatistics from "./player-character-statistics.js";
 import ShipStatistics from "./ship-statistics.js";
+/**
+ * A parse result of a ship, either with only name or with name and NCC and class
+ * @typedef {ShipNameAndNccResult|ShipNameOnlyResult} ShipParseResult
+ */
+
+/**
+ * A parse result that can be registered in the statistics
+ * @typedef {ShipResult|PlayerNameAndIdResult} RegisterableParseResult
+ */
+
+/**
+ * Statistics object for an individual object
+ * @typedef {IndividualPlayerCharacterStatistics|IndividualShipStatistics} IndividualStatisticsObject
+ */
 
 class Statistics {
   /**
@@ -39,6 +53,23 @@ class Statistics {
       shipStatistics.setOwner(ownerStatistics);
     }
     return {ship: shipStatistics, owner: ownerStatistics};
+  }
+
+  /**
+   * shorthand to register any number of registerable parse result, will be sent to the proper registration functions
+   * @param  {...?RegisterableParseResult} parseResultObjects parse result objects to register
+   * @returns {(?IndividualStatisticsObject)[]} statistics objects for the registered objects or null if not registerable
+   */
+  register(...parseResultObjects) {
+    return parseResultObjects.map(parseResult => {
+      if(parseResult instanceof ShipNameAndNccResult || parseResult instanceof ShipNameOnlyResult) {
+        return this.ships.registerShip(parseResult);
+      }
+      if(parseResult instanceof PlayerNameAndIdResult) {
+        return this.playerCharacters.registerPlayerCharacter(parseResult);
+      }
+      return null;
+    });
   }
 
   constructor() {
