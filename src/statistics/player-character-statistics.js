@@ -50,11 +50,14 @@ class PlayerCharacterStatistics {
 
   /**
    * registers or updates a player character to create statistics
-   * @param {PlayerNameAndIdResult} player player character to be registered
+   * @param {?PlayerNameAndIdResult} player player character to be registered
    * @throws {TypeError} player character must be a valid type
    * @returns {IndividualPlayerCharacterStatistics} registered or updated player character statistics object
    */
   registerPlayerCharacter(playerCharacter) {
+    if(playerCharacter === null || typeof playerCharacter === "undefined") {
+      return;
+    }
     if (!(playerCharacter instanceof PlayerNameAndIdResult)) {
       throw new TypeError("player character is not a valid player character parse result");
     }

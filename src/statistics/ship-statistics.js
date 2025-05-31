@@ -79,11 +79,14 @@ class ShipStatistics {
 
   /**
    * registers or updates a ship to create statistics
-   * @param {ShipNameAndNccResult|ShipNameOnlyResult} ship Ship to be registered
+   * @param {ShipNameAndNccResult|ShipNameOnlyResult|null} ship Ship to be registered
    * @throws {TypeError} Ship must be a valid type
    * @returns {IndividualShipStatistics} registered or updates ship statistics object
    */
   registerShip(ship) {
+    if(ship === null || typeof ship === "undefined") {
+      return;
+    }
     if(!(ship instanceof ShipNameAndNccResult) && !(ship instanceof ShipNameOnlyResult)) {
       throw new TypeError("ship is not a valid ship type");
     }
