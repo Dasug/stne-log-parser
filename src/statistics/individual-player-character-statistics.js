@@ -1,12 +1,26 @@
 "use strict";
 
 import PlayerNameAndIdResult from "../regex/parse-result/player-name-and-id-result.js";
+import IndividualShipStatistics from "./individual-ship-statistics.js";
 
 class IndividualPlayerCharacterStatistics {
+  /**
+   * @type {?String}
+   */
   #name;
+  /**
+   * @type {?Number}
+   */
   #id;
+  /**
+   * @type {?String}
+   */
   #idPrefix;
-  
+  /**
+   * @type {IndividualShipStatistics[]}
+   */
+  #ships = [];
+
   get name() {
     return this.#name ?? null;
   }
@@ -15,6 +29,10 @@ class IndividualPlayerCharacterStatistics {
   }
   get idPrefix() {
     return this.#idPrefix ?? null;
+  }
+  get ships() {
+    // return a shallow copy to prevent modification
+    return this.#ships.slice();
   }
 
   /**
@@ -27,6 +45,25 @@ class IndividualPlayerCharacterStatistics {
     this.#name = playerParseResult.name;
     this.#id = playerParseResult.id;
     this.#idPrefix = playerParseResult.idPrefix;
+  }
+
+  /**
+   * Add ship to a user.
+   * Do not use outside of {@link IndividualShipStatistics#setOwner}. Doing so will break the two-way link!
+   * @param {IndividualShipStatistics} ship Ship to add to this user
+   */
+  _addShip(ship) {
+    if(this.#ships.findIndex(s => {
+      if(s.ncc === null) {
+        return s.name === ship.name;
+      }
+      return s.ncc === ship.ncc;
+    }) !== -1) {
+      // ship already in list, skipping
+      return;
+    }
+
+    this.#ships.push(ship);
   }
   
   constructor() {

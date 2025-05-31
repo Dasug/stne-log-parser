@@ -2,12 +2,29 @@
 
 import ShipNameAndNccResult from "../regex/parse-result/ship-name-and-ncc-result.js";
 import ShipNameOnlyResult from "../regex/parse-result/ship-name-only-result.js";
+import IndividualPlayerCharacterStatistics from "./individual-player-character-statistics.js";
 
 class IndividualShipStatistics {
+  /**
+   * @type {?String}
+   */
   #name;
+  /**
+   * @type {?Number}
+   */
   #ncc;
+  /**
+   * @type {?String}
+   */
   #nccPrefix;
+  /**
+   * @type {?String}
+   */
   #shipClass;
+  /**
+   * @type {?IndividualPlayerCharacterStatistics}
+   */
+  #owner;
   
   get name() {
     return this.#name ?? null;
@@ -20,6 +37,9 @@ class IndividualShipStatistics {
   }
   get shipClass() {
     return this.#shipClass ?? null;
+  }
+  get owner() {
+    return this.#owner ?? null;
   }
 
   hasBasicData() {
@@ -51,6 +71,16 @@ class IndividualShipStatistics {
     } else if(shipParseResult instanceof ShipNameOnlyResult) {
       this.#name = shipParseResult.name;
     }
+  }
+
+  /**
+   * Marks the owner of this ship.
+   * Does not perform player character registration so make sure the owner is registered first using {@link PlayerCharacterStatistics#registerPlayerCharacter} if you want them to be registered.
+   * @param {IndividualPlayerCharacterStatistics} playerCharacter player character that owns this ship
+   */
+  setOwner(playerCharacter) {
+    this.#owner = playerCharacter;
+    playerCharacter._addShip(this);
   }
   
   constructor() {

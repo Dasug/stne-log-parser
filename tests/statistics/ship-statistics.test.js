@@ -4,6 +4,8 @@ import LogDirection from '../../src/enum/log-direction.js';
 import ShipNameAndNccResult from '../../src/regex/parse-result/ship-name-and-ncc-result.js';
 import ShipStatistics from '../../src/statistics/ship-statistics.js';
 import ShipNameOnlyResult from '../../src/regex/parse-result/ship-name-only-result.js';
+import IndividualPlayerCharacterStatistics from '../../src/statistics/individual-player-character-statistics.js';
+import PlayerNameAndIdResult from '../../src/regex/parse-result/player-name-and-id-result.js';
 
 describe('ship statistics', () => {
   test("registers ships correctly", () => {
@@ -78,5 +80,28 @@ describe('ship statistics', () => {
     expect(firstShipStatistics.ncc).toBe(123456);
     expect(firstShipStatistics.shipClass).toBe("DY-500");
     expect(registration.shipClass).toBe("DY-500");
+  });
+
+  test("ship owner registration", () => {
+    const shipStatistics = new ShipStatistics;
+    const ship1 = new ShipNameAndNccResult;
+    ship1.name = "MyFirstShip";
+    ship1.ncc = 123456;
+    ship1.shipClass = "DY-500";
+
+    const ownerParseResult = new PlayerNameAndIdResult;
+    ownerParseResult.id = 34108;
+    ownerParseResult.name = "[]U.C.W[] Scorga Empire";
+    const owner = new IndividualPlayerCharacterStatistics;
+    owner._updateDataFromParseResult(ownerParseResult);
+    
+    const ship1Statistics = shipStatistics.registerShip(ship1);
+    ship1Statistics.setOwner(owner);
+
+    expect(ship1Statistics.owner.id).toBe(34108);
+    expect(ship1Statistics.owner.name).toBe("[]U.C.W[] Scorga Empire");
+
+    expect(owner.ships.length).toBe(1);
+    expect(owner.ships).toContain(ship1Statistics);
   });
 });
