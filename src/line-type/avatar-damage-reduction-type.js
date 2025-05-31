@@ -60,13 +60,7 @@ class AvatarDamageReductionType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    // register ship
-    if(parseResult.origin instanceof ShipNameAndNccResult) {
-      statistics.ships.registerShip(parseResult.origin);
-    }
-    if(parseResult.target instanceof ShipNameAndNccResult) {
-      statistics.ships.registerShip(parseResult.target);
-    }
+    statistics.register(parseResult.origin, parseResult.target);
     
     return statistics;
   }

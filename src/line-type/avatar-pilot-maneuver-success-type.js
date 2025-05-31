@@ -50,13 +50,7 @@ class AvatarPilotManeuverSuccessType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    // register ships
-    if(parseResult.ship instanceof ShipNameAndNccResult) {
-      statistics.ships.registerShip(parseResult.ship);
-    }
-    if(parseResult.target instanceof ShipNameAndNccResult) {
-      statistics.ships.registerShip(parseResult.target);
-    }
+    statistics.register(parseResult.ship, parseResult.target);
     
     return statistics;
   }

@@ -189,7 +189,7 @@ class FireWeaponType extends GenericType {
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
     statistics.registerShipAndOwner(parseResult.origin, parseResult.owner);
-    statistics.ships.registerShip(parseResult.target);
+    statistics.register(parseResult.target);
     
     return statistics;
   }

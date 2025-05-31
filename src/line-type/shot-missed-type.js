@@ -62,10 +62,7 @@ class ShotMissedType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    // register ship
-    if(parseResult.origin instanceof ShipNameAndNccResult) {
-      statistics.ships.registerShip(parseResult.origin);
-    }
+    statistics.register(parseResult.origin);
     
     return statistics;
   }

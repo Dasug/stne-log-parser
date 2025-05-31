@@ -48,8 +48,7 @@ class SalvageType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    // register ship
-    statistics.ships.registerShip(parseResult.debrisField);
+    statistics.register(parseResult.debrisField);
     
     return statistics;
   }

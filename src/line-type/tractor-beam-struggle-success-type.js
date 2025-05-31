@@ -39,8 +39,7 @@ class TractorBeamStruggleSuccessType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    // register ship
-    statistics.ships.registerShip(parseResult.target);
+    statistics.register(parseResult.target);
     
     return statistics;
   }

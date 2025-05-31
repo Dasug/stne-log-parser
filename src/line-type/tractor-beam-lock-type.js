@@ -49,9 +49,7 @@ class TractorBeamLockType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    // register ships
-    statistics.ships.registerShip(parseResult.ship);
-    statistics.ships.registerShip(parseResult.target);
+    statistics.register(parseResult.ship, parseResult.target);
     
     return statistics;
   }

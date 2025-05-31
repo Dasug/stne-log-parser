@@ -53,10 +53,7 @@ class AvatarDecoyDroneFailureType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    // register ship
-    if(parseResult.opponent instanceof ShipNameAndNccResult) {
-      statistics.ships.registerShip(parseResult.opponent);
-    }
+    statistics.register(parseResult.opponent);
     
     return statistics;
   }

@@ -46,8 +46,7 @@ class EnvironmentCeruleanType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    // register ships
-    statistics.ships.registerShip(parseResult.ship);
+    statistics.register(parseResult.ship);
     
     return statistics;
   }

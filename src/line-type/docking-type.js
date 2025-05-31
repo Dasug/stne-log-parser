@@ -78,9 +78,8 @@ class DockingType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    // register ships
     statistics.registerShipAndOwner(parseResult.ship, parseResult.owner);
-    statistics.ships.registerShip(parseResult.station);
+    statistics.register(parseResult.station);
     
     return statistics;
   }

@@ -44,8 +44,7 @@ class SystemBlockadeCaughtType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    // register ship
-    statistics.ships.registerShip(parseResult.ship);
+    statistics.register(parseResult.ship);
     
     return statistics;
   }

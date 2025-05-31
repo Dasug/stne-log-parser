@@ -47,10 +47,7 @@ class AvatarPilotManeuverCooldownType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    // register ship
-    if(parseResult.target instanceof ShipNameAndNccResult) {
-      statistics.ships.registerShip(parseResult.target);
-    }
+    statistics.register(parseResult.target);
     
     return statistics;
   }

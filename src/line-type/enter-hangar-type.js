@@ -83,7 +83,7 @@ class EnterHangarType extends GenericType {
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
     statistics.registerShipAndOwner(parseResult.ship, parseResult.owner);
-    statistics.ships.registerShip(parseResult.carrier);
+    statistics.register(parseResult.carrier);
     
     return statistics;
   }

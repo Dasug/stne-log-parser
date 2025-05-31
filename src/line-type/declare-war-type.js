@@ -39,7 +39,6 @@ class DeclareWarType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    // register player
     statistics.playerCharacters.registerPlayerCharacter(parseResult.player);
     
     return statistics;
