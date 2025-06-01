@@ -1,4 +1,4 @@
-import { beforeAll, describe, expect, test } from '@jest/globals';
+import { afterAll, beforeAll, describe, expect, test } from '@jest/globals';
 import LogLine from '../src/log-line.js';
 import FireWeaponType from '../src/line-type/fire-weapon-type.js';
 import FireWeaponResult from '../src/line-type/parse-result/fire-weapon-result.js';
@@ -8,6 +8,9 @@ describe('log line', () => {
     LogLine.overrideLogLineTypes([
       FireWeaponType,
     ]);
+  });
+  afterAll(() => {
+    LogLine.resetLogLineTypes();
   });
 
   test("detects log line correctly", () => {
