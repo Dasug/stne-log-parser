@@ -50,6 +50,11 @@ class IndividualShipStatistics {
    * @type {Number}
    */
   #overkillDamageReceived = 0;
+  /**
+   * how much damage was absorbed by the ship's armor?
+   * @type {Number}
+   */
+  #armorAbsorption = 0;
   
   get name() {
     return this.#name ?? null;
@@ -80,6 +85,9 @@ class IndividualShipStatistics {
   }
   get overkillDamageReceived() {
     return this.#overkillDamageReceived;
+  }
+  get armorAbsorption() {
+    return this.#armorAbsorption;
   }
 
   hasBasicData() {
@@ -123,6 +131,14 @@ class IndividualShipStatistics {
    */
   applyOverkillDamage(damage) {
     this.#overkillDamageReceived += damage;
+  }
+
+  /**
+   * apply armor damage absorption to a ship
+   * @param {Number} damage amount damage absorbed by armor
+   */
+  applyArmorAbsorption(damage) {
+    this.#armorAbsorption += damage;
   }
 
   /**

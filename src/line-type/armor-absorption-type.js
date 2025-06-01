@@ -58,7 +58,8 @@ class ArmorAbsorptionType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    statistics.register(parseResult.ship);
+    const [ship] = statistics.register(parseResult.ship);
+    ship.applyArmorAbsorption(parseResult.armorAbsorption);
     
     return statistics;
   }
