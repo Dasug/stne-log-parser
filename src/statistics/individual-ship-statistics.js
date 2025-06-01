@@ -55,6 +55,21 @@ class IndividualShipStatistics {
    * @type {Number}
    */
   #armorAbsorption = 0;
+  /**
+   * which ship of other object has this ship been destroyed by?
+   * @type {?IndividualShipStatistics}
+   */
+  #destroyer;
+  /**
+   * which weapon has this ship been destroyed by?
+   * @type {?IndividualShipStatistics}
+   */
+  #destroyedByWeapon;
+  /**
+   * which ships of other objects has this ship destroyed
+   * @type {(?IndividualShipStatistics)[]}
+   */
+  #destroyed = [];
   
   get name() {
     return this.#name ?? null;
@@ -89,6 +104,21 @@ class IndividualShipStatistics {
   get armorAbsorption() {
     return this.#armorAbsorption;
   }
+  get destroyer() {
+    return this.#destroyer ?? null;
+  }
+  get destroyedByWeapon() {
+    return this.#destroyedByWeapon ?? null;
+  }
+  get destroyed() {
+    return this.#destroyed;
+  }
+  /**
+   * @returns {Number} number of objetcs this ship has destroyed
+   */
+  get destroyedNum() {
+    return this.#destroyed.length;
+  }
 
   hasBasicData() {
     return this.name !== null && this.ncc !== null && this.shipClass !== null; 
@@ -99,6 +129,30 @@ class IndividualShipStatistics {
    */
   destroyShip() {
     this.#isDestroyed = true;
+  }
+
+  /**
+   * Sets the destroyer of this ship
+   * @param {?IndividualShipStatistics} destroyer ship or other object that destroyed this ship 
+   */
+  setDestroyer(destroyer) {
+    this.#destroyer = destroyer;
+  }
+
+  /**
+   * Sets the weapon this ship was destroyed by
+   * @param {?String} weapon weapon that this ship was destroyed by 
+   */
+  setDestroyedByWeapon(weapon) {
+    this.#destroyedByWeapon  = weapon;
+  }
+
+  /**
+   * Adds a ship or other object to the list of objects destroyed by this ship
+   * @param {?IndividualShipStatistics} destroyed ship or other object 
+   */
+  addDestroyedObject(destroyedObject) {
+    this.#destroyed.push(destroyedObject);
   }
 
   /**

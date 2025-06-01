@@ -75,6 +75,8 @@ class LogEntry {
     const statistics = new Statistics;
     statistics.register(this.player);
     this.parsedLines.forEach(/** @var {LogLine} */ line => line.populateStatistics(statistics));
+    const attacks = this.findAttacks();
+    statistics.processAttacks(attacks);
 
     this.#statistics = statistics;
 
@@ -89,6 +91,9 @@ class LogEntry {
   populateStatistics(statistics) {
     statistics.register(this.player);
     this.parsedLines.forEach(/** @var {LogLine} */ line => line.populateStatistics(statistics));
+    const attacks = this.findAttacks();
+    statistics.processAttacks(attacks);
+    
     return statistics;
   }
 

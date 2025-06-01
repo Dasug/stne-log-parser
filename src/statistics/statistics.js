@@ -1,5 +1,7 @@
 "use strict";
 
+import LineTag from "../enum/line-tag.js";
+import LogLine from "../log-line.js";
 import PlayerNameAndIdResult from "../regex/parse-result/player-name-and-id-result.js";
 import ShipNameAndNccResult from "../regex/parse-result/ship-name-and-ncc-result.js";
 import ShipNameOnlyResult from "../regex/parse-result/ship-name-only-result.js";
@@ -70,6 +72,53 @@ class Statistics {
       }
       return null;
     });
+  }
+
+  /**
+   * finds the first lig line containing the given tag
+   * @param {LogLine[]} attack log lines to search for the tag
+   * @param {LineTag} tag tag to search for
+   * @returns {?LogLine}
+   */
+  #attackGetLineByTag(attack, tag) {
+    return attack.filter(/** @var {logLine} */ line => line.tags.includes(tag))[0] ?? null;
+  }
+  /**
+   * Processes the destruction of a ship
+   * @param {?IndividualShipStatistics} shotOrigin origin object that fired the shot 
+   * @param {LogLine} shipDestructionLine line in which the ship was destroyed
+   * @param {LogLine} weaponShotLine line in which the weapon was shot
+   */
+  #processShipDestruction(shotOrigin, shipDestructionLine, weaponShotLine) {
+    if(shipDestructionLine !== null) {
+      const [destroyedShip] = this.register(shipDestructionLine.parseResult.ship);
+      destroyedShip.setDestroyer(shotOrigin);
+      if(shotOrigin instanceof IndividualShipStatistics) {
+        shotOrigin.addDestroyedObject(destroyedShip);
+      }
+      destroyedShip.setDestroyedByWeapon(weaponShotLine?.parseResult?.weaponName);
+    }
+  }
+
+  /**
+   * 
+   * @param {LogLine[]} attack array of log lines constituting a single attack.
+   * @see {@link LogEntry#findAttacks}
+   */
+  processAttack(attack) {
+    const weaponShotLine = this.#attackGetLineByTag(attack, LineTag.weaponShot);
+    if(weaponShotLine === null) {
+      return;
+    }
+    const [shotOrigin] = this.register(weaponShotLine.parseResult?.origin);
+    const shipDestructionLine = this.#attackGetLineByTag(attack, LineTag.shipDestruction);
+    if(shipDestructionLine !== null) {
+      this.#processShipDestruction(shotOrigin, shipDestructionLine, weaponShotLine);
+    }
+  }
+
+  processAttacks(attacks) {
+    attacks.forEach(attack => this.processAttack(attack));
   }
 
   constructor() {
