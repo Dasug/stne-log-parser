@@ -2,6 +2,7 @@
   "jest.nodeEnv": {
     "NODE_OPTIONS": "--experimental-vm-modules"
   },
+  "jest.jestCommandLine": "yarn test",
   "javascript.preferences.importModuleSpecifierEnding": "js",
   "typescript.preferences.importModuleSpecifierEnding": "js",
 }

@@ -30,6 +30,12 @@
       "@babel/preset-env"
     ]
   },
+  "jest": {
+    "transform": {},
+    "setupFilesAfterEnv": [
+      "./tests/setupTests.js"
+    ]
+  },
   "dependencies": {
     "dayjs": "^1.11.13",
     "enumify": "^2.0.0",
