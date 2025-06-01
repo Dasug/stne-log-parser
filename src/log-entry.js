@@ -72,6 +72,7 @@ class LogEntry {
    */
   buildStatistics() {
     const statistics = new Statistics;
+    statistics.register(this.player);
     this.parsedLines.forEach(/** @var {LogLine} */ line => line.populateStatistics(statistics));
 
     this.#statistics = statistics;
@@ -85,6 +86,7 @@ class LogEntry {
    * @returns {Statistics} statistics object populated with this log entry's statistics
    */
   populateStatistics(statistics) {
+    statistics.register(this.player);
     this.parsedLines.forEach(/** @var {LogLine} */ line => line.populateStatistics(statistics));
     return statistics;
   }
