@@ -76,7 +76,7 @@ lineTypeClass
     expect(ship.name).toBe("U.S.S. Dracaix");
   });
 
-  test("registers armir absorption in statistics", () => {
+  test("registers armor absorption in statistics", () => {
     const statistics = new Statistics;
     const testLogEntry = { "lang": "de", "entry": String.raw`Panzerung von U.S.S. Dracaix (2819313, Korolev) schwächt Angriff um 1 Punkte` };
     const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
