@@ -6,6 +6,8 @@ import LineTag from "./enum/line-tag.js";
 import Statistics from "./statistics/statistics.js";
 
 class LogLine {
+  static #logLineTypes = lineTypes;
+
   #language = null;
   #detected = false;
   #line = "";
@@ -49,6 +51,34 @@ class LogLine {
   get tags() { return this.#lineParser?.getTags() ?? []; }
 
   /**
+   * get the log line types that are loaded
+   * @returns {GenericType[]}
+   */
+  static get lineTypes() {
+    return this.#logLineTypes;
+  }
+
+  /**
+   * Overrides the log line types to use for parsing the log lines.
+   * Use this method if you want to use log parsing in a test
+   * as jest cannot load them in the usual way and you normally
+   * won't need all of them anyways for testing.
+   * @param {GenericType[]} lineTypes line types to use
+   */
+  static overrideLogLineTypes(lineTypes) {
+    this.#logLineTypes = lineTypes;
+  }
+
+  /**
+   * Resets the log line types to the default ones provided by line-types.js.
+   * This is usually all of them or none of them if using the jest mock.
+   * @returns {void}
+   */
+  static resetLogLineTypes() {
+    this.#logLineTypes = lineTypes;
+  }
+
+  /**
    * populates the given statistics object with this log line's data
    * @param {Statistics} statistics statistics object
    * @returns {Statistics} statistics object populated with this log line's data
@@ -75,7 +105,7 @@ class LogLine {
     let parsedLine = null;
     let detectedLanguage = null;
     let detectedLineType = null;
-    lineTypes.some(/** @param {GenericType} lineType */ lineType => {
+    this.#logLineTypes.some(/** @param {GenericType} lineType */ lineType => {
       let checkedLanguages = [];
       if(language === null) {
         checkedLanguages = lineType.getSupportedLanguages();
