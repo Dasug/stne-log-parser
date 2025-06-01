@@ -61,16 +61,31 @@ class IndividualShipStatistics {
    */
   #destroyer;
   /**
-   * which weapon has this ship been destroyed by?
-   * @type {?IndividualShipStatistics}
-   */
-  #destroyedByWeapon;
-  /**
    * which ships of other objects has this ship destroyed
    * @type {(?IndividualShipStatistics)[]}
    */
   #destroyed = [];
-  
+  /**
+   * list of shots fired by the ship
+   * @type {WeaponShot[]}
+   */
+  #shotsFired = [];
+  /**
+   * list of shots received by the ship
+   * @type {WeaponShot[]}
+   */
+  #shotsReceived = [];
+  /**
+   * shot that this ship has been destroyed by
+   * @type {?WeaponShot}
+   */
+  #destroyedByShot = null;
+  /**
+   * shot that this ship has been disabled by
+   * @type {?WeaponShot}
+   */
+  #disabledByShot = null;
+
   get name() {
     return this.#name ?? null;
   }
@@ -107,11 +122,20 @@ class IndividualShipStatistics {
   get destroyer() {
     return this.#destroyer ?? null;
   }
-  get destroyedByWeapon() {
-    return this.#destroyedByWeapon ?? null;
-  }
   get destroyed() {
     return this.#destroyed;
+  }
+  get shotsFired() {
+    return this.#shotsFired;
+  }
+  get shotsReceived() {
+    return this.#shotsReceived;
+  }
+  get destroyedByShot() {
+    return this.#destroyedByShot;
+  }
+  get disabledByShot() {
+    return this.#disabledByShot;
   }
   /**
    * @returns {Number} number of objetcs this ship has destroyed
@@ -137,14 +161,6 @@ class IndividualShipStatistics {
    */
   setDestroyer(destroyer) {
     this.#destroyer = destroyer;
-  }
-
-  /**
-   * Sets the weapon this ship was destroyed by
-   * @param {?String} weapon weapon that this ship was destroyed by 
-   */
-  setDestroyedByWeapon(weapon) {
-    this.#destroyedByWeapon  = weapon;
   }
 
   /**
@@ -193,6 +209,28 @@ class IndividualShipStatistics {
    */
   applyArmorAbsorption(damage) {
     this.#armorAbsorption += damage;
+  }
+
+  /**
+   * add a shot to the list of shots fired by this ship
+   * @param {WeaponShot} shot fired shot
+   */
+  addFiredShot(shot) {
+    this.#shotsFired.push(shot);
+  }
+
+  /**
+   * add a shot to the list of shots received by this ship
+   * @param {WeaponShot} shot - fired shot
+   */
+  addReceivedShot(shot) {
+    this.#shotsReceived.push(shot);
+    if(shot.shotHasDisabledTarget) {
+      this.#disabledByShot = shot;
+    }
+    if(shot.shotHasDestroyedTarget) {
+      this.#destroyedByShot = shot;
+    }
   }
 
   /**

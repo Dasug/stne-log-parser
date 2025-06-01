@@ -115,6 +115,15 @@ describe('statistics process attack', () => {
     expect(yzato.destroyedNum).toBe(1);
     expect(yzato.destroyed).toContain(darinaya);
     expect(darinaya.destroyer).toBe(yzato);
-    expect(darinaya.destroyedByWeapon).toBe("Disruptor");
+    expect(darinaya.shotsReceived.length).toBe(1);
+    expect(darinaya.shotsFired.length).toBe(0);
+    expect(darinaya.destroyedByShot.weaponName).toBe("Disruptor");
+    expect(darinaya.destroyedByShot.hullDamage).toBe(18);
+    expect(darinaya.destroyedByShot.shieldDamage).toBe(18);
+    expect(darinaya.destroyedByShot.energyDamage).toBe(0);
+    expect(darinaya.destroyedByShot.overkill).toBe(7);
+    expect(darinaya.destroyedByShot.effectiveHullDamage).toBe(7);
+    expect(darinaya.disabledByShot).toBeNull();
+    expect(yzato.shotsFired).toContain(darinaya.destroyedByShot);
   });
 });

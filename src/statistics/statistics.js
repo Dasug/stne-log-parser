@@ -1,6 +1,14 @@
 "use strict";
 
 import LineTag from "../enum/line-tag.js";
+import ArmorAbsorptionResult from "../line-type/parse-result/armor-absorption-result.js";
+import ArmorPenetrationResult from "../line-type/parse-result/armor-penetration-result.js";
+import EnergyDamageResult from "../line-type/parse-result/energy-damage-result.js";
+import FireWeaponResult from "../line-type/parse-result/fire-weapon-result.js";
+import HullDamageResult from "../line-type/parse-result/hull-damage-result.js";
+import ShieldDamageResult from "../line-type/parse-result/shield-damage-result.js";
+import ShotMissedResult from "../line-type/parse-result/shot-missed-result.js";
+import WeaponShot from './weapon-shot.js';
 import LogLine from "../log-line.js";
 import PlayerNameAndIdResult from "../regex/parse-result/player-name-and-id-result.js";
 import ShipNameAndNccResult from "../regex/parse-result/ship-name-and-ncc-result.js";
@@ -75,13 +83,33 @@ class Statistics {
   }
 
   /**
-   * finds the first lig line containing the given tag
+   * finds the first log line containing the given tag
    * @param {LogLine[]} attack log lines to search for the tag
    * @param {LineTag} tag tag to search for
    * @returns {?LogLine}
    */
   #attackGetLineByTag(attack, tag) {
     return attack.filter(/** @var {logLine} */ line => line.tags.includes(tag))[0] ?? null;
+  }
+
+  /**
+   * finds the first log line containing the given tag
+   * @param {LogLine[]} attack log lines to search for the tag
+   * @param {LineTag} tag tag to search for
+   * @returns {?LogLine}
+   */
+  #attackGetLineByParseResultType(attack, parseResultClass) {
+    return attack.filter(/** @var {logLine} */ line => line.parseResult instanceof parseResultClass)[0] ?? null;
+  }
+
+  /**
+   * finds all log lines containing the given tag
+   * @param {LogLine[]} attack log lines to search for the tag
+   * @param {LineTag} tag tag to search for
+   * @returns {LogLine[]}
+   */
+  #attackGetLinesByTag(attack, tag) {
+    return attack.filter(/** @var {logLine} */ line => line.tags.includes(tag));
   }
   /**
    * Processes the destruction of a ship
@@ -96,8 +124,44 @@ class Statistics {
       if(shotOrigin instanceof IndividualShipStatistics) {
         shotOrigin.addDestroyedObject(destroyedShip);
       }
-      destroyedShip.setDestroyedByWeapon(weaponShotLine?.parseResult?.weaponName);
     }
+  }
+
+  #processWeaponShot(attack, weaponShotLine) {
+    /**
+     * @type {FireWeaponResult}
+     */
+    const shotParseResults = weaponShotLine.parseResult;
+    const [shotOrigin, shotTarget] = this.register(shotParseResults.origin, shotParseResults.target);
+    const shotHasHit = this.#attackGetLineByParseResultType(attack, ShotMissedResult) !== null;
+    const shotHasDestroyedTarget = this.#attackGetLineByTag(attack, LineTag.shipDestruction) !== null;
+    const shotHasDisabledTarget = this.#attackGetLineByTag(attack, LineTag.shipDisabled) !== null;
+    const hullDamageLine = this.#attackGetLineByParseResultType(attack, HullDamageResult);
+    const shieldDamageLine = this.#attackGetLineByParseResultType(attack, ShieldDamageResult);
+    const energyDamageLine = this.#attackGetLineByParseResultType(attack, EnergyDamageResult);
+    const armorAbsorptionLine = this.#attackGetLineByParseResultType(attack, ArmorAbsorptionResult);
+    const armorPenetrationLine = this.#attackGetLineByParseResultType(attack, ArmorPenetrationResult);
+
+    const shot = new WeaponShot({
+      origin: shotOrigin,
+      target: shotTarget,
+      weaponName: shotParseResults.weaponName,
+      shotHasHit: shotHasHit,
+      shotHasDestroyedTarget: shotHasDestroyedTarget,
+      shotHasDisabledTarget: shotHasDisabledTarget,
+      hullDamage: shotParseResults.weaponStrength.hullDamage,
+      shieldDamage: shotParseResults.weaponStrength.shieldDamage,
+      energyDamage: shotParseResults.weaponStrength.energyDamage,
+      effectiveHullDamage: hullDamageLine?.parseResult.hullDamage ?? 0,
+      overkill: hullDamageLine?.parseResult.overkillDamage ?? 0,
+      effectiveShieldDamage: shieldDamageLine?.parseResult.shieldDamage ?? 0,
+      effectiveEnergyDamage: energyDamageLine?.parseResult.energyDamage ?? 0,
+      armorAbsorption: armorAbsorptionLine?.parseResult.armorAbsorption ?? 0,
+      armorPenetration: armorPenetrationLine?.parseResult.armorPenetration ?? 0,
+    });
+
+    shotOrigin.addFiredShot(shot);
+    shotTarget.addReceivedShot(shot);
   }
 
   /**
@@ -110,11 +174,13 @@ class Statistics {
     if(weaponShotLine === null) {
       return;
     }
-    const [shotOrigin] = this.register(weaponShotLine.parseResult?.origin);
     const shipDestructionLine = this.#attackGetLineByTag(attack, LineTag.shipDestruction);
+    const shipDisablingLine = this.#attackGetLineByTag(attack, LineTag.shipDisabled);
+    const [shotOrigin] = this.register(weaponShotLine.parseResult?.origin);
     if(shipDestructionLine !== null) {
       this.#processShipDestruction(shotOrigin, shipDestructionLine, weaponShotLine);
     }
+    this.#processWeaponShot(attack, weaponShotLine);
   }
 
   processAttacks(attacks) {
