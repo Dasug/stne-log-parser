@@ -1,5 +1,6 @@
 "use strict";
 
+import LineTag from "./enum/line-tag.js";
 import LogDirection from "./enum/log-direction.js";
 import LogLine from "./log-line.js";
 import LogHeadParser from "./regex/log-head-parser.js";
@@ -89,6 +90,86 @@ class LogEntry {
     statistics.register(this.player);
     this.parsedLines.forEach(/** @var {LogLine} */ line => line.populateStatistics(statistics));
     return statistics;
+  }
+
+  /**
+   * finds and returns all log lines that are part of an attack, groups by the attack
+   * 
+   * An attack is considered a weapon shot plus the weapon shot result including any avatar actions.
+   * Undetected log lines are considered as part of an attack as it's more likely than not that they are
+   * and considering them as such avoids falsely breaking up attacks.
+   * @returns {Array<Array<LogLine>>}
+   */
+  findAttacks() {
+    const attacks = [];
+    let currentAttack = null;
+    let inBattleResultPhase = false;
+    const lineTypesThatContinueBattleResultPhase = [
+      LineTag.weaponShotResult,
+      LineTag.shipDestruction,
+      LineTag.shipDisabled
+    ];
+    for (let index = 0; index < this.#parsedLines.length; index++) {
+      /**
+       * @type {LogLine}
+       */
+      const logLine = this.#parsedLines[index];
+      if(currentAttack === null && logLine.tags.includes(LineTag.battle)) {
+        currentAttack = [logLine];
+        attacks.push(currentAttack);
+      } else if(currentAttack !== null) {
+        // presume an unknown log line is part of the attack
+        if(!logLine.detected) {
+          currentAttack.push(logLine);
+          continue;
+        }
+        // If it includes battle slots or not battle tag the battle ends here immediately
+        if(logLine.tags.includes(LineTag.battleSlots) || !logLine.tags.includes(LineTag.battle)) {
+          inBattleResultPhase = false;
+          currentAttack = null;
+          continue;
+        }
+        // if there's a weapon shot result this might be the end but there could be more weapon shot results following
+        if(logLine.tags.includes(LineTag.weaponShotResult)) {
+          inBattleResultPhase = true;
+          currentAttack.push(logLine);
+          /**
+           * @type {LogLine}
+           */
+          const nextLine = this.#parsedLines[index + 1];
+          if(typeof nextLine === "undefined") {
+            currentAttack = null;
+            inBattleResultPhase = false;
+            continue;
+          }
+          // next line is undetected, presume to be still part of the attack so we don't need to end it here
+          if(!nextLine.detected) {
+            continue;
+          }
+          
+          // is the next line not with a tag that is still part of the weapon shot result?
+          if(nextLine.tags.filter(tag => lineTypesThatContinueBattleResultPhase.includes(tag)).length === 0) {
+            inBattleResultPhase = false;
+            currentAttack = null;
+          }
+          continue;
+        } else if(inBattleResultPhase) {
+          currentAttack.push(logLine);
+          /**
+           * @type {LogLine}
+           */
+          const nextLine = this.#parsedLines[index + 1];
+          if(nextLine.tags.filter(tag => lineTypesThatContinueBattleResultPhase.includes(tag)).length === 0) {
+            currentAttack = null;
+            inBattleResultPhase = false;
+          }
+          continue;
+        }
+        // continue adding to the attack if it's none of the above
+        currentAttack.push(logLine);
+      }
+    }
+    return attacks;
   }
 
   /**
