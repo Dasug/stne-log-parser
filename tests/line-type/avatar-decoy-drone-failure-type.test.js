@@ -88,10 +88,14 @@ describe('avatar decoy drone failure line type', () => {
 
     lineTypeClass.populateStatistics(statistics, parseResult);
 
-    expect(statistics.ships.mentionedShips.length).toBe(1);
+    expect(statistics.ships.mentionedShips.length).toBe(2);
     const ship = statistics.ships.getShipByNcc(2838279);
     expect(ship).not.toBeNull();
     expect(ship.ncc).toBe(2838279);
     expect(ship.name).toBe("Kluboc");
+    const ship2 = statistics.ships.getShipByNcc(2441662);
+    expect(ship2).not.toBeNull();
+    expect(ship2.ncc).toBe(2441662);
+    expect(ship2.name).toBe("=MS= Panthera Nebulos");
   });
 })
