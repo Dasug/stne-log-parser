@@ -17,6 +17,8 @@ import IndividualPlayerCharacterStatistics from "./individual-player-character-s
 import IndividualShipStatistics from "./individual-ship-statistics.js";
 import PlayerCharacterStatistics from "./player-character-statistics.js";
 import ShipStatistics from "./ship-statistics.js";
+import ColonyStatistics from "./colony-statistics.js";
+import ColonyNameAndIdResult from "../regex/parse-result/colony-name-and-id-result.js";
 /**
  * A parse result of a ship, either with only name or with name and NCC and class
  * @typedef {ShipNameAndNccResult|ShipNameOnlyResult} ShipParseResult
@@ -24,7 +26,7 @@ import ShipStatistics from "./ship-statistics.js";
 
 /**
  * A parse result that can be registered in the statistics
- * @typedef {ShipResult|PlayerNameAndIdResult} RegisterableParseResult
+ * @typedef {ShipResult|PlayerNameAndIdResult|ColonyNameAndIdResult} RegisterableParseResult
  */
 
 /**
@@ -44,6 +46,12 @@ class Statistics {
    * @type {PlayerCharacterStatistics}
    */
   playerCharacters;
+
+  /**
+   * Contains statistics related to colonies used in the log(s)
+   * @type {ColonyStatistics}
+   */
+  colonies;
 
   /**
    * shorthand to register a ship, its owner and the ownership relationship between them.
@@ -77,6 +85,9 @@ class Statistics {
       }
       if(parseResult instanceof PlayerNameAndIdResult) {
         return this.playerCharacters.registerPlayerCharacter(parseResult);
+      }
+      if(parseResult instanceof ColonyNameAndIdResult) {
+        return this.colonies.registerColony(parseResult);
       }
       return null;
     });
@@ -190,6 +201,7 @@ class Statistics {
   constructor() {
     this.ships = new ShipStatistics;
     this.playerCharacters = new PlayerCharacterStatistics;
+    this.colonies = new ColonyStatistics;
   }
 }
 
