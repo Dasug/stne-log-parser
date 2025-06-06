@@ -104,4 +104,18 @@ describe('avatar damage reduction line type', () => {
     expect(targetShip.ncc).toBe(2551448);
     expect(targetShip.name).toBe("Storm of Retribution");
   });
+
+  test("registers colony in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Pilatius Obelyn Swain (943193, Verteidigungstaktiker) stört die Zielerfassung von Tropico (46961), wodurch dessen Angriff auf =MS= Hivemother Hexara (2531302, Rei´Kon) um 31% schwächer ausfällt!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.colonies.mentionedColonies.length).toBe(1);
+    const colony = statistics.colonies.getColonyById(46961);
+    expect(colony).not.toBeNull();
+    expect(colony.id).toBe(46961);
+    expect(colony.name).toBe("Tropico");
+  });
 })

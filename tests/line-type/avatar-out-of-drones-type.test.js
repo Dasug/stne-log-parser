@@ -144,4 +144,18 @@ describe('avatar out of drones line type', () => {
     expect(ship2.ncc).toBe(2822078);
     expect(ship2.name).toBe("Susco");
   });
+
+  test("registers colony in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Jürgen Abendroth (1492415, Drohnenpilot) hat keine Köderdrohnen mehr zur Verfügung und kann deshalb nichts für =MS= Panthera Nebulos (2441662, Iowa Typ Z) tun um dem Angriff von Asuras (85945) zu engehen!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.colonies.mentionedColonies.length).toBe(1);
+    const colony = statistics.colonies.getColonyById(85945);
+    expect(colony).not.toBeNull();
+    expect(colony.id).toBe(85945);
+    expect(colony.name).toBe("Asuras");
+  });
 })

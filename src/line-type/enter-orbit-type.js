@@ -69,6 +69,7 @@ class EnterOrbitType extends GenericType {
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
     statistics.registerShipAndOwner(parseResult.ship, parseResult.owner);
+    statistics.register(parseResult.colony);
     
     return statistics;
   }
