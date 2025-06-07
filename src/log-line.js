@@ -1,6 +1,6 @@
 "use strict";
 
-import { lineTypes } from "./line-types.js";
+import { lineTypes } from "./line-type.index.js";
 import GenericType from "./line-type/generic-type.js";
 import LineTag from "./enum/line-tag.js";
 import Statistics from "./statistics/statistics.js";
@@ -70,7 +70,7 @@ class LogLine {
   }
 
   /**
-   * Resets the log line types to the default ones provided by line-types.js.
+   * Resets the log line types to the default ones provided by line-type.index.js.
    * This is usually all of them or none of them if using the jest mock.
    * @returns {void}
    */
