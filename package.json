@@ -18,13 +18,15 @@
     "webpack": "^5.99.9",
     "webpack-bundle-analyzer": "^4.10.2",
     "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.2",
     "webpack-merge": "^6.0.1"
   },
   "scripts": {
     "test": "cross-env NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" jest",
     "prepublish": "babel src -d lib",
     "build": "webpack --config webpack.prod.js",
-    "watch": "webpack --config webpack.dev.js --watch"
+    "watch": "webpack serve --config webpack.dev.js",
+    "analyze": "webpack serve --config webpack.dev.js --analyze"
   },
   "babel": {
     "presets": [

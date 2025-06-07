@@ -8,8 +8,7 @@ export default {
     filename: 'main.js',
     path: path.resolve(import.meta.dirname, 'dist'),
     library: {
-      name: 'stneLogParser',
-      type: 'umd',
+      type: 'module',
     },
     globalObject: 'this',
   },
@@ -19,6 +18,9 @@ export default {
       analyzerMode: 'static',
     }),
   ],
+  experiments: {
+    outputModule: true,
+  },
   optimization: {
     minimizer: [
       new TerserPlugin({
