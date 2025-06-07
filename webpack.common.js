@@ -1,5 +1,6 @@
 import path from 'path';
 import TerserPlugin from 'terser-webpack-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 export default {
   entry: './src/index.js',
@@ -12,6 +13,12 @@ export default {
     },
     globalObject: 'this',
   },
+  plugins: [
+    new BundleAnalyzerPlugin({
+      openAnalyzer: false,
+      analyzerMode: 'static',
+    }),
+  ],
   optimization: {
     minimizer: [
       new TerserPlugin({
