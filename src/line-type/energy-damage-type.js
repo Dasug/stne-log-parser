@@ -91,12 +91,7 @@ class EnergyDamageType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    /**
-    * @type {[IndividualShipStatistics]}
-    */
-    const [ship] = statistics.register(parseResult.ship);
-
-    ship.applyEnergyDamage(parseResult.energyDamage);
+    statistics.register(parseResult.ship);
         
     return statistics;
   }

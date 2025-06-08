@@ -122,16 +122,4 @@ describe('hull damage line type', () => {
     expect(ship.ncc).toBe(2837352);
     expect(ship.name).toBe("Ishol");
   });
-
-  test("registers hull and overkill damage in statistics", () => {
-    const statistics = new Statistics;
-    const testLogEntry = { "lang": "en", "entry": String.raw`Warrior OI8497 (1658087, LX710b) takes 2(+15) damage, hull integrity is reduced to 0` };
-    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
-
-    lineTypeClass.populateStatistics(statistics, parseResult);
-
-    const ship = statistics.ships.getShipByNcc(1658087);
-    expect(ship.hullDamageReceived).toBe(2);
-    expect(ship.overkillDamageReceived).toBe(15);
-  });
 })

@@ -52,10 +52,45 @@ class IndividualShipStatistics {
    */
   #overkillDamageReceived = 0;
   /**
+   * how much shield damage has the ship dealt?
+   * @type {Number}
+   */
+  #hullDamageDealt = 0;
+  /**
+   * how much energy damage has the ship dealt?
+   * @type {Number}
+   */
+  #energyDamageDealt = 0;
+  /**
+   * how much shield damage has the ship dealt?
+   * @type {Number}
+   */
+  #shieldDamageDealt = 0;
+  /**
+   * how much damage was wasted by overkilling opponents?
+   * @type {Number}
+   */
+  #overkillDamageDealt = 0;
+  /**
+   * how much damage this ship dealt was absorbed by opponents' armor?
+   * @type {Number}
+   */
+  #opponentArmorAbsorption = 0;
+  /**
    * how much damage was absorbed by the ship's armor?
    * @type {Number}
    */
   #armorAbsorption = 0;
+  /**
+   * how much damage absorbtion was foiled by opponents' armor penetration?
+   * @type {Number}
+   */
+  #armorPenetration = 0;
+  /**
+   * how much of opponents' damage absorbtion was avoided by armor penetration?
+   * @type {Number}
+   */
+  #opponentArmorPenetrated = 0;
   /**
    * which ship of other object has this ship been destroyed by?
    * @type {?IndividualShipStatistics}
@@ -117,8 +152,41 @@ class IndividualShipStatistics {
   get overkillDamageReceived() {
     return this.#overkillDamageReceived;
   }
+  get hullDamageDealt() {
+    return this.#hullDamageDealt;
+  }
+  get energyDamageDealt() {
+    return this.#energyDamageDealt;
+  }
+  get shieldDamageDealt() {
+    return this.#shieldDamageDealt;
+  }
+  get overkillDamageDealt() {
+    return this.#overkillDamageDealt;
+  }
+  /**
+   * @returns {Number} The total damage dealt by the ship to hulls and shields, ignoring overkill damage.
+   */
+  get effectiveDamageDealt() {
+    return this.hullDamageDealt + this.shieldDamageDealt;
+  }
+  /**
+   * @returns {Number} The total damage dealt by the ship to hulls and shields, including damage wasted by overkill.
+   */
+  get totalDamageDealt() {
+    return this.hullDamageDealt + this.shieldDamageDealt + this.overkillDamageDealt;
+  }
   get armorAbsorption() {
     return this.#armorAbsorption;
+  }
+  get opponentArmorAbsorption() {
+    return this.#opponentArmorAbsorption;
+  }
+  get armorPenetration() {
+    return this.#armorPenetration;
+  }
+  get opponentArmorPenetrated() {
+    return this.#opponentArmorPenetrated;
   }
   get destroyer() {
     return this.#destroyer ?? null;
@@ -235,11 +303,74 @@ class IndividualShipStatistics {
   }
 
   /**
+   * apply armor penetration to a ship
+   * @param {Number} damage amount damage absorbed by armor
+   */
+  applyArmorPenetration(damage) {
+    this.#armorPenetration += damage;
+  }
+
+  /**
+   * apply hull damage dealt to an opponent
+   * @param {Number} damage amount of hull damage received
+   */
+  applyDealtHullDamage(damage) {
+    this.#hullDamageDealt += damage;
+  }
+
+  /**
+   * apply shield damage dealt to an opponent
+   * @param {Number} damage amount of shield damage received
+   */
+  applyDealtShieldDamage(damage) {
+    this.#shieldDamageDealt += damage;
+  }
+
+  /**
+   * apply energy damage dealt to an opponent
+   * @param {Number} damage amount of energy damage received
+   */
+  applyDealtEnergyDamage(damage) {
+    this.#energyDamageDealt += damage;
+  }
+
+  /**
+   * apply overkill damage dealt to an opponent
+   * @param {Number} damage amount of overkill damage received
+   */
+  applyDealtOverkillDamage(damage) {
+    this.#overkillDamageDealt += damage;
+  }
+
+  /**
+   * apply armor absorption by opponents against this ship's attack
+   * @param {Number} damage amount damage absorbed by armor
+   */
+  applyOpponentArmorAbsorption(damage) {
+    this.#opponentArmorAbsorption += damage;
+  }
+
+  /**
+   * apply armor penetration against an opponent
+   * @param {Number} damage amount damage absorbed by armor
+   */
+  applyOpponentArmorPenetrated(damage) {
+    this.#opponentArmorPenetrated += damage;
+  }
+
+  /**
    * add a shot to the list of shots fired by this ship
    * @param {WeaponShot} shot fired shot
    */
   addFiredShot(shot) {
     this.#shotsFired.push(shot);
+
+    this.applyDealtHullDamage(shot.effectiveHullDamage ?? 0);
+    this.applyDealtShieldDamage(shot.effectiveShieldDamage ?? 0);
+    this.applyDealtEnergyDamage(shot.effectiveEnergyDamage ?? 0);
+    this.applyDealtOverkillDamage(shot.overkill ?? 0);
+    this.applyOpponentArmorPenetrated(shot.armorPenetration ?? 0);
+    this.applyOpponentArmorAbsorption(shot.armorAbsorption ?? 0);
   }
 
   /**
@@ -254,6 +385,13 @@ class IndividualShipStatistics {
     if(shot.shotHasDestroyedTarget) {
       this.#destroyedByShot = shot;
     }
+
+    this.applyHullDamage(shot.effectiveHullDamage ?? 0);
+    this.applyShieldDamage(shot.effectiveShieldDamage ?? 0);
+    this.applyEnergyDamage(shot.effectiveEnergyDamage ?? 0);
+    this.applyOverkillDamage(shot.overkill ?? 0);
+    this.applyArmorAbsorption(shot.armorAbsorption ?? 0);
+    this.applyArmorPenetration(shot.armorPenetration ?? 0);
   }
 
   /**

@@ -66,13 +66,7 @@ class HullDamageType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    /**
-    * @type {[IndividualShipStatistics]}
-    */
-    const [ship] = statistics.register(parseResult.ship);
-
-    ship.applyHullDamage(parseResult.hullDamage);
-    ship.applyOverkillDamage(parseResult.overkillDamage);
+    statistics.register(parseResult.ship);
     
     return statistics;
   }

@@ -126,15 +126,4 @@ describe('energy damage line type', () => {
     expect(ship.ncc).toBe(2788187);
     expect(ship.name).toBe("Fara *");
   });
-
-  test("registers energy damage in statistics", () => {
-    const statistics = new Statistics;
-    const testLogEntry = { "lang": "de", "entry": String.raw`Hauptenergie von Fara * (2788187, D7) sinkt um 98, von 568,18 auf 470,18` };
-    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
-
-    lineTypeClass.populateStatistics(statistics, parseResult);
-
-    const ship = statistics.ships.getShipByNcc(2788187);
-    expect(ship.energyDamageReceived).toBe(98);
-  });
 })

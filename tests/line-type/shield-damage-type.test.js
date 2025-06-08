@@ -120,15 +120,4 @@ describe('shield damage line type', () => {
     expect(ship.ncc).toBe(2008590);
     expect(ship.name).toBe("Kubus 2784");
   });
-
-  test("registers shield damage in statistics", () => {
-    const statistics = new Statistics;
-    const testLogEntry = { "lang": "de", "entry": String.raw`Schilde von Kubus 2784 (2008590, Kubus) nehmen 7 Schaden, sind jetzt auf 47` };
-    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
-
-    lineTypeClass.populateStatistics(statistics, parseResult);
-
-    const ship = statistics.ships.getShipByNcc(2008590);
-    expect(ship.shieldDamageReceived).toBe(7);
-  });
 })

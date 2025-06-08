@@ -71,12 +71,7 @@ class ShieldDamageType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    /**
-    * @type {[IndividualShipStatistics]}
-    */
-    const [ship] = statistics.register(parseResult.ship);
-
-    ship.applyShieldDamage(parseResult.shieldDamage);
+    statistics.register(parseResult.ship);
     
     return statistics;
   }
