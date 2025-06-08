@@ -19,6 +19,8 @@ import PlayerCharacterStatistics from "./player-character-statistics.js";
 import ShipStatistics from "./ship-statistics.js";
 import ColonyStatistics from "./colony-statistics.js";
 import ColonyNameAndIdResult from "../regex/parse-result/colony-name-and-id-result.js";
+import AvatarStatistics from "./avatar-statistics.js";
+import AvatarResult from "../regex/parse-result/avatar-result.js";
 /**
  * A parse result of a ship, either with only name or with name and NCC and class
  * @typedef {ShipNameAndNccResult|ShipNameOnlyResult} ShipParseResult
@@ -52,6 +54,12 @@ class Statistics {
    * @type {ColonyStatistics}
    */
   colonies;
+
+  /**
+   * Contains statistics related to avatars used in the log(s)
+   * @type {AvatarStatistics}
+   */
+  avatars;
 
   /**
    * shorthand to register a ship, its owner and the ownership relationship between them.
@@ -88,6 +96,9 @@ class Statistics {
       }
       if(parseResult instanceof ColonyNameAndIdResult) {
         return this.colonies.registerColony(parseResult);
+      }
+      if(parseResult instanceof AvatarResult) {
+        return this.avatars.registerAvatar(parseResult);
       }
       return null;
     });
@@ -206,6 +217,7 @@ class Statistics {
     this.ships = new ShipStatistics;
     this.playerCharacters = new PlayerCharacterStatistics;
     this.colonies = new ColonyStatistics;
+    this.avatars = new AvatarStatistics;
   }
 }
 

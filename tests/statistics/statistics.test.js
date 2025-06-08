@@ -16,6 +16,9 @@ import ArmorAbsorptionType from '../../src/line-type/armor-absorption-type.js';
 import ArmorPenetrationType from '../../src/line-type/armor-penetration-type.js';
 import LogLine from '../../src/log-line.js';
 import LogEntry from '../../src/log-entry.js';
+import AvatarResult from '../../src/regex/parse-result/avatar-result.js';
+import AvatarJob from '../../src/enum/avatar-job.js';
+import { IndividualAvatarStatistics } from '../../src/statistics.index.js';
 
 describe('statistics registration', () => {
   test("registers ship and owner correctly", () => {
@@ -59,19 +62,27 @@ describe('statistics registration', () => {
     owner1.name = "[]U.C.W[] Scorga Empire";
     owner1.id = 34108;
 
+    const avatar1 = new AvatarResult;
+    avatar1.itemId = 123456;
+    avatar1.job = AvatarJob.deflectorEngineer;
+    avatar1.name = "Günther";
+
     const [
       ship1Stats,
       ship2Stats,
       player1Stats,
+      avatar1Stats,
       invalidStats,
       nullStats,
-    ] = statistics.register(ship1, ship2, owner1, new Array, null);
+    ] = statistics.register(ship1, ship2, owner1, avatar1, new Array, null);
     expect(ship1Stats).toBeInstanceOf(IndividualShipStatistics);
     expect(ship1Stats.ncc).toBe(123456);
     expect(ship2Stats).toBeInstanceOf(IndividualShipStatistics);
     expect(ship2Stats.name).toBe("MySecondShip");
     expect(player1Stats).toBeInstanceOf(IndividualPlayerCharacterStatistics);
     expect(player1Stats.id).toBe(34108);
+    expect(avatar1Stats).toBeInstanceOf(IndividualAvatarStatistics);
+    expect(avatar1Stats.name).toBe("Günther");
     expect(invalidStats).toBeNull();
     expect(nullStats).toBeNull();
   });
