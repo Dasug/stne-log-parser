@@ -144,7 +144,7 @@ class Statistics {
      */
     const shotParseResults = weaponShotLine.parseResult;
     const [shotOrigin, shotTarget] = this.register(shotParseResults.origin, shotParseResults.target);
-    const shotHasHit = this.#attackGetLineByParseResultType(attack, ShotMissedResult) !== null;
+    const shotHasHit = this.#attackGetLineByParseResultType(attack, ShotMissedResult) === null;
     const shotHasDestroyedTarget = this.#attackGetLineByTag(attack, LineTag.shipDestruction) !== null;
     const shotHasDisabledTarget = this.#attackGetLineByTag(attack, LineTag.shipDisabled) !== null;
     const hullDamageLine = this.#attackGetLineByParseResultType(attack, HullDamageResult);
