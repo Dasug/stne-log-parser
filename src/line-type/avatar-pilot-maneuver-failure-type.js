@@ -46,7 +46,7 @@ class AvatarPilotManeuverFailureType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    statistics.register(parseResult.target);
+    statistics.register(parseResult.target, parseResult.avatar);
     
     return statistics;
   }

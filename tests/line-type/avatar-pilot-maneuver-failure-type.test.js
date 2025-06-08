@@ -53,4 +53,19 @@ describe('avatar pilot maneuver failure line type', () => {
     expect(ship.ncc).toBe(2838280);
     expect(ship.name).toBe("Vetro");
   });
+
+  test("registers avatar in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Vetro (2838280, Battle Carrier Wrack) kontert das Manöver von Annett Hirsch (1140807, Pilot) geschickt und schützt erfolgreich die verwundbaren Stellen!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.avatars.mentionedAvatars.length).toBe(1);
+    const avatar = statistics.avatars.getAvatarByItemId(1140807);
+    expect(avatar).not.toBeNull();
+    expect(avatar.itemId).toBe(1140807);
+    expect(avatar.name).toBe("Annett Hirsch");
+    expect(avatar.job).toBe(AvatarJob.pilot);
+  });
 })

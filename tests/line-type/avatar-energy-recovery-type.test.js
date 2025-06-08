@@ -56,4 +56,19 @@ describe('avatar energy recovery line type', () => {
     expect(ship.ncc).toBe(2228483);
     expect(ship.name).toBe("{LV} Enyo Sakul *");
   });
+
+  test("registers avatar in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Jana Muller (779455, Wartungstechniker) optimiert den Abschuss von {LV} Enyo Sakul * (2228483, Taktischer Kubus) und gewinnt dabei 0,4 Hauptenergie zurück!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.avatars.mentionedAvatars.length).toBe(1);
+    const avatar = statistics.avatars.getAvatarByItemId(779455);
+    expect(avatar).not.toBeNull();
+    expect(avatar.itemId).toBe(779455);
+    expect(avatar.name).toBe("Jana Muller");
+    expect(avatar.job).toBe(AvatarJob.maintenanceTechnician);
+  });
 })

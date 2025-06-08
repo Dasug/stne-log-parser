@@ -83,4 +83,19 @@ describe('avatar attack drone crit line type', () => {
     expect(ship.ncc).toBe(2822090);
     expect(ship.name).toBe("[U] Portal Generator");
   });
+
+  test("registers avatar in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Die Drohne trifft und destabilisiert das Schildgitter von [U] Portal Generator (2822090, Portal Generator) durch einen EMP-Impuls, wodurch sich die Chance für Tom Herz (1555792, Drohnenpilot) ergibt kritische Schäden (x2) gegen [U] Portal Generator (2822090, Portal Generator) zu verursachen!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.avatars.mentionedAvatars.length).toBe(1);
+    const avatar = statistics.avatars.getAvatarByItemId(1555792);
+    expect(avatar).not.toBeNull();
+    expect(avatar.itemId).toBe(1555792);
+    expect(avatar.name).toBe("Tom Herz");
+    expect(avatar.job).toBe(AvatarJob.dronePilot);
+  });
 })

@@ -73,7 +73,7 @@ class AvatarOutOfDronesType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    statistics.register(parseResult.ship, parseResult.opponent);
+    statistics.register(parseResult.ship, parseResult.opponent, parseResult.avatar);
     
     return statistics;
   }

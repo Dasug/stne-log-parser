@@ -52,4 +52,19 @@ describe('avatar emergency shield activation failure line type', () => {
     expect(ship.ncc).toBe(2481039);
     expect(ship.name).toBe("=MS= Aquilon Kratos");
   });
+
+  test("registers avatar in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Patrick Greene (1093078, Verteidigungstaktiker) an Bord von =MS= Aquilon Kratos (2481039, Terran Excelsior Refit) bemerkt die drohnende Gefahr zu spät und schafft es nicht rechtzeitig die Schilde zu aktivieren!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.avatars.mentionedAvatars.length).toBe(1);
+    const avatar = statistics.avatars.getAvatarByItemId(1093078);
+    expect(avatar).not.toBeNull();
+    expect(avatar.itemId).toBe(1093078);
+    expect(avatar.name).toBe("Patrick Greene");
+    expect(avatar.job).toBe(AvatarJob.defenseTactician);
+  });
 })

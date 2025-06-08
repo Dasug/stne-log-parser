@@ -53,4 +53,19 @@ describe('avatar weak point miss line type', () => {
     expect(ship.ncc).toBe(2838280);
     expect(ship.name).toBe("Vetro");
   });
+
+  test("registers avatar in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Tim Becker (801516, Waffenoffizier) verfehlt die anvisierte Schwachstelle von Vetro (2838280, Battle Carrier Wrack)!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.avatars.mentionedAvatars.length).toBe(1);
+    const avatar = statistics.avatars.getAvatarByItemId(801516);
+    expect(avatar).not.toBeNull();
+    expect(avatar.itemId).toBe(801516);
+    expect(avatar.name).toBe("Tim Becker");
+    expect(avatar.job).toBe(AvatarJob.weaponsOfficier);
+  });
 })

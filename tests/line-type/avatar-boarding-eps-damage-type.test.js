@@ -69,4 +69,19 @@ describe('avatar boarding EPS damage line type', () => {
     expect(targetShip.ncc).toBe(2838115);
     expect(targetShip.name).toBe("Slemiagh");
   });
+
+  test("registers avatar in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Anke Meyer (365906, Sicherheitsoffizier) von SMS Friedrich der Große (1713491, Cellship) beamt sich mit einem Außenteam an Bord von Slemiagh (2838115, Battlecruiser Wrack). Dort zerstören sie wahlos EPS-Relais und verursachen 211 direkten Energieverlust, 211 für Eindämmungsaufgaben und 106 Hüllenschaden.` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.avatars.mentionedAvatars.length).toBe(1);
+    const avatar = statistics.avatars.getAvatarByItemId(365906);
+    expect(avatar).not.toBeNull();
+    expect(avatar.itemId).toBe(365906);
+    expect(avatar.name).toBe("Anke Meyer");
+    expect(avatar.job).toBe(AvatarJob.securityOfficer);
+  });
 })

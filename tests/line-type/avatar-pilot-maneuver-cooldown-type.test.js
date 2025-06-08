@@ -53,4 +53,19 @@ describe('avatar pilot maneuver cooldown line type', () => {
     expect(ship.ncc).toBe(2838280);
     expect(ship.name).toBe("Vetro");
   });
+
+  test("registers avatar in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Annett Hirsch (1140807, Pilot) kann kein 2. Manöver, so kurz nach dem 1. durchführen. Er kann jetzt nichts tun um den Angriff gegen Vetro (2838280, Battle Carrier Wrack) zu verstärken!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.avatars.mentionedAvatars.length).toBe(1);
+    const avatar = statistics.avatars.getAvatarByItemId(1140807);
+    expect(avatar).not.toBeNull();
+    expect(avatar.itemId).toBe(1140807);
+    expect(avatar.name).toBe("Annett Hirsch");
+    expect(avatar.job).toBe(AvatarJob.pilot);
+  });
 })

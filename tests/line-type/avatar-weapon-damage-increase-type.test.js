@@ -120,4 +120,19 @@ describe('avatar weapon damage increase line type', () => {
     expect(colony.id).toBe(69619);
     expect(colony.name).toBe("neu-aut");
   });
+
+  test("registers avatar in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Philipp Baecker (1630675, Waffenoffizier) zielt auf eine Schwachstelle wodurch der Angriff von =MS= Echo Fatalis (2873452, Tamani) gegen neu-aut (69619) um 22% stärker ausfällt!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.avatars.mentionedAvatars.length).toBe(1);
+    const avatar = statistics.avatars.getAvatarByItemId(1630675);
+    expect(avatar).not.toBeNull();
+    expect(avatar.itemId).toBe(1630675);
+    expect(avatar.name).toBe("Philipp Baecker");
+    expect(avatar.job).toBe(AvatarJob.weaponsOfficier);
+  });
 })

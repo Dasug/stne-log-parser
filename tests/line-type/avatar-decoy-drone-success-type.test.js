@@ -116,4 +116,19 @@ describe('avatar decoy drone success line type', () => {
     expect(colony.id).toBe(85945);
     expect(colony.name).toBe("Asuras");
   });
+
+  test("registers avatar in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Asuras (85945) trifft die Köderdrohne von Jürgen Abendroth (1492415, Drohnenpilot) auf =MS= Panthera Nebulos (2441662, Iowa Typ Z) mit Phaser und zerstört sie!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.avatars.mentionedAvatars.length).toBe(1);
+    const avatar = statistics.avatars.getAvatarByItemId(1492415);
+    expect(avatar).not.toBeNull();
+    expect(avatar.itemId).toBe(1492415);
+    expect(avatar.name).toBe("Jürgen Abendroth");
+    expect(avatar.job).toBe(AvatarJob.dronePilot);
+  });
 })

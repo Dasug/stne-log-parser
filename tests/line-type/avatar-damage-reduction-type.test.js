@@ -118,4 +118,19 @@ describe('avatar damage reduction line type', () => {
     expect(colony.id).toBe(46961);
     expect(colony.name).toBe("Tropico");
   });
+
+  test("registers avatar in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Pilatius Obelyn Swain (943193, Verteidigungstaktiker) stört die Zielerfassung von Tropico (46961), wodurch dessen Angriff auf =MS= Hivemother Hexara (2531302, Rei´Kon) um 31% schwächer ausfällt!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.avatars.mentionedAvatars.length).toBe(1);
+    const avatar = statistics.avatars.getAvatarByItemId(943193);
+    expect(avatar).not.toBeNull();
+    expect(avatar.itemId).toBe(943193);
+    expect(avatar.name).toBe("Pilatius Obelyn Swain");
+    expect(avatar.job).toBe(AvatarJob.defenseTactician);
+  });
 })

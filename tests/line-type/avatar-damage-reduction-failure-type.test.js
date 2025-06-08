@@ -93,4 +93,19 @@ describe('avatar damage reduction failure line type', () => {
     expect(colony.id).toBe(46961);
     expect(colony.name).toBe("Tropico");
   });
+
+  test("registers avatar in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Patrick Fitzgerald (943185, Verteidigungstaktiker) versucht die Zielerfassung von Tropico (46961) zu stören, hat damit aber keinerlei Erfolg!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.avatars.mentionedAvatars.length).toBe(1);
+    const avatar = statistics.avatars.getAvatarByItemId(943185);
+    expect(avatar).not.toBeNull();
+    expect(avatar.itemId).toBe(943185);
+    expect(avatar.name).toBe("Patrick Fitzgerald");
+    expect(avatar.job).toBe(AvatarJob.defenseTactician);
+  });
 })

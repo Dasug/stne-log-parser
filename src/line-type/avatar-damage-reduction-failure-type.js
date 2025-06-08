@@ -53,7 +53,7 @@ class AvatarDamageReductionFailureType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    statistics.register(parseResult.origin, parseResult.colony);
+    statistics.register(parseResult.origin, parseResult.colony, parseResult.avatar);
     
     return statistics;
   }

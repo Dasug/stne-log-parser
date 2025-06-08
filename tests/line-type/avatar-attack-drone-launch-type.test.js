@@ -53,4 +53,19 @@ describe('avatar attack drone launch line type', () => {
     expect(ship.ncc).toBe(2826794);
     expect(ship.name).toBe("Dikees");
   });
+
+  test("registers avatar in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Petra Kappel (570216, Drohnenpilot) setzt eine Angriffsdrohne ein und stürzt sie auf Dikees (2826794, Verlassene Adrec)!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.avatars.mentionedAvatars.length).toBe(1);
+    const avatar = statistics.avatars.getAvatarByItemId(570216);
+    expect(avatar).not.toBeNull();
+    expect(avatar.itemId).toBe(570216);
+    expect(avatar.name).toBe("Petra Kappel");
+    expect(avatar.job).toBe(AvatarJob.dronePilot);
+  });
 })

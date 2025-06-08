@@ -52,4 +52,19 @@ describe('avatar emergency shield actvation line type', () => {
     expect(ship.ncc).toBe(2558180);
     expect(ship.name).toBe("=MS= Euros Deimos");
   });
+
+  test("registers avatar in statistics", () => {
+    const statistics = new Statistics;
+    const testLogEntry = { "lang": "de", "entry": String.raw`Maria Weiss (1124429, Verteidigungstaktiker) an Bord von =MS= Euros Deimos (2558180, Terran Excelsior Refit) reagiert blitzschnell und schafft es in buchstäblich letzter Sekunde den Schildauslöser zu erreichen!` };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    lineTypeClass.populateStatistics(statistics, parseResult);
+
+    expect(statistics.avatars.mentionedAvatars.length).toBe(1);
+    const avatar = statistics.avatars.getAvatarByItemId(1124429);
+    expect(avatar).not.toBeNull();
+    expect(avatar.itemId).toBe(1124429);
+    expect(avatar.name).toBe("Maria Weiss");
+    expect(avatar.job).toBe(AvatarJob.defenseTactician);
+  });
 })
