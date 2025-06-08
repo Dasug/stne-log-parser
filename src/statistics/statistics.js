@@ -171,8 +171,12 @@ class Statistics {
       armorPenetration: armorPenetrationLine?.parseResult.armorPenetration ?? 0,
     });
 
-    shotOrigin.addFiredShot(shot);
-    shotTarget.addReceivedShot(shot);
+    if(shotOrigin !== null) {
+      shotOrigin.addFiredShot(shot);
+    }
+    if(shotTarget !== null) {
+      shotTarget.addReceivedShot(shot);
+    }
   }
 
   /**
