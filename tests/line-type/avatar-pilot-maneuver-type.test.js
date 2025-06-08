@@ -67,5 +67,9 @@ describe('avatar pilot maneuver line type', () => {
     expect(avatar.itemId).toBe(1140807);
     expect(avatar.name).toBe("Annett Hirsch");
     expect(avatar.job).toBe(AvatarJob.pilot);
+
+    // actions
+    expect(avatar.totalActions).toBe(1);
+    expect(avatar.successfulActions).toBe(0);
   });
 })

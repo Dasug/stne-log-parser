@@ -57,8 +57,11 @@ class AvatarDecoyDroneSuccessType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    statistics.register(parseResult.ship, parseResult.opponent, parseResult.avatar);
+    const [,, avatar] = statistics.register(parseResult.ship, parseResult.opponent, parseResult.avatar);
     
+    avatar.registerAction();
+    avatar.registerActionSuccess();
+
     return statistics;
   }
 

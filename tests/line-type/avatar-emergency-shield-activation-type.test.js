@@ -66,5 +66,9 @@ describe('avatar emergency shield actvation line type', () => {
     expect(avatar.itemId).toBe(1124429);
     expect(avatar.name).toBe("Maria Weiss");
     expect(avatar.job).toBe(AvatarJob.defenseTactician);
+
+    // actions
+    expect(avatar.totalActions).toBe(1);
+    expect(avatar.successfulActions).toBe(1);
   });
 })

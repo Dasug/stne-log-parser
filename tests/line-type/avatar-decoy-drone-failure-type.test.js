@@ -126,5 +126,9 @@ describe('avatar decoy drone failure line type', () => {
     expect(avatar.itemId).toBe(1492415);
     expect(avatar.name).toBe("Jürgen Abendroth");
     expect(avatar.job).toBe(AvatarJob.dronePilot);
+
+    // actions
+    expect(avatar.totalActions).toBe(1);
+    expect(avatar.successfulActions).toBe(0);
   });
 })

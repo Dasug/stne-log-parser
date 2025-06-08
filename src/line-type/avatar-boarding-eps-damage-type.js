@@ -61,7 +61,10 @@ class AvatarBoardingEpsDamageType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    statistics.register(parseResult.ship, parseResult.target, parseResult.avatar);
+    const [,, avatar] = statistics.register(parseResult.ship, parseResult.target, parseResult.avatar);
+
+    avatar.registerAction();
+    avatar.registerActionSuccess();
     
     return statistics;
   }

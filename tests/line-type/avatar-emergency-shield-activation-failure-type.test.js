@@ -66,5 +66,9 @@ describe('avatar emergency shield activation failure line type', () => {
     expect(avatar.itemId).toBe(1093078);
     expect(avatar.name).toBe("Patrick Greene");
     expect(avatar.job).toBe(AvatarJob.defenseTactician);
+
+    // actions
+    expect(avatar.totalActions).toBe(1);
+    expect(avatar.successfulActions).toBe(0);
   });
 })

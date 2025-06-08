@@ -97,5 +97,9 @@ describe('avatar attack drone crit line type', () => {
     expect(avatar.itemId).toBe(1555792);
     expect(avatar.name).toBe("Tom Herz");
     expect(avatar.job).toBe(AvatarJob.dronePilot);
+
+    // actions
+    expect(avatar.totalActions).toBe(0);
+    expect(avatar.successfulActions).toBe(1);
   });
 })

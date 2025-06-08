@@ -9,7 +9,6 @@ import LineTag from "../../src/enum/line-tag.js";
 import Avatar from "../regex/subroutine/avatar.js";
 import AvatarPilotManeuverCooldownResult from "./parse-result/avatar-pilot-maneuver-cooldown-result.js";
 import Statistics from "../statistics/statistics.js";
-import ShipNameAndNccResult from "../regex/parse-result/ship-name-and-ncc-result.js";
 
 class AvatarPilotManeuverCooldownType extends GenericType {
   static _regexByLanguage = {
@@ -47,8 +46,10 @@ class AvatarPilotManeuverCooldownType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    statistics.register(parseResult.target, parseResult.avatar);
+    const [, avatar] = statistics.register(parseResult.target, parseResult.avatar);
     
+    avatar.registerAction();
+
     return statistics;
   }
 

@@ -53,7 +53,8 @@ class AvatarDamageReductionFailureType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    statistics.register(parseResult.origin, parseResult.colony, parseResult.avatar);
+    const [, avatar] = statistics.register(parseResult.origin, parseResult.avatar);
+    avatar.registerAction();
     
     return statistics;
   }

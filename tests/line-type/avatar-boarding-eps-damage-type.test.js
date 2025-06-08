@@ -83,5 +83,9 @@ describe('avatar boarding EPS damage line type', () => {
     expect(avatar.itemId).toBe(365906);
     expect(avatar.name).toBe("Anke Meyer");
     expect(avatar.job).toBe(AvatarJob.securityOfficer);
+
+    // actions
+    expect(avatar.totalActions).toBe(1);
+    expect(avatar.successfulActions).toBe(1);
   });
 })

@@ -134,5 +134,9 @@ describe('avatar weapon damage increase line type', () => {
     expect(avatar.itemId).toBe(1630675);
     expect(avatar.name).toBe("Philipp Baecker");
     expect(avatar.job).toBe(AvatarJob.weaponsOfficier);
+
+    // actions
+    expect(avatar.totalActions).toBe(1);
+    expect(avatar.successfulActions).toBe(1);
   });
 })

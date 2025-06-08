@@ -21,6 +21,18 @@ class IndividualAvatarStatistics {
    */
   #job;
 
+  /**
+   * total number of actions performed by the avatar 
+   * @type {Number}
+   */
+  #totalActions = 0;
+  
+  /**
+   * number of successful actions performed by the avatar 
+   * @type {Number}
+   */
+  #successfulActions = 0;
+
   /** 
    * name of the avatar
    * @type {?String}
@@ -43,6 +55,56 @@ class IndividualAvatarStatistics {
    */
   get job() {
     return this.#job ?? AvatarJob.unknown;
+  }
+
+  /**
+   * total number of actions performed by the avatar 
+   * @type {Number}
+   */
+  get totalActions() {
+    return this.#totalActions;
+  }
+
+  /**
+   * number of successful actions performed by the avatar 
+   * @type {Number}
+   */
+  get successfulActions() {
+    return this.#successfulActions;
+  }
+
+  /**
+   * number of unsuccessful actions performed by the avatar 
+   * @type {Number}
+   */
+  get unsuccessfulActions() {
+    return this.#totalActions - this.#successfulActions;
+  }
+
+  /**
+   * success rate of the avatar's actions or null if total actions is zero 
+   * @type {?Number}
+   */
+  get successRate() {
+    if(this.#totalActions === 0) {
+      return null;
+    }
+    return this.#successfulActions / this.#totalActions;
+  }
+
+  /**
+   * register an action performed by the avatar 
+   */
+  registerAction() {
+    this.#totalActions++;
+  }
+
+  /**
+   * register a successful action performed by the avatar.
+   * Does not increment the total action amount, be sure to register an action first
+   */
+  registerActionSuccess() {
+    this.#successfulActions++;
   }
 
   /**

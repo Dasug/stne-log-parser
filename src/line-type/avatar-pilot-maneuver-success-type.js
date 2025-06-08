@@ -50,7 +50,10 @@ class AvatarPilotManeuverSuccessType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    statistics.register(parseResult.ship, parseResult.target, parseResult.avatar);
+    const [,, avatar] = statistics.register(parseResult.ship, parseResult.target, parseResult.avatar);
+    
+    // action itself is already registered in AvatarPilotManeuverType.
+    avatar.registerActionSuccess();
     
     return statistics;
   }

@@ -67,5 +67,9 @@ describe('avatar weak point miss line type', () => {
     expect(avatar.itemId).toBe(801516);
     expect(avatar.name).toBe("Tim Becker");
     expect(avatar.job).toBe(AvatarJob.weaponsOfficier);
+
+    // actions
+    expect(avatar.totalActions).toBe(1);
+    expect(avatar.successfulActions).toBe(0);
   });
 })

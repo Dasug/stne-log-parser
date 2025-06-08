@@ -70,5 +70,9 @@ describe('avatar energy recovery line type', () => {
     expect(avatar.itemId).toBe(779455);
     expect(avatar.name).toBe("Jana Muller");
     expect(avatar.job).toBe(AvatarJob.maintenanceTechnician);
+
+    // actions
+    expect(avatar.totalActions).toBe(1);
+    expect(avatar.successfulActions).toBe(1);
   });
 })

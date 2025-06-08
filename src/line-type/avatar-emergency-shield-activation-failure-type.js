@@ -46,7 +46,9 @@ class AvatarEmergencyShieldActivationFailureType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    statistics.register(parseResult.ship, parseResult.avatar);
+    const [, avatar] = statistics.register(parseResult.ship, parseResult.avatar);
+    
+    avatar.registerAction();
     
     return statistics;
   }

@@ -67,5 +67,9 @@ describe('avatar attack drone launch line type', () => {
     expect(avatar.itemId).toBe(570216);
     expect(avatar.name).toBe("Petra Kappel");
     expect(avatar.job).toBe(AvatarJob.dronePilot);
+
+    // actions
+    expect(avatar.totalActions).toBe(1);
+    expect(avatar.successfulActions).toBe(0);
   });
 })

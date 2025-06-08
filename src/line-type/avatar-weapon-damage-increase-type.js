@@ -58,7 +58,10 @@ class AvatarWeaponDamageIncreaseType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    statistics.register(parseResult.origin, parseResult.target, parseResult.avatar);
+    const [,, avatar] = statistics.register(parseResult.origin, parseResult.target, parseResult.avatar);
+
+    avatar.registerAction();
+    avatar.registerActionSuccess();
     
     return statistics;
   }

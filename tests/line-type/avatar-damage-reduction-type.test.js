@@ -132,5 +132,9 @@ describe('avatar damage reduction line type', () => {
     expect(avatar.itemId).toBe(943193);
     expect(avatar.name).toBe("Pilatius Obelyn Swain");
     expect(avatar.job).toBe(AvatarJob.defenseTactician);
+
+    // actions
+    expect(avatar.totalActions).toBe(1);
+    expect(avatar.successfulActions).toBe(1);
   });
 })

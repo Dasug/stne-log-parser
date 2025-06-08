@@ -56,7 +56,10 @@ class AvatarAttackDroneCritType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    statistics.register(parseResult.target, parseResult.avatar);
+    const [, avatar] = statistics.register(parseResult.target, parseResult.avatar);
+
+    // action itself is already registered in AvatarAttackDroneLaunchType.
+    avatar.registerActionSuccess();
     
     return statistics;
   }
