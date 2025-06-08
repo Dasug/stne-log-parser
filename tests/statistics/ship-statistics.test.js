@@ -1,6 +1,4 @@
 import { describe, expect, test } from '@jest/globals';
-import LogHeadParser from '../../src/regex/log-head-parser.js';
-import LogDirection from '../../src/enum/log-direction.js';
 import ShipNameAndNccResult from '../../src/regex/parse-result/ship-name-and-ncc-result.js';
 import ShipStatistics from '../../src/statistics/ship-statistics.js';
 import ShipNameOnlyResult from '../../src/regex/parse-result/ship-name-only-result.js';

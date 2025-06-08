@@ -3,6 +3,7 @@
 import ShipNameAndNccResult from "../regex/parse-result/ship-name-and-ncc-result.js";
 import ShipNameOnlyResult from "../regex/parse-result/ship-name-only-result.js";
 import IndividualPlayerCharacterStatistics from "./individual-player-character-statistics.js";
+import WeaponShot from "./weapon-shot.js";
 
 class IndividualShipStatistics {
   /**
@@ -142,6 +143,28 @@ class IndividualShipStatistics {
    */
   get destroyedNum() {
     return this.#destroyed.length;
+  }
+  /**
+   * @returns {?Number} ratio of shots hit by this object or null if the ship hasn't shot anything
+   */
+  get hitRate() {
+    const shotFiredNum = this.#shotsFired.length;
+    if(shotFiredNum === 0) {
+      return null;
+    }
+    return this.#shotsFired.filter(shot => shot.shotHasHit).length / shotFiredNum;
+  }
+
+
+  /**
+   * @returns {?Number} ratio of shots this ship was hit by or null if the shiphas never been shot at
+   */
+  get hitByRate() {
+    const shotReceivedNum = this.#shotsReceived.length;
+    if(shotReceivedNum === 0) {
+      return null;
+    }
+    return this.#shotsReceived.filter(shot => shot.shotHasHit).length / shotReceivedNum;
   }
 
   hasBasicData() {
