@@ -9,5 +9,6 @@ export default merge(common, {
     static: {
       directory: path.resolve(import.meta.dirname, 'public'),
     },
+    hot: false,
   },
 });
