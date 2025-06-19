@@ -39,4 +39,13 @@ describe('defense slots line type', () => {
     expect(parseResult.sector.x).toBe(639);
     expect(parseResult.sector.y).toBe(290);
   });
+
+  test("parses old German entry log line without coordinates correctly", () => {
+    const testLogEntry = { "lang": "de", "entry": String.raw`12 Verteidigungskosten` }; // silly floating point shenanigans
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    expect(parseResult.slots).toBeCloseTo(12);
+
+    expect(parseResult.sector).toBeNull();
+  });
 })

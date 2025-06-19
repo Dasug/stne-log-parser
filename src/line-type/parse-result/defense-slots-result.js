@@ -9,7 +9,7 @@ class DefenseSlotsResult {
 
   /**
    * sector the defense slots reacted in
-   * @type {MapCoordinatesResult}
+   * @type {?MapCoordinatesResult}
    */
   sector;
 }

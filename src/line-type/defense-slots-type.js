@@ -14,8 +14,8 @@ class DefenseSlotsType extends GenericType {
       pattern`
       ^
       (?<defense_slots_amount> \d+(?:[,\.]\d+)?)
-      \ +Verteidigungskosten\ +
-      (?<sector> \g<sectorCoordinates>)
+      \ +Verteidigungskosten\ *
+      (?<sector> \g<sectorCoordinates>)?
       $
       `,
       {
@@ -26,8 +26,8 @@ class DefenseSlotsType extends GenericType {
       pattern`
       ^
       (?<defense_slots_amount> \d+(?:[,\.]\d+)?)
-      \ +Slots\ Defence\ Cost\ +
-      (?<sector> \g<sectorCoordinates>)
+      \ +Slots\ Defence\ Cost\ *
+      (?<sector> \g<sectorCoordinates>)?
       $
       `,
       {
@@ -37,7 +37,7 @@ class DefenseSlotsType extends GenericType {
   }
 
   static _buildResultObject(matches) {
-    const sector = MapCoordinates.matchResult(matches.groups.sector);
+    const sector = MapCoordinates.matchResult(matches.groups.sector) ?? null;
     const slots = Number(matches.groups.defense_slots_amount.replace(",", "."));
 
     const resultObject = new DefenseSlotsResult;
