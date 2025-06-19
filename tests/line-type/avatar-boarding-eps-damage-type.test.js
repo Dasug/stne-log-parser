@@ -45,7 +45,7 @@ describe('avatar boarding EPS damage line type', () => {
     expect(parseResult.target.nccPrefix).toBeNull();
     expect(parseResult.target.shipClass).toBe("Battlecruiser Wrack");
 
-    // alert level
+    // damages
     expect(parseResult.directEnergyDamage).toBe(211);
     expect(parseResult.countermeasuresEnergyDamage).toBe(211);
     expect(parseResult.hullDamage).toBe(106);
@@ -87,5 +87,42 @@ describe('avatar boarding EPS damage line type', () => {
     // actions
     expect(avatar.totalActions).toBe(1);
     expect(avatar.successfulActions).toBe(1);
+  });
+
+  test("parses German entry log line with decimal values correctly", () => {
+    const testLogEntry = { "lang": "de", "entry": "Tmaeb (800798, Sicherheitsoffizier) von ]=SLC=[ Erzengel Michael (2217323, Tamani) beamt sich mit einem Außenteam an Bord von V.S.S. Midway (2214160, Großes Subraumportal). Dort zerstören sie wahlos EPS-Relais und verursachen 222,8 direkten Energieverlust, 222,8 für Eindämmungsaufgaben und 112 Hüllenschaden." };
+    const parseResult = lineTypeClass.parse(testLogEntry.entry, testLogEntry.lang);
+
+    // result is not null
+    expect(parseResult).not.toBeNull();
+    
+    // parts are not null if present
+    expect(parseResult.ship).not.toBeNull();
+    expect(parseResult.avatar).not.toBeNull();
+    expect(parseResult.target).not.toBeNull();
+    
+    // parts are set correctly
+    // avatar
+    expect(parseResult.avatar.name).toBe("Tmaeb");
+    expect(parseResult.avatar.itemId).toBe(800798);
+    expect(parseResult.avatar.job).toBe(AvatarJob.securityOfficer);
+
+    // ship
+    expect(parseResult.ship.ncc).toBe(2217323);
+    expect(parseResult.ship.name).toBe("]=SLC=[ Erzengel Michael");
+    expect(parseResult.ship.nccPrefix).toBeNull();
+    expect(parseResult.ship.shipClass).toBe("Tamani");
+
+    // target
+    expect(parseResult.target.ncc).toBe(2214160);
+    expect(parseResult.target.name).toBe("V.S.S. Midway");
+    expect(parseResult.target.nccPrefix).toBeNull();
+    expect(parseResult.target.shipClass).toBe("Großes Subraumportal");
+
+    // damages
+    expect(parseResult.directEnergyDamage).toBeCloseTo(222.8);
+    expect(parseResult.countermeasuresEnergyDamage).toBeCloseTo(222.8);
+    expect(parseResult.hullDamage).toBe(112);
+    
   });
 })

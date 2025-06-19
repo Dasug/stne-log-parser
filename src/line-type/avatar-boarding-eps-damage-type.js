@@ -21,9 +21,9 @@ class AvatarBoardingEpsDamageType extends GenericType {
       \ beamt\ sich\ mit\ einem\ Außenteam\ an\ Bord\ von\ 
       (?<target> \g<shipAndNcc>)
       \.\ Dort\ zerstören\ sie\ wahlos\ EPS-Relais\ und\ verursachen\ 
-      (?<direct_energy_damage> \d+?)
+      (?<direct_energy_damage> \d+?[\.,]?\d+?)
       \ direkten\ Energieverlust,\ 
-      (?<countermeasures_energy_damage> \d+?)
+      (?<countermeasures_energy_damage> \d+?[\.,]?\d+?)
       \ für\ Eindämmungsaufgaben\ und\ 
       (?<hull_damage> \d+?)
       \ Hüllenschaden\.
@@ -41,8 +41,8 @@ class AvatarBoardingEpsDamageType extends GenericType {
     const avatar = Avatar.matchResult(matches.groups.trigger_avatar);
     const ship = ShipNameAndNcc.matchResult(matches.groups.ship);
     const target = ShipNameAndNcc.matchResult(matches.groups.target);
-    const directEnergyDamage = Number(matches.groups.direct_energy_damage);
-    const countermeasuresEnergyDamage = Number(matches.groups.countermeasures_energy_damage);
+    const directEnergyDamage = Number(matches.groups.direct_energy_damage.replace(",", "."));
+    const countermeasuresEnergyDamage = Number(matches.groups.countermeasures_energy_damage.replace(",", "."));
     const hullDamage = Number(matches.groups.hull_damage);
 
     const resultObject = new AvatarBoardingEpsDamageResult
