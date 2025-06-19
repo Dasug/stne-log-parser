@@ -5,7 +5,7 @@ import ArmorPenetrationType from '../../src/line-type/armor-penetration-type';
 describe('armor penetration line type', () => {
   const lineTypeClass = ArmorPenetrationType;
   test("has battle tag", () => {
-    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.weaponShotResult]));
   }); 
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`4 Panzerung durchdrungen.` };

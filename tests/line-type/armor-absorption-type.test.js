@@ -6,7 +6,7 @@ import Statistics from '../../src/statistics/statistics.js';
 describe('armor absorption line type', () => {
   const lineTypeClass = ArmorAbsorptionType;
   test("has battle tag", () => {
-    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle]));
+    expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.weaponShotResult]));
   }); 
   test("detects German entry log line positively", () => {
     const testLogEntry = { "lang": "de", "entry": String.raw`Panzerung von U.S.S. Dracaix (2819313, Korolev) schwächt Angriff um 1 Punkte` };

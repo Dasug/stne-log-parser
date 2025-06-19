@@ -35,6 +35,7 @@ class ArmorPenetrationType extends GenericType {
   static getTags() {
     return [
       LineTag.battle,
+      LineTag.weaponShotResult
     ];
   }
 }
