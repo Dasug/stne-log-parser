@@ -33,6 +33,24 @@ class IndividualAvatarStatistics {
    */
   #successfulActions = 0;
 
+  /**
+   * points of hull damage the avatar managed to avoid
+   * @type {Number}
+   */
+  #hullDamageReduction = 0;
+  
+  /**
+   * points of shield damage the avatar managed to avoid
+   * @type {Number}
+   */
+  #shieldDamageReduction = 0;
+  
+  /**
+   * points of energy damage the avatar managed to avoid
+   * @type {Number}
+   */
+  #energyDamageReduction = 0;
+
   /** 
    * name of the avatar
    * @type {?String}
@@ -93,6 +111,36 @@ class IndividualAvatarStatistics {
   }
 
   /**
+   * number of hull damage points that have been avoided by this avatar
+   * 
+   * This is theoretical damage, eg. just the difference between final shot strength and shot strength before the damage reduction 
+   * @type {Number}
+   */
+  get hullDamageReduction() {
+    return this.#hullDamageReduction;
+  }
+
+  /**
+   * number of shield damage points that have been avoided by this avatar
+   * 
+   * This is theoretical damage, eg. just the difference between final shot strength and shot strength before the damage reduction 
+   * @type {Number}
+   */
+  get shieldDamageReduction() {
+    return this.#shieldDamageReduction;
+  }
+
+  /**
+   * number of energy damage points that have been avoided by this avatar
+   * 
+   * This is theoretical damage, eg. just the difference between final shot strength and shot strength before the damage reduction 
+   * @type {Number}
+   */
+  get energyDamageReduction() {
+    return this.#energyDamageReduction;
+  }
+
+  /**
    * register an action performed by the avatar 
    */
   registerAction() {
@@ -105,6 +153,30 @@ class IndividualAvatarStatistics {
    */
   registerActionSuccess() {
     this.#successfulActions++;
+  }
+
+  /**
+   * Registers hull damage reduced by the avatar
+   * @param {Number} damageReduction amount of hull damage reduced by the avatar. This refers to the weapon shot strength before hit detection, armor absorption etc.
+   */
+  registerHullDamageReduction(damageReduction) {
+    this.#hullDamageReduction += damageReduction;
+  }
+
+  /**
+   * Registers shield damage reduced by the avatar
+   * @param {Number} damageReduction amount of shield damage reduced by the avatar. This refers to the weapon shot strength before hit detection, armor absorption etc.
+   */
+  registerShieldDamageReduction(damageReduction) {
+    this.#shieldDamageReduction += damageReduction;
+  }
+
+  /**
+   * Registers energy damage reduced by the avatar
+   * @param {Number} damageReduction amount of energy damage reduced by the avatar. This refers to the weapon shot strength before hit detection, armor absorption etc.
+   */
+  registerEnergyDamageReduction(damageReduction) {
+    this.#energyDamageReduction += damageReduction;
   }
 
   /**

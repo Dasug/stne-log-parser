@@ -21,6 +21,8 @@ import ColonyStatistics from "./colony-statistics.js";
 import ColonyNameAndIdResult from "../regex/parse-result/colony-name-and-id-result.js";
 import AvatarStatistics from "./avatar-statistics.js";
 import AvatarResult from "../regex/parse-result/avatar-result.js";
+import AvatarDamageReductionResult from "../line-type/parse-result/avatar-damage-reduction-result.js";
+import IndividualAvatarStatistics from "./individual-avatar-statistics.js";
 /**
  * A parse result of a ship, either with only name or with name and NCC and class
  * @typedef {ShipNameAndNccResult|ShipNameOnlyResult} ShipParseResult
@@ -187,6 +189,22 @@ class Statistics {
     }
     if(shotTarget !== null) {
       shotTarget.addReceivedShot(shot);
+    }
+
+    const avatarDamageReductionLine = this.#attackGetLineByParseResultType(attack, AvatarDamageReductionResult);
+    if(avatarDamageReductionLine !== null) {
+      /** @type {IndividualAvatarStatistics} avatar */
+      const [avatar] = this.register(avatarDamageReductionLine.parseResult.avatar);
+      const damageReductionPercentage = avatarDamageReductionLine.parseResult.damageReduction / 100;
+      const originalHullDamage = Math.ceil(shot.hullDamage / (1-damageReductionPercentage));
+      const originalShieldDamage = Math.ceil(shot.shieldDamage / (1-damageReductionPercentage));
+      const originalEnergyDamage = Math.ceil(shot.energyDamage / (1-damageReductionPercentage));
+      const hullDamageReduction = originalHullDamage - shot.hullDamage;
+      const shieldDamageReduction = originalShieldDamage - shot.shieldDamage;
+      const energyDamageReduction = originalEnergyDamage - shot.energyDamage;
+      avatar.registerHullDamageReduction(hullDamageReduction);
+      avatar.registerShieldDamageReduction(shieldDamageReduction);
+      avatar.registerEnergyDamageReduction(energyDamageReduction);
     }
   }
 

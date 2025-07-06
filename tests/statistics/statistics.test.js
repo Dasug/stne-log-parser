@@ -14,8 +14,8 @@ import MainComputerCrashType from '../../src/line-type/main-computer-crash-type.
 import FullSystemFailureType from '../../src/line-type/full-system-failure-type.js';
 import ArmorAbsorptionType from '../../src/line-type/armor-absorption-type.js';
 import ArmorPenetrationType from '../../src/line-type/armor-penetration-type.js';
+import AvatarDamageReductionType from '../../src/line-type/avatar-damage-reduction-type.js';
 import LogLine from '../../src/log-line.js';
-import LogEntry from '../../src/log-entry.js';
 import AvatarResult from '../../src/regex/parse-result/avatar-result.js';
 import AvatarJob from '../../src/enum/avatar-job.js';
 import { IndividualAvatarStatistics } from '../../src/statistics.index.js';
@@ -100,6 +100,7 @@ describe('statistics process attack', () => {
       FullSystemFailureType,
       ArmorAbsorptionType,
       ArmorPenetrationType,
+      AvatarDamageReductionType,
     ]);
   });
   afterAll(() => {
@@ -136,5 +137,26 @@ describe('statistics process attack', () => {
     expect(darinaya.destroyedByShot.effectiveHullDamage).toBe(7);
     expect(darinaya.disabledByShot).toBeNull();
     expect(yzato.shotsFired).toContain(darinaya.destroyedByShot);
+  });
+
+  test("process avatar damage reduction", () => {
+    const statistics = new Statistics();
+    const rawAttackString = String.raw`Verteidigungstaktiker (48132, Verteidigungstaktiker) stört die Zielerfassung von Buneock (52946, Iowa), wodurch dessen Angriff auf Zielscheibe (71848, Raumdock) um 19% schwächer ausfällt!
+Iowa Buneock (52946, Iowa) von Dasug2 (2186) greift Raumdock Zielscheibe (71848, Raumdock) mit Antiprotonenkanone und Stärke 141/125/0 an
+Schilde von Zielscheibe (71848, Raumdock) nehmen 110 Schaden, sind jetzt auf 15882
+Panzerung von Zielscheibe (71848, Raumdock) schwächt Angriff um 3 Punkte
+Zielscheibe (71848, Raumdock) nimmt 25 Schaden, Hüllenintegrität sinkt auf 14977`;
+    const rawAttackLines = rawAttackString.split("\n");
+    const attack = rawAttackLines.map(line => LogLine.parse(line, "de"));
+    
+    // populate statistics so everything is registered
+    attack.forEach(line => line.populateStatistics(statistics));
+
+    statistics.processAttack(attack);
+
+    const avatar = statistics.avatars.getAvatarByItemId(48132);
+    expect(avatar.hullDamageReduction).toBeCloseTo(30);
+    expect(avatar.shieldDamageReduction).toBeCloseTo(34);
+    expect(avatar.energyDamageReduction).toBeCloseTo(0);
   });
 });
