@@ -158,5 +158,9 @@ Zielscheibe (71848, Raumdock) nimmt 25 Schaden, Hüllenintegrität sinkt auf 149
     expect(avatar.hullDamageReduction).toBeCloseTo(30);
     expect(avatar.shieldDamageReduction).toBeCloseTo(34);
     expect(avatar.energyDamageReduction).toBeCloseTo(0);
+
+    const iowa = statistics.ships.getShipByNcc(52946);
+    expect(iowa.shotsFired.length).toBe(1);
+    expect(iowa.shotsFired[0].damageMultiplier).toBeCloseTo(1-0.19);
   });
 });

@@ -15,6 +15,7 @@ class WeaponShot {
   #overkill = 0;
   #armorAbsorption = 0;
   #armorPenetration = 0;
+  #damageMultiplier = 1;
 
   #origin = null;
   #target = null;
@@ -85,6 +86,13 @@ class WeaponShot {
    */
   get armorPenetration() { return this.#armorPenetration }
   /**
+   * the (detected) damage multiplier applied to this weapon shot by external factors (like avatars, items etc.)
+   * 
+   * there might be some additional damage modifiers applied that were not detected by the parser (eg. map field environmental effects, undetected items, etc)
+   * @returns {number}
+   */
+  get damageMultiplier() { return this.#damageMultiplier }
+  /**
    * the origin object of the shot
    * @returns {?IndividualShipStatistics}
    */
@@ -110,6 +118,7 @@ class WeaponShot {
    * @param {?number} param.overkill - amount of damage wasted by overkilling the target
    * @param {?number} param.armorAbsorption - amount of damage absorbed by the armor
    * @param {?number} param.armorPenetration - the amount of armor penetrated by the shot
+   * @param {?number} param.damageMultiplier - damage modifier of the shot applied by external sources (items etc.)
    * @param {?IndividualShipStatistics} param.origin - the ship that fired the shot
    * @param {?IndividualShipStatistics} param.target - the ship that was hit by the shot
    */
@@ -127,6 +136,7 @@ class WeaponShot {
     overkill = 0,
     armorAbsorption = 0,
     armorPenetration = 0,
+    damageMultiplier = 1,
     origin = null,
     target = null,
   } = {}) {
@@ -143,6 +153,7 @@ class WeaponShot {
     this.#overkill = overkill;
     this.#armorAbsorption = armorAbsorption;
     this.#armorPenetration = armorPenetration;
+    this.#damageMultiplier = damageMultiplier;
     this.#origin = origin;
     this.#target = target;
   }

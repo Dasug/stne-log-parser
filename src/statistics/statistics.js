@@ -22,7 +22,10 @@ import ColonyNameAndIdResult from "../regex/parse-result/colony-name-and-id-resu
 import AvatarStatistics from "./avatar-statistics.js";
 import AvatarResult from "../regex/parse-result/avatar-result.js";
 import AvatarDamageReductionResult from "../line-type/parse-result/avatar-damage-reduction-result.js";
+import AvatarAttackDroneCritResult from "../line-type/parse-result/avatar-attack-drone-crit-result.js";
 import IndividualAvatarStatistics from "./individual-avatar-statistics.js";
+import AvatarWeaponDamageIncreaseResult from "../line-type/parse-result/avatar-weapon-damage-increase-result.js";
+import AvatarPilotManeuverSuccessResult from "../line-type/parse-result/avatar-pilot-maneuver-success-result.js";
 /**
  * A parse result of a ship, either with only name or with name and NCC and class
  * @typedef {ShipNameAndNccResult|ShipNameOnlyResult} ShipParseResult
@@ -165,6 +168,25 @@ class Statistics {
     const energyDamageLine = this.#attackGetLineByParseResultType(attack, EnergyDamageResult);
     const armorAbsorptionLine = this.#attackGetLineByParseResultType(attack, ArmorAbsorptionResult);
     const armorPenetrationLine = this.#attackGetLineByParseResultType(attack, ArmorPenetrationResult);
+    const avatarDamageReductionLine = this.#attackGetLineByParseResultType(attack, AvatarDamageReductionResult);
+    const avatarAttackDroneCritLine = this.#attackGetLineByParseResultType(attack, AvatarAttackDroneCritResult);
+    const avatarPilotManeuverSuccessLine = this.#attackGetLineByParseResultType(attack, AvatarPilotManeuverSuccessResult);
+    const avatarWeaponDamageIncreaseLine = this.#attackGetLineByParseResultType(attack, AvatarWeaponDamageIncreaseResult);
+
+    // calculate applied damage modifier
+    let damageMultiplier = 1;
+    // defense tactician avatar
+    damageMultiplier *= 1-(avatarDamageReductionLine?.parseResult.damageReduction ?? 0)/100;
+    // drone pilot avatar
+    if(avatarAttackDroneCritLine !== null) {
+      damageMultiplier *= 2;
+    }
+    // pilot avatar
+    if(avatarPilotManeuverSuccessLine !== null) {
+      damageMultiplier *= 2;
+    }
+    // weapon officier avatar
+    damageMultiplier *= 1+(avatarWeaponDamageIncreaseLine?.parseResult.damageIncrease ?? 0)/100;
 
     const shot = new WeaponShot({
       origin: shotOrigin,
@@ -182,6 +204,7 @@ class Statistics {
       effectiveEnergyDamage: energyDamageLine?.parseResult.energyDamage ?? 0,
       armorAbsorption: armorAbsorptionLine?.parseResult.armorAbsorption ?? 0,
       armorPenetration: armorPenetrationLine?.parseResult.armorPenetration ?? 0,
+      damageMultiplier: damageMultiplier,
     });
 
     if(shotOrigin !== null) {
@@ -191,9 +214,8 @@ class Statistics {
       shotTarget.addReceivedShot(shot);
     }
 
-    const avatarDamageReductionLine = this.#attackGetLineByParseResultType(attack, AvatarDamageReductionResult);
     if(avatarDamageReductionLine !== null) {
-      /** @type {IndividualAvatarStatistics} avatar */
+      /** @type {[IndividualAvatarStatistics]} */
       const [avatar] = this.register(avatarDamageReductionLine.parseResult.avatar);
       const damageReductionPercentage = avatarDamageReductionLine.parseResult.damageReduction / 100;
       const originalHullDamage = Math.ceil(shot.hullDamage / (1-damageReductionPercentage));
