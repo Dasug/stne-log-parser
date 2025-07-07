@@ -15,6 +15,7 @@ import FullSystemFailureType from '../../src/line-type/full-system-failure-type.
 import ArmorAbsorptionType from '../../src/line-type/armor-absorption-type.js';
 import ArmorPenetrationType from '../../src/line-type/armor-penetration-type.js';
 import AvatarDamageReductionType from '../../src/line-type/avatar-damage-reduction-type.js';
+import AvatarDecoyDroneSuccessType from '../../src/line-type/avatar-decoy-drone-success-type.js';
 import LogLine from '../../src/log-line.js';
 import AvatarResult from '../../src/regex/parse-result/avatar-result.js';
 import AvatarJob from '../../src/enum/avatar-job.js';
@@ -89,6 +90,11 @@ describe('statistics registration', () => {
 });
 
 describe('statistics process attack', () => {
+  const parseAttack = (rawAttackString) => {
+    const rawAttackLines = rawAttackString.split("\n");
+    return rawAttackLines.map(line => LogLine.parse(line, "de"));
+  };
+
   beforeAll(() => {
     LogLine.overrideLogLineTypes([
       FireWeaponType,
@@ -101,6 +107,7 @@ describe('statistics process attack', () => {
       ArmorAbsorptionType,
       ArmorPenetrationType,
       AvatarDamageReductionType,
+      AvatarDecoyDroneSuccessType,
     ]);
   });
   afterAll(() => {
@@ -109,13 +116,11 @@ describe('statistics process attack', () => {
 
   test("process attack", () => {
     const statistics = new Statistics();
-    const rawAttackLines = [
-      String.raw`Yzato Doatrif (2178717, Yzato) von []U.C.W[] Dachsavar Assguard Incorporated (72714) schlägt Darinaya Brohesh (2261735, Darinaya) mit Disruptor und Stärke 18/18/0 zurück`,
-      String.raw`Panzerung von Brohesh (2261735, Darinaya) schwächt Angriff um 4 Punkte`,
-      String.raw`Brohesh (2261735, Darinaya) nimmt 7(+7) Schaden, Hüllenintegrität sinkt auf 0`,
-      String.raw`Kontakt zu Brohesh (2261735, Darinaya) verloren! Letzte bekannte Position: 229|423`,
-    ];
-    const attack = rawAttackLines.map(line => LogLine.parse(line, "de"));
+    const attack = parseAttack(
+      String.raw`Yzato Doatrif (2178717, Yzato) von []U.C.W[] Dachsavar Assguard Incorporated (72714) schlägt Darinaya Brohesh (2261735, Darinaya) mit Disruptor und Stärke 18/18/0 zurück
+      Panzerung von Brohesh (2261735, Darinaya) schwächt Angriff um 4 Punkte
+      Brohesh (2261735, Darinaya) nimmt 7(+7) Schaden, Hüllenintegrität sinkt auf 0
+      Kontakt zu Brohesh (2261735, Darinaya) verloren! Letzte bekannte Position: 229|423`);
     
     // populate statistics so everything is registered
     attack.forEach(line => line.populateStatistics(statistics));
@@ -141,13 +146,11 @@ describe('statistics process attack', () => {
 
   test("process avatar damage reduction", () => {
     const statistics = new Statistics();
-    const rawAttackString = String.raw`Verteidigungstaktiker (48132, Verteidigungstaktiker) stört die Zielerfassung von Buneock (52946, Iowa), wodurch dessen Angriff auf Zielscheibe (71848, Raumdock) um 19% schwächer ausfällt!
+    const attack = parseAttack(String.raw`Verteidigungstaktiker (48132, Verteidigungstaktiker) stört die Zielerfassung von Buneock (52946, Iowa), wodurch dessen Angriff auf Zielscheibe (71848, Raumdock) um 19% schwächer ausfällt!
 Iowa Buneock (52946, Iowa) von Dasug2 (2186) greift Raumdock Zielscheibe (71848, Raumdock) mit Antiprotonenkanone und Stärke 141/125/0 an
 Schilde von Zielscheibe (71848, Raumdock) nehmen 110 Schaden, sind jetzt auf 15882
 Panzerung von Zielscheibe (71848, Raumdock) schwächt Angriff um 3 Punkte
-Zielscheibe (71848, Raumdock) nimmt 25 Schaden, Hüllenintegrität sinkt auf 14977`;
-    const rawAttackLines = rawAttackString.split("\n");
-    const attack = rawAttackLines.map(line => LogLine.parse(line, "de"));
+Zielscheibe (71848, Raumdock) nimmt 25 Schaden, Hüllenintegrität sinkt auf 14977`);
     
     // populate statistics so everything is registered
     attack.forEach(line => line.populateStatistics(statistics));
@@ -162,5 +165,51 @@ Zielscheibe (71848, Raumdock) nimmt 25 Schaden, Hüllenintegrität sinkt auf 149
     const iowa = statistics.ships.getShipByNcc(52946);
     expect(iowa.shotsFired.length).toBe(1);
     expect(iowa.shotsFired[0].damageMultiplier).toBeCloseTo(1-0.19);
+  });
+
+  test("process avatar shot avoidance with unknown weapon", () => {
+    const statistics = new Statistics();
+    const attack = parseAttack(String.raw`Staffel Blau 2 58 (2237612, Klaestron) trifft die Köderdrohne von Stephanie Beich (667849, Drohnenpilot) auf Kinder von Tama (2183807, Tamani) mit Disruptor und zerstört sie!`);
+    
+    // populate statistics so everything is registered
+    attack.forEach(line => line.populateStatistics(statistics));
+
+    statistics.processAttack(attack);
+
+    const avatar = statistics.avatars.getAvatarByItemId(667849);
+    expect(avatar.hullDamageReduction).toBeCloseTo(0);
+    expect(avatar.shieldDamageReduction).toBeCloseTo(0);
+    expect(avatar.energyDamageReduction).toBeCloseTo(0);
+
+    const klaestron = statistics.ships.getShipByNcc(2237612);
+    const unknownAvoidedShots = avatar.unknownAvoidedShots;
+    expect(unknownAvoidedShots.length).toBe(1);
+    expect(unknownAvoidedShots[0].weaponName).toBe("Disruptor");
+    expect(unknownAvoidedShots[0].shotOrigin).toBe(klaestron);
+  });
+
+  test("process avatar shot avoidance with known weapon", () => {
+    const statistics = new Statistics();
+    const attack1 = parseAttack(String.raw`Klaestron Staffel Blau 2 58 (2237612, Klaestron) von ]=SLC=[Caiera (62625) greift Tamani Kinder von Tama (2183807, Tamani) mit Disruptor und Stärke 20/20/0 an
+Schilde von Kinder von Tama (2183807, Tamani) nehmen 17 Schaden, sind jetzt auf 697
+Panzerung von Kinder von Tama (2183807, Tamani) schwächt Angriff um 1 Punkte
+Kinder von Tama (2183807, Tamani) nimmt 2 Schaden, Hüllenintegrität sinkt auf 1391`);
+    const attack2 = parseAttack(String.raw`Staffel Blau 2 58 (2237612, Klaestron) trifft die Köderdrohne von Stephanie Beich (667849, Drohnenpilot) auf Kinder von Tama (2183807, Tamani) mit Disruptor und zerstört sie!`);
+    
+    // populate statistics so everything is registered
+    attack1.forEach(line => line.populateStatistics(statistics));
+    attack2.forEach(line => line.populateStatistics(statistics));
+
+    statistics.processAttack(attack1);
+    statistics.processAttack(attack2);
+
+    const avatar = statistics.avatars.getAvatarByItemId(667849);
+    expect(avatar.hullDamageReduction).toBeCloseTo(20);
+    expect(avatar.shieldDamageReduction).toBeCloseTo(20);
+    expect(avatar.energyDamageReduction).toBeCloseTo(0);
+
+    const klaestron = statistics.ships.getShipByNcc(2237612);
+    const unknownAvoidedShots = avatar.unknownAvoidedShots;
+    expect(unknownAvoidedShots.length).toBe(0);
   });
 });

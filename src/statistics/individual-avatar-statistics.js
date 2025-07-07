@@ -2,6 +2,8 @@
 
 import AvatarJob from "../enum/avatar-job.js";
 import AvatarResult from "../regex/parse-result/avatar-result.js";
+import IndividualShipStatistics from "./individual-ship-statistics.js";
+import WeaponShot from "./weapon-shot.js";
 
 class IndividualAvatarStatistics {
   /** 
@@ -50,6 +52,12 @@ class IndividualAvatarStatistics {
    * @type {Number}
    */
   #energyDamageReduction = 0;
+
+  /**
+   * shots that have been avoided by this avatar but the weapon used is unknown
+   * @type {{weaponName: String, shotOrigin: ?IndividualShipStatistics}[]}
+   */
+  #unknownAvoidedShots = [];
 
   /** 
    * name of the avatar
@@ -141,6 +149,14 @@ class IndividualAvatarStatistics {
   }
 
   /**
+   * shots that have been avoided by this avatar but the weapon used is unknown
+   * @type {{weaponName: String, shotOrigin: ?IndividualShipStatistics}[]}
+   */
+  get unknownAvoidedShots() {
+    return this.#unknownAvoidedShots;
+  }
+
+  /**
    * register an action performed by the avatar 
    */
   registerAction() {
@@ -177,6 +193,46 @@ class IndividualAvatarStatistics {
    */
   registerEnergyDamageReduction(damageReduction) {
     this.#energyDamageReduction += damageReduction;
+  }
+
+  /**
+   * processes an avoided shot
+   * @returns {boolean} true if the shot could be processed, false if it couldn't. (shotOrigin is null of the weapon is not known)
+   */
+  #processAvoidedShot(weaponName, shotOrigin) {
+    if(shotOrigin === null) {
+      return false;
+    }
+    const weaponShots = shotOrigin.shotsFired.filter(/** @type {WeaponShot} */ weaponShot => weaponShot.weaponName === weaponName);
+    if(weaponShots.length === 0) {
+      return false;
+    }
+
+    // calculate average in case the actual base damage is ambiguous
+    let avgOriginalHullDamage = Math.round(weaponShots.reduce((damageTotal, weaponShot) => (damageTotal + weaponShot.hullDamage / weaponShot.damageMultiplier), 0) / weaponShots.length);
+    let avgOriginalShieldDamage = Math.round(weaponShots.reduce((damageTotal, weaponShot) => (damageTotal + weaponShot.shieldDamage / weaponShot.damageMultiplier), 0) / weaponShots.length);
+    let avgOriginalEnergyDamage = Math.round(weaponShots.reduce((damageTotal, weaponShot) => (damageTotal + weaponShot.energyDamage / weaponShot.damageMultiplier), 0) / weaponShots.length);
+
+    this.registerHullDamageReduction(avgOriginalHullDamage);
+    this.registerShieldDamageReduction(avgOriginalShieldDamage);
+    this.registerEnergyDamageReduction(avgOriginalEnergyDamage);
+
+    return true;
+  }
+
+  /**
+   * register that the avatar managed to avoid a shot at the ship he is stationed on.
+   * 
+   * this will register damage reduction for the avatar if the weapon's base shot strength is known.
+   * This is inferred if a weapon shot has been registered before this function is called.
+   *  
+   * @param {?IndividualShipStatistics} shotOrigin origin of the shot
+   * @param {String} weaponName name of the weapon the avatar avoided
+   */
+  registerAvoidedShot(weaponName, shotOrigin) {
+    if(!this.#processAvoidedShot(weaponName, shotOrigin)) {
+      this.#unknownAvoidedShots.push({weaponName, shotOrigin});
+    }
   }
 
   /**

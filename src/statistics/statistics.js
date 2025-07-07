@@ -22,6 +22,7 @@ import ColonyNameAndIdResult from "../regex/parse-result/colony-name-and-id-resu
 import AvatarStatistics from "./avatar-statistics.js";
 import AvatarResult from "../regex/parse-result/avatar-result.js";
 import AvatarDamageReductionResult from "../line-type/parse-result/avatar-damage-reduction-result.js";
+import AvatarDecoyDroneSuccessResult from "../line-type/parse-result/avatar-decoy-drone-success-result.js";
 import AvatarAttackDroneCritResult from "../line-type/parse-result/avatar-attack-drone-crit-result.js";
 import IndividualAvatarStatistics from "./individual-avatar-statistics.js";
 import AvatarWeaponDamageIncreaseResult from "../line-type/parse-result/avatar-weapon-damage-increase-result.js";
@@ -144,7 +145,7 @@ class Statistics {
    * @param {LogLine} shipDestructionLine line in which the ship was destroyed
    * @param {LogLine} weaponShotLine line in which the weapon was shot
    */
-  #processShipDestruction(shotOrigin, shipDestructionLine, weaponShotLine) {
+  #processShipDestruction(shotOrigin, shipDestructionLine) {
     if(shipDestructionLine !== null) {
       const [destroyedShip] = this.register(shipDestructionLine.parseResult.ship);
       destroyedShip.setDestroyer(shotOrigin);
@@ -153,8 +154,13 @@ class Statistics {
       }
     }
   }
-
-  #processWeaponShot(attack, weaponShotLine) {
+  
+  /**
+   * 
+   * @param {LogLine[]} attack array of log lines constituting an attack
+   * @param {LogLine} weaponShotLine log line that shows the weapon being fired
+   */
+  #buildShot(attack, weaponShotLine) {
     /**
      * @type {FireWeaponResult}
      */
@@ -214,7 +220,12 @@ class Statistics {
       shotTarget.addReceivedShot(shot);
     }
 
-    if(avatarDamageReductionLine !== null) {
+    return shot;
+  }
+
+  #processAvatarActions(attack, shot) {
+    const avatarDamageReductionLine = this.#attackGetLineByParseResultType(attack, AvatarDamageReductionResult);
+    if(shot !== null && avatarDamageReductionLine !== null) {
       /** @type {[IndividualAvatarStatistics]} */
       const [avatar] = this.register(avatarDamageReductionLine.parseResult.avatar);
       const damageReductionPercentage = avatarDamageReductionLine.parseResult.damageReduction / 100;
@@ -228,6 +239,18 @@ class Statistics {
       avatar.registerShieldDamageReduction(shieldDamageReduction);
       avatar.registerEnergyDamageReduction(energyDamageReduction);
     }
+
+    const avatarDecoyDroneSuccessLine = this.#attackGetLineByParseResultType(attack, AvatarDecoyDroneSuccessResult);
+    if(avatarDecoyDroneSuccessLine !== null) {
+      /** @type {[IndividualAvatarStatistics, ?IndividualShipStatistics]} */
+      const [avatar, opponent] = this.register(avatarDecoyDroneSuccessLine.parseResult.avatar, avatarDecoyDroneSuccessLine.parseResult.opponent);
+      avatar.registerAvoidedShot(avatarDecoyDroneSuccessLine.parseResult.weaponName, opponent);
+    }
+  }
+
+  #processWeaponShot(attack, weaponShotLine) {
+    const shot = weaponShotLine !== null ? this.#buildShot(attack, weaponShotLine) : null;
+    this.#processAvatarActions(attack, shot);
   }
 
   /**
@@ -237,14 +260,11 @@ class Statistics {
    */
   processAttack(attack) {
     const weaponShotLine = this.#attackGetLineByTag(attack, LineTag.weaponShot);
-    if(weaponShotLine === null) {
-      return;
-    }
     const shipDestructionLine = this.#attackGetLineByTag(attack, LineTag.shipDestruction);
     const shipDisablingLine = this.#attackGetLineByTag(attack, LineTag.shipDisabled);
-    const [shotOrigin] = this.register(weaponShotLine.parseResult?.origin);
+    const [shotOrigin] = this.register(weaponShotLine?.parseResult?.origin);
     if(shipDestructionLine !== null) {
-      this.#processShipDestruction(shotOrigin, shipDestructionLine, weaponShotLine);
+      this.#processShipDestruction(shotOrigin, shipDestructionLine);
     }
     this.#processWeaponShot(attack, weaponShotLine);
   }
