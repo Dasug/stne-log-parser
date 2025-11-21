@@ -6,7 +6,6 @@
   "repository": "https://github.com/Dasug/stne-log-parser",
   "author": "Marius Kaufmann <dasug@improved-madness.de>",
   "license": "MIT",
-  "private": false,
   "type": "module",
   "devDependencies": {
     "@babel/cli": "^7.28.0",
@@ -21,7 +20,7 @@
     "webpack-merge": "^6.0.1"
   },
   "scripts": {
-    "test": "cross-env NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" jest",
+    "test": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest",
     "prepare": "webpack --config webpack.prod.js",
     "build": "webpack --config webpack.prod.js",
     "watch": "webpack serve --config webpack.dev.js"
@@ -42,5 +41,5 @@
     "enumify": "^2.0.0",
     "regex": "^6.0.1"
   },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+  "packageManager": "yarn@4.11.0"
 }
