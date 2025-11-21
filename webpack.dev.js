@@ -3,6 +3,10 @@ import { merge } from 'webpack-merge';
 import common from './webpack.common.js';
 
 export default merge(common, {
+  entry: {
+    main: './src/index.js',
+    demonstration: './src/demonstration/index.js',
+  },
   mode: 'development',
   devtool: 'inline-source-map',
    devServer: {

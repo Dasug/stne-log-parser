@@ -1,0 +1,263 @@
+/* 1. Use a more-intuitive box-sizing model */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* 2. Remove default margin */
+* {
+  margin: 0;
+}
+
+/* 3. Enable keyword animations */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    interpolate-size: allow-keywords;
+  }
+}
+
+body {
+  /* 4. Add accessible line-height */
+  line-height: 1.5;
+  /* 5. Improve text rendering */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 6. Improve media defaults */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* 7. Inherit fonts for form controls */
+input, button, textarea, select {
+  font: inherit;
+}
+
+/* 8. Avoid text overflows */
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+/* 9. Improve line wrapping */
+p {
+  text-wrap: pretty;
+}
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+/*
+  10. Create a root stacking context
+*/
+#root, #__next {
+  isolation: isolate;
+}
+
+
+
+
+
+/* Dark theme styles for library testing */
+:root {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --accent-color: #bb86fc;
+    --card-bg: #1e1e1e;
+    --border-color: #333333;
+    --code-bg: #1e1e1e;
+    --success-color: #4caf50;
+    --error-color: #f44336;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    padding: 20px;
+    margin: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 30px;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+}
+
+nav a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: var(--accent-color);
+}
+
+section {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+section h2 {
+    color: var(--accent-color);
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.test-results {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+.test-success {
+    background-color: rgba(76, 175, 80, 0.1);
+    border: 1px solid var(--success-color);
+}
+
+.test-error {
+    background-color: rgba(244, 67, 54, 0.1);
+    border: 1px solid var(--error-color);
+}
+
+.code-block {
+    background-color: var(--code-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 15px;
+    margin: 15px 0;
+    font-family: monospace;
+    overflow-x: auto;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+button {
+    background-color: var(--accent-color);
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: opacity 0.3s ease;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+.log-entry {
+  /* Textarea-like styling */
+  background-color: #1e1e1e;
+  border: 1px solid #333333;
+  border-radius: 4px;
+  color: #e0e0e0;
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 12px;
+  min-height: 120px;
+  max-height: min(800px, 50vh);
+  overflow: auto;
+  width: 100%;
+  resize: vertical;
+  outline: none;
+}
+
+.log-entry:focus {
+  border-color: #bb86fc;
+  box-shadow: 0 0 0 2px rgba(187, 134, 252, 0.2);
+}
+
+.log-entry:empty:before {
+  content: 'Enter your log entry here...';
+  color: #666666;
+  font-style: italic;
+}
+
+/* Table styling for dark theme */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  background-color: #1e1e1e;
+  border: 1px solid #333333;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #333333;
+}
+
+th {
+  background-color: #2d2d2d;
+  color: #bb86fc;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.9em;
+  letter-spacing: 0.5px;
+}
+
+tr:hover {
+  background-color: #252525;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+@media (max-width: 768px) {
+  header {
+      flex-direction: column;
+      gap: 15px;
+  }
+  
+  nav ul {
+      flex-wrap: wrap;
+      justify-content: center;
+  }
+  
+  .button-group {
+      flex-direction: column;
+  }
+  
+  button {
+      width: 100%;
+  }
+  
+  table {
+    font-size: 0.9em;
+  }
+  
+  th, td {
+    padding: 8px 10px;
+  }
+}

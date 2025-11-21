@@ -3,12 +3,55 @@
   <head>
     <meta charset="utf-8" />
     <title>stneLogParser test page</title>
-    <script src="main.js" type="module"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script defer src="main.js" type="module"></script>
     <script>
-      import('./main.js').then(m => window.stneLogParser = m);
+      import("./demonstration.js").then(d => d.default());
     </script>
   </head>
   <body>
-    <p>check stneLogParser variable in browser console.</p>
+    <div class="container">
+        <header>
+            <h1>STNE Library Parser Test Page</h1>
+            <nav>
+                <ul>
+                    <li><a href="#parser">Log-Parser</a></li>
+                    <li><a href="#line-types">Log Line Types</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <section id="parser">
+          <h2>Log Parser</h2>
+          <div class="log-parser-container">
+            <div contenteditable="plaintext-only" spellcheck="false" class="log-entry"></div>
+          </div>
+        </section>
+
+        <section id="line-types">
+            <h2>Implemented Log Line Types</h2>
+            <table id="log-line-type-overview">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>de</th>
+                  <th>en</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>aaa</td>
+                  <td>aaa</td>
+                  <td>aaa</td>
+                </tr>
+                <tr>
+                  <td>aaa</td>
+                  <td>aaa</td>
+                  <td>aaa</td>
+                </tr>
+              </tbody>
+            </table>
+        </section>
+    </div>
   </body>
 </html>

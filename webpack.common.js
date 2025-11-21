@@ -2,9 +2,11 @@ import path from 'path';
 import TerserPlugin from 'terser-webpack-plugin';
 
 export default {
-  entry: './src/index.js',
+  entry: {
+    main: './src/index.js',
+  },
   output: {
-    filename: 'main.js',
+    filename: '[name].js',
     path: path.resolve(import.meta.dirname, 'dist'),
     library: {
       type: 'module',
