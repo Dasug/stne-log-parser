@@ -21,16 +21,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - name: "Enable corepack"
+      run: corepack enable
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+        cache: 'yarn'
     - name: Run install
-      uses: borales/actions-yarn@v5
-      with:
-        cmd: install # will run `yarn install` command
+      run: yarn install --immutable
     - name: Test the app
-      uses: borales/actions-yarn@v5
-      with:
-        cmd: test # will run `yarn test` command
+      run: yarn test
