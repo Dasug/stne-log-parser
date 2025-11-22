@@ -1,3 +1,5 @@
+"use strict"
+
 import { lineTypesByName } from "../../line-type.index.js";
 
 function setupLineTypeTable() {

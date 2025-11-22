@@ -65,8 +65,11 @@ h1, h2, h3, h4, h5, h6 {
     --card-bg: #1e1e1e;
     --border-color: #333333;
     --code-bg: #1e1e1e;
-    --success-color: #4caf50;
-    --error-color: #f44336;
+    --line-success-color: rgba(76, 175, 80, 0.1);
+    --line-error-color: rgba(244, 67, 54, 0.1);
+    --line-header-color: #ffe10025;
+    --line-pending-color: rgba(255, 255, 255, 0.05);
+    --log-entry-boundary-color: rgba(255, 225, 0, 1);
 }
 
 body {
@@ -198,6 +201,29 @@ button:hover {
   content: 'Enter your log entry here...';
   color: #666666;
   font-style: italic;
+}
+
+.log-entry .log-entry-boundary {
+  border: var(--log-entry-boundary-color) solid 1px;
+  border-radius: 5px;
+  margin-bottom: 0.5em;
+  padding: 0.25em;
+}
+
+.log-entry .log-line-parsed {
+  background-color: var(--line-success-color);
+}
+
+.log-entry .log-line-not-parsed {
+  background-color: var(--line-error-color);
+}
+
+.log-entry .log-line-pending {
+  background-color: var(--line-pending-color);
+}
+
+.log-entry .log-header {
+  background-color: var(--line-header-color);
 }
 
 /* Table styling for dark theme */
