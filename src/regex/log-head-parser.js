@@ -12,6 +12,7 @@ import { getLineNumber } from '../util/string-helper.js';
 class LogHeadParser {
   static regexPattern = addSubroutines(
     pattern`
+      (?<=^|\n)
       \s*
       (?<log_direction> (?: Auslöser|Ziel|Trigger|Target|Acción\ Ejecutada:?|Objetivo))
       \s+
@@ -22,15 +23,15 @@ class LogHeadParser {
       (?<date_time> \d{2}\.\d{2}\.\d{4,}\ \d{2}:\d{2}:\d{2})
       \s*
       (?<log_body> (?: .+?\r?\n?)+?)
-      
+      (?>[\r\n]*)
       # look ahead if there's either the end or the start of the next log
       (?=
         $
         |
-        (?:
-          \s+
+        (?>
+          \s*?
           (?: Auslöser|Ziel|Trigger|Target|Acción\ Ejecutada:?|Objetivo)
-          \s+
+          \s+?
           \g<playerNameAndId>
         )
       )
