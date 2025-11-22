@@ -17,7 +17,8 @@ function processLogEntry(logEntryInputField, workQueue) {
   const entryDiv = work.entryDiv;
   let parsedEntry = null;
   try {
-     parsedEntry = LogEntry.parseLogMessage(entry);
+    LogEntry.preprocessLogMessage(entry);
+    parsedEntry = LogEntry.parseLogMessage(entry);
   } catch(e) {
     console.error("could not parse log entry", {entry, e});
   }
@@ -26,21 +27,23 @@ function processLogEntry(logEntryInputField, workQueue) {
   if(parsedEntry !== null) {
     logEntryInputField.parsedEntries.push(parsedEntry);
     const parsedLines = parsedEntry.parsedLines;
-    const logLineDivs = Array.from(entryDiv.querySelectorAll(".log-line:not(.log-header)"));
-    for (let index = 0; index < logLineDivs.length; index++) {
-      const lineDiv = logLineDivs[index];
+    const headerLineDivs = Array.from(entryDiv.querySelectorAll(".log-line.log-header"));
+    const newLineDivs = [];
+    for (let index = 0; index < parsedLines.length; index++) {
+      const lineDiv = document.createElement("div");
+      lineDiv.classList.add("log-line");
+      newLineDivs.push(lineDiv);
       const parsedLine = parsedLines[index] ?? null;
-      if(parsedLine === null) {
-        console.error("parsed line and line divs are not synchronized somehow...", {parsedLines, logLineDivs});
-        return;
-      }
-      lineDiv.classList.remove("log-line-pending");
+      lineDiv.innerText = parsedLine.line;
+      
       if(parsedLine.detected) {
         lineDiv.classList.add("log-line-parsed");
       } else {
         lineDiv.classList.add("log-line-not-parsed");
       }
     }
+
+    entryDiv.replaceChildren(...headerLineDivs, ...newLineDivs);
   }
 
   // go to the next item when done.

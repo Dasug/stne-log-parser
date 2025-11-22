@@ -1,6 +1,6 @@
 "use strict"
 
-import {pattern} from 'regex';
+import {pattern, regex} from 'regex';
 import Expression from './expression.js';
 import PlayerNameAndIdResult from '../parse-result/player-name-and-id-result.js';
 
@@ -22,6 +22,24 @@ class PlayerNameAndId extends Expression {
     # player id
     (?<player_id>\d+)
     \)
+  `;
+
+  static linebreakFixRegex = regex('g')`
+    (?<=
+      # player name
+      (?<player_name>.{1,256}?)
+      \s*
+    )
+    \n
+    (?=
+      \s*
+      \(
+      # player id prefix if existing
+      ((?<id_prefix>[a-zA-Z0-9]+)-)?
+      # player id
+      (?<player_id>\d+)
+      \)
+    )
   `;
 
   /**

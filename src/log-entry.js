@@ -6,9 +6,12 @@ import LogLine from "./log-line.js";
 import LogHeadParser from "./regex/log-head-parser.js";
 import LogMessage from "./regex/parse-result/log-message.js";
 import PlayerNameAndId from "./regex/subroutine/player-name-and-id.js";
+import availablePreprocessors from "./preprocessor.index.js";
 import Statistics from "./statistics/statistics.js";
+import GenericPreprocessor from "./preprocessor/generic-preprocessor.js";
 
 class LogEntry {
+  static #preprocessors = availablePreprocessors;
   /**
    * @param {LogMessage} header log message with pre-parsed header information
    */
@@ -65,6 +68,26 @@ class LogEntry {
    * @type {?Statistics}
    */
   get statistics() { return this.#statistics ?? null; }
+
+  /**
+   * Overrides the preprocessors to use before the line-by-line parsing.
+   * Use this method if you want to use log preprocessing in a test
+   * as jest cannot load them in the usual way.
+   * @param {GenericPreprocessor[]} preprocessors preprocessors to use
+   */
+  static overridePreprocessors(preprocessors) {
+    this.#preprocessors = preprocessors;
+  }
+
+  /**
+   * Resets the preprocessors to the default ones provided by preprocessor.index.js.
+   * This is usually all of them or none of them if using the jest mock.
+   * @returns {void}
+   */
+  static resetPreprocessors() {
+    this.#preprocessors = availablePreprocessors;
+  }
+
 
   /**
    * Builds a statistics object containing only this log entry's data.
@@ -185,7 +208,21 @@ class LogEntry {
   static parseLogEntries(text) {
     const parsedLogHeaders = LogHeadParser.parseMessages(text);
 
-    return parsedLogHeaders.map(parsedLogHeader => this.parseLogMessage(parsedLogHeader));
+    return parsedLogHeaders.map(parsedLogHeader => {
+      this.preprocessLogMessage(parsedLogHeader);
+      this.parseLogMessage(parsedLogHeader);
+    });
+  }
+
+  /**
+   * Runs all preprocessors on the given log message, updating it's message body
+   * @param {LogMessage} logMessage log message to preprocess
+   */
+  static preprocessLogMessage(logMessage) {
+    const sortedPreprocessors = this.#preprocessors.sort((a, b) => a.priority-b.priority);
+    sortedPreprocessors.forEach(preprocessor => {
+      logMessage.messageBody = preprocessor.preprocess(logMessage.messageBody);
+    });
   }
 
   /**
