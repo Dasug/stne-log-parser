@@ -217,7 +217,7 @@ th, td {
   border-bottom: 1px solid #333333;
 }
 
-th {
+th, tfoot td {
   background-color: #2d2d2d;
   color: #bb86fc;
   font-weight: 600;
@@ -252,7 +252,7 @@ tr:last-child td {
   button {
       width: 100%;
   }
-  
+
   table {
     font-size: 0.9em;
   }
