@@ -67,6 +67,7 @@ class LogHeadParser {
       log.messageBody = logBody;
       log.lineStart = getLineNumber(text, match.index);
       log.lineEnd = getLineNumber(text, match.index + match[0].length-1);
+      log.messageBodyLineStartOffset = getLineNumber(match[0], match[0].indexOf(logBody));
       
       logs.push(log);
     }

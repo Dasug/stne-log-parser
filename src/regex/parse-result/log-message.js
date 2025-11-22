@@ -29,10 +29,16 @@ class LogMessage {
   messageBody;
 
   /**
-   * Line the content starts matching a log entry
+   * Line the content starts matching a log entry relative to the entire text
    * @type {number}
    */
   lineStart;
+
+  /**
+   * Line the log message body starts on relative to the start of the start of the header
+   * @type {number}
+   */
+  messageBodyLineStartOffset;
 
   /**
    * Last line of the text that still matches this log message
