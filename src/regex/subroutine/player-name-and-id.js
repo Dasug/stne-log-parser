@@ -15,7 +15,7 @@ import PlayerNameAndIdResult from '../parse-result/player-name-and-id-result.js'
 class PlayerNameAndId extends Expression {
   static regexPattern = pattern`
     # player name
-    (?<player_name>.+)
+    (?<player_name>.{1,256}?)
     \s+\(
     # player id prefix if existing
     ((?<id_prefix>[a-zA-Z0-9]+)-)?
