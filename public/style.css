@@ -195,6 +195,7 @@ button:hover {
   width: 100%;
   resize: vertical;
   outline: none;
+  overscroll-behavior: contain;
 }
 
 .log-entry:focus {
