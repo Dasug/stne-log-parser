@@ -34,6 +34,12 @@ class LogHeadParser {
           \s+?
           \g<playerNameAndId>
         )
+        |
+        (?:
+          \s*?
+          (?: Markierung\ umkehren|Invert\ selection|Invertir\ Selección)
+          \s+?
+        )
       )
     `,
     {
