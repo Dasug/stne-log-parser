@@ -69,7 +69,12 @@ h1, h2, h3, h4, h5, h6 {
     --line-error-color: rgba(244, 67, 54, 0.1);
     --line-header-color: #ffe10025;
     --line-pending-color: rgba(255, 255, 255, 0.05);
+    --line-success-color-hover: rgb(from var(--line-success-color) r g b / clamp(0, calc(2*alpha), 1));
+    --line-error-color-hover: rgb(from var(--line-error-color) r g b / clamp(0, calc(2*alpha), 1));
+    --line-header-color-hover: rgb(from var(--line-header-color) r g b / clamp(0, calc(2*alpha), 1));
+    --line-pending-color-hover: rgb(from var(--line-pending-color) r g b / clamp(0, calc(2*alpha), 1));
     --log-entry-boundary-color: rgba(255, 225, 0, 1);
+
 }
 
 body {
@@ -235,6 +240,22 @@ button:hover {
 
 .log-entry .log-header {
   background-color: var(--line-header-color);
+}
+
+.log-entry .log-line-parsed:hover {
+  background-color: var(--line-success-color-hover);
+}
+
+.log-entry .log-line-not-parsed:hover {
+  background-color: var(--line-error-color-hover);
+}
+
+.log-entry .log-line-pending:hover {
+  background-color: var(--line-pending-color-hover);
+}
+
+.log-entry .log-header:hover {
+  background-color: var(--line-header-color-hover);
 }
 
 /* Table styling for dark theme */
