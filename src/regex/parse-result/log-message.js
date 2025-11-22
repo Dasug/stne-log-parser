@@ -27,6 +27,18 @@ class LogMessage {
    * @type {string}
    */
   messageBody;
+
+  /**
+   * Line the content starts matching a log entry
+   * @type {number}
+   */
+  lineStart;
+
+  /**
+   * Last line of the text that still matches this log message
+   * @type {number}
+   */
+  lineEnd;
 }
 
 export default LogMessage;

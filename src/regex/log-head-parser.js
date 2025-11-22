@@ -7,6 +7,7 @@ import { addSubroutines } from '../util/regex-helper.js';
 import PlayerNameAndId from './subroutine/player-name-and-id.js';
 import LogDirection from '../enum/log-direction.js';
 import LogMessage from './parse-result/log-message.js';
+import { getLineNumber } from '../util/string-helper.js';
 
 class LogHeadParser {
   static regexPattern = addSubroutines(
@@ -64,6 +65,8 @@ class LogHeadParser {
       log.player = player;
       log.dateTime = date;
       log.messageBody = logBody;
+      log.lineStart = getLineNumber(text, match.index);
+      log.lineEnd = getLineNumber(text, match.index + match[0].length-1);
       
       logs.push(log);
     }

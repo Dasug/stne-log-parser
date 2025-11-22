@@ -29,6 +29,9 @@ Agrok (2579780, Nova) von Kôntránisches VerwaltungsAmt [PeaceInUkraine] (56813
     expect(firstLog.dateTime.getHours()).toBe(14);
     expect(firstLog.dateTime.getMinutes()).toBe(1);
     expect(firstLog.dateTime.getSeconds()).toBe(7);
+    
+    expect(firstLog.lineStart).toBe(0);
+    expect(firstLog.lineEnd).toBe(2);
 
     expect(firstLog.messageBody).toBe(String.raw`Asuteroidodansu (NX-2567981, Adeos) von Mortarion [OBV] * * * (28076) ist in Sektor 255|270 eingeflogen`);
 
@@ -43,6 +46,9 @@ Agrok (2579780, Nova) von Kôntránisches VerwaltungsAmt [PeaceInUkraine] (56813
     expect(secondLog.dateTime.getHours()).toBe(13);
     expect(secondLog.dateTime.getMinutes()).toBe(47);
     expect(secondLog.dateTime.getSeconds()).toBe(17);
+
+    expect(secondLog.lineStart).toBe(3);
+    expect(secondLog.lineEnd).toBe(6);
 
     expect(secondLog.messageBody).toBe(String.raw`Agrok (2579780, Nova) von Kôntránisches VerwaltungsAmt [PeaceInUkraine] (56813) ist in Sektor 102|373 eingeflogen`);
   });
