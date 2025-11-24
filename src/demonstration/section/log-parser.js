@@ -2,6 +2,7 @@
 
 import LogEntry from '../../log-entry.js';
 import LogHeadParser from '../../regex/log-head-parser.js';
+import { updateStatistics } from './log-parser-stats.js';
 
 function setupLogParser() {
   const input = document.querySelector("#parser .log-entry");
@@ -10,6 +11,7 @@ function setupLogParser() {
 
 function processLogEntry(logEntryInputField, workQueue) {
   if(workQueue.length === 0) {
+    updateStatistics(logEntryInputField.parsedEntries);
     return;
   }
   const work = workQueue.pop();
@@ -45,6 +47,8 @@ function processLogEntry(logEntryInputField, workQueue) {
 
     entryDiv.replaceChildren(...headerLineDivs, ...newLineDivs);
   }
+
+  updateStatistics(logEntryInputField.parsedEntries);
 
   // go to the next item when done.
   window.setTimeout(() => processLogEntry(logEntryInputField, workQueue), 100);

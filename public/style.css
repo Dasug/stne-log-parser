@@ -293,6 +293,126 @@ tr:last-child td {
   border-bottom: none;
 }
 
+details {
+  background-color: #1e1e1e;
+  border: 1px solid #333333;
+  border-radius: 4px;
+  margin: 20px 0;
+  overflow: hidden;
+}
+
+details[open] {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+summary {
+  background-color: #252525;
+  color: #e0e0e0;
+  padding: 15px 20px;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+summary:hover {
+  background-color: #2d2d2d;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+summary::after {
+  content: '▼';
+  font-size: 0.8em;
+  transition: transform 0.3s ease;
+}
+
+details[open] summary::after {
+  transform: rotate(180deg);
+}
+
+details > div {
+  padding: 20px;
+  border-top: 1px solid #333333;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.stat-item {
+  background-color: #121212;
+  padding: 10px;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.stat-value {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #bb86fc;
+  margin-bottom: 3px;
+  line-height: 1.2;
+}
+
+.stat-value.stat-num::after {
+  counter-reset: stat-number var(--stat-num);
+  content: counter(stat-number);
+  transition: --stat-num 1s;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: #aaa;
+  line-height: 1.2;
+}
+
+/* For multiple categories */
+.stat-category:not(:first-child) {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #333333;
+}
+
+.stat-category h3 {
+  margin: 0 0 10px 0;
+  color: #bb86fc;
+  font-size: 1rem;
+}
+
+/* Even more compact for very dense data */
+.stat-grid.compact {
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 8px;
+}
+
+.stat-grid.compact .stat-item {
+  padding: 8px;
+}
+
+.stat-grid.compact .stat-value {
+  font-size: 1rem;
+  margin-bottom: 2px;
+}
+
+.stat-grid.compact .stat-label {
+  font-size: 0.7rem;
+}
+
+@property --stat-num {
+  syntax: '<integer>';
+  initial-value: 0;
+  inherits: true;
+}
+
 @media (max-width: 768px) {
   header {
       flex-direction: column;
@@ -318,5 +438,13 @@ tr:last-child td {
   
   th, td {
     padding: 8px 10px;
+  }
+
+  .stat-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  summary {
+    padding: 12px 15px;
   }
 }

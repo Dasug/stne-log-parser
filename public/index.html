@@ -26,6 +26,32 @@
           <div class="log-parser-container">
             <div contenteditable="plaintext-only" spellcheck="false" class="log-entry"></div>
           </div>
+          <details id="log-statistics">
+            <summary>Statistics</summary>
+              <div>                
+                <div class="stat-category">
+                  <h3>Parsing Statistics</h3>
+                  <div class="stat-grid compact">
+                    <div class="stat-item">
+                      <div class="stat-value stat-num" data-stats-key="parsedLogLines"></div>
+                      <div class="stat-label">Successfully Parsed Log Lines</div>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-value stat-num" data-stats-key="unparsedLogLines"></div>
+                      <div class="stat-label">Unknown Log Lines</div>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-value stat-num" data-stats-key="totalLogLines"></div>
+                      <div class="stat-label">Total Log Lines</div>
+                    </div>
+                    <div class="stat-item">
+                      <div class="stat-value stat-num" data-stats-key="totalLogEntries"></div>
+                      <div class="stat-label">Total Log Entries</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </details>
         </section>
 
         <section id="line-types">
