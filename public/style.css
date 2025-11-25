@@ -285,6 +285,24 @@ th, tfoot td {
   letter-spacing: 0.5px;
 }
 
+th[data-sortable="true"] {
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+
+th[data-sortable="true"]:hover {
+  background-color:  #252525;
+}
+
+th.asc::after {
+  content: " ↑";
+}
+
+th.desc::after {
+  content: " ↓";
+}
+
 tr:hover {
   background-color: #252525;
 }
