@@ -119,7 +119,7 @@ function updateShipStatisticsTable(libraryStatistics) {
     } else {
       ownerNameString = "?";
     }
-    const shipOwnerSortValue = ship.owner.id ?? ship.owner.name;
+    const shipOwnerSortValue = ship.owner?.id ?? ship.owner?.name ?? "";
     statsTableRow.push(
       {
         value: ownerNameString,
