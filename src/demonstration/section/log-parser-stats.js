@@ -65,15 +65,30 @@ function buildLogStatistics(logEntries) {
   }
 }
 
-function updateShipStatisticsTable(libraryStatistics) {
-  const statsMentionedShipsTableBody = document.querySelector("#stats-mentioned-ships-table > tbody");
-  const newShipsTableRows = [];
-  libraryStatistics.ships.mentionedShips.forEach(ship => {
-    const tableRow = document.createElement("tr");
-    newShipsTableRows.push(tableRow);
+function buildStatsTableBody(table, statsRows) {
+  const tableBody = table.querySelector("& > tbody");
 
-    const shipNameCell = document.createElement("td");
-    tableRow.appendChild(shipNameCell);
+  const newTableRows = [];
+  statsRows.forEach(statsRow => {
+    const row = document.createElement("tr");
+    newTableRows.push(row);
+
+    statsRow.forEach(statsItem => {
+      const cell = document.createElement("td");
+      cell.innerText = statsItem.value ?? "";
+      cell.dataset.sortValue = statsItem.sortValue ?? 0;
+      row.appendChild(cell);
+    });
+  });
+
+  tableBody.replaceChildren(...newTableRows);
+}
+
+function updateShipStatisticsTable(libraryStatistics) {
+  const statsMentionedShipsTableBody = document.querySelector("#stats-mentioned-ships-table");
+  const statsTableContents = [];
+  libraryStatistics.ships.mentionedShips.forEach(ship => {
+    const statsTableRow = [];
     const shipNccDisplay = ship.nccPrefix ? (ship.nccPrefix + "-") : "";
     const shipClassDisplay = ship.shipClass ? (", " + ship.shipClass) : "";
     let shipNameString;
@@ -85,11 +100,13 @@ function updateShipStatisticsTable(libraryStatistics) {
     if(ship.isDestroyed) {
       shipNameString += " †";
     }
-    shipNameCell.innerText = shipNameString;
-    shipNameCell.dataset.sortValue = ship.ncc ?? ship.name;
+    const shipNameSortValue = ship.ncc ?? ship.name;
+    statsTableRow.push({
+        value: shipNameString,
+        sortValue: shipNameSortValue
+      }
+    );
 
-    const shipOwnerCell = document.createElement("td");
-    tableRow.appendChild(shipOwnerCell);
     let ownerNameString;
     if(ship.owner && ship.owner.name === null && ship.owner.id !== null) {
       ownerNameString = ship.owner.id;
@@ -102,52 +119,77 @@ function updateShipStatisticsTable(libraryStatistics) {
     } else {
       ownerNameString = "?";
     }
-    shipOwnerCell.innerText = ownerNameString;
-    shipOwnerCell.dataset.sortValue = ship.owner.id ?? ship.owner.name;
+    const shipOwnerSortValue = ship.owner.id ?? ship.owner.name;
+    statsTableRow.push(
+      {
+        value: ownerNameString,
+        sortValue: shipOwnerSortValue
+      }
+    );
     
-    const damageDealtCell = document.createElement("td");
-    tableRow.appendChild(damageDealtCell);
     let damageDealtText = ship.effectiveDamageDealt;
     if(ship.overkillDamageDealt > 0) {
       damageDealtText += ` (+${ship.overkillDamageDealt})`;
     }
-    damageDealtCell.innerText = damageDealtText;
-    damageDealtCell.dataset.sortValue = ship.totalDamageDealt;
+    const damageDealtSortValue = ship.totalDamageDealt;
+    statsTableRow.push(
+      {
+        value: damageDealtText,
+        sortValue: damageDealtSortValue
+      }
+    );
     
-    const damageTakenCell = document.createElement("td");
-    tableRow.appendChild(damageTakenCell);
     let damageTakenText = ship.shieldDamageReceived + ship.hullDamageReceived;
     if(ship.overkillDamageReceived > 0) {
       damageTakenText += ` (+${ship.overkillDamageReceived})`;
     }
-    damageTakenCell.innerText = damageTakenText;
-    damageTakenCell.dataset.sortValue = ship.shieldDamageReceived + ship.hullDamageReceived + ship.overkillDamageReceived;
+    const damageTakenSortValue = ship.shieldDamageReceived + ship.hullDamageReceived + ship.overkillDamageReceived;
+    statsTableRow.push(
+      {
+        value: damageTakenText,
+        sortValue: damageTakenSortValue
+      }
+    );
 
-    const hitRateCell = document.createElement("td");
-    tableRow.appendChild(hitRateCell);
     const shotsFired = ship.shotsFired;
+    let hitRateText;
+    let hitRateSortValue;
     if(shotsFired.length > 0) {
       const shotsHitNumber = shotsFired.filter(shot => shot.shotHasHit).length;
-      hitRateCell.innerText = (Math.round(10000 * shotsHitNumber / shotsFired.length) / 100) + "%";
-      hitRateCell.dataset.sortValue = shotsHitNumber / shotsFired.length;
+      hitRateText = (Math.round(10000 * shotsHitNumber / shotsFired.length) / 100) + "%";
+      hitRateSortValue = shotsHitNumber / shotsFired.length;
     } else {
-      hitRateCell.innerText = "-";
-      hitRateCell.dataset.sortValue = Number.MIN_SAFE_INTEGER;
+      hitRateText = "-";
+      hitRateSortValue = Number.MIN_SAFE_INTEGER;
     }
-
-    const dodgeRateCell = document.createElement("td");
-    tableRow.appendChild(dodgeRateCell);
+    statsTableRow.push(
+      {
+        value: hitRateText,
+        sortValue: hitRateSortValue
+      }
+    );
+    
     const shotsReceived = ship.shotsReceived;
+    let dodgeRateText;
+    let dodgeRateSortValue;
     if(shotsReceived.length > 0) {
       const shotsDodgedNumber = shotsReceived.length - shotsReceived.filter(shot => shot.shotHasHit).length;
-      dodgeRateCell.innerText = (Math.round(10000 * shotsDodgedNumber / shotsReceived.length) / 100) + "%";
-      dodgeRateCell.dataset.sortValue = shotsDodgedNumber / shotsReceived.length;
+      dodgeRateText = (Math.round(10000 * shotsDodgedNumber / shotsReceived.length) / 100) + "%";
+      dodgeRateSortValue = shotsDodgedNumber / shotsReceived.length;
     } else {
-      dodgeRateCell.innerText = "-";
-      dodgeRateCell.dataset.sortValue = Number.MIN_SAFE_INTEGER;
+      dodgeRateText = "-";
+      dodgeRateSortValue = Number.MIN_SAFE_INTEGER;
     }
+    statsTableRow.push(
+      {
+        value: dodgeRateText,
+        sortValue: dodgeRateSortValue
+      }
+    );
+
+    statsTableContents.push(statsTableRow);
   });
-  statsMentionedShipsTableBody.replaceChildren(...newShipsTableRows);
+  buildStatsTableBody(statsMentionedShipsTableBody, statsTableContents);
 }
 
 function updateStatistics(logEntries) {
