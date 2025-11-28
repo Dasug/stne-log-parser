@@ -430,6 +430,36 @@ class IndividualShipStatistics {
     this.#owner = playerCharacter;
     playerCharacter._addShip(this);
   }
+
+  /**
+   * Merges another ship's statistics into this ship
+   * @param {IndividualShipStatistics} ship other ship's statistics 
+   */
+  mergeShipData(ship) {
+    this.#name = this.#name ?? ship.name;
+    this.#ncc = this.#ncc ?? ship.ncc;
+    this.#nccPrefix = this.#nccPrefix ?? ship.nccPrefix;
+    this.#shipClass = this.#shipClass ?? ship.shipClass;
+    this.#isDestroyed = this.#isDestroyed || ship.isDestroyed;
+    this.#hullDamageReceived = this.#hullDamageReceived + ship.hullDamageReceived;
+    this.#energyDamageReceived = this.#energyDamageReceived + ship.energyDamageReceived;
+    this.#shieldDamageReceived = this.#shieldDamageReceived + ship.shieldDamageReceived;
+    this.#overkillDamageReceived = this.#overkillDamageReceived + ship.overkillDamageReceived;
+    this.#hullDamageDealt = this.#hullDamageDealt + ship.hullDamageDealt;
+    this.#energyDamageDealt = this.#energyDamageDealt + ship.energyDamageDealt;
+    this.#shieldDamageDealt = this.#shieldDamageDealt + ship.shieldDamageDealt;
+    this.#overkillDamageDealt = this.#overkillDamageDealt + ship.overkillDamageDealt;
+    this.#opponentArmorAbsorption = this.#opponentArmorAbsorption + ship.opponentArmorAbsorption;
+    this.#armorAbsorption = this.#armorAbsorption + ship.armorAbsorption;
+    this.#armorPenetration = this.#armorPenetration + ship.armorPenetration;
+    this.#opponentArmorPenetrated = this.#opponentArmorPenetrated + ship.opponentArmorPenetrated;
+    this.#destroyer = this.#destroyer ?? ship.destroyer;
+    this.#destroyed = [...this.#destroyed, ...ship.destroyed];
+    this.#shotsFired = [...this.#shotsFired, ...ship.shotsFired];
+    this.#shotsReceived = [...this.#shotsReceived, ...ship.shotsReceived];
+    this.#destroyedByShot = this.#destroyedByShot ?? ship.destroyedByShot;
+    this.#disabledByShot = this.#disabledByShot ?? ship.disabledByShot;
+  }
   
   constructor() {
 
