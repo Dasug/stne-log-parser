@@ -51,8 +51,8 @@
                   </div>
                 </div>
                 <div class="stat-category">
-                  <h3>Mentioned Ships</h3>
-                  <table id="stats-mentioned-ships-table">
+                  <h3>Ships</h3>
+                  <table id="stats-mentioned-ships-table" data-row-template="#stats-mentioned-ships-table-row-template">
                     <thead>
                       <tr>
                         <th data-sortable="true">Ship</th>
@@ -69,6 +69,16 @@
                       </tr>
                     </tbody>
                   </table>
+                  <template id="stats-mentioned-ships-table-row-template">
+                    <tr>
+                      <td data-key="ship"></td>
+                      <td data-key="owner"></td>
+                      <td data-key="damageDealt"></td>
+                      <td data-key="damageTaken"></td>
+                      <td data-key="hitRate"></td>
+                      <td data-key="dodgeRate"></td>
+                    </tr>
+                  </template>
                 </div>
               </div>
           </details>

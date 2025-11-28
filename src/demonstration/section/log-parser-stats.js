@@ -67,125 +67,140 @@ function buildLogStatistics(logEntries) {
 
 function buildStatsTableBody(table, statsRows) {
   const tableBody = table.querySelector("& > tbody");
+  const template = document.querySelector(table.dataset.rowTemplate);
+  if(template === null) {
+    console.error("no row template found for table", table);
+    return;
+  }
 
   const newTableRows = [];
   statsRows.forEach(statsRow => {
-    const row = document.createElement("tr");
+    const row = template.content.cloneNode(true);
     newTableRows.push(row);
 
-    statsRow.forEach(statsItem => {
-      const cell = document.createElement("td");
+    for (let [key, statsItem] of Object.entries(statsRow)) {
+      const cell = row.querySelector(`td[data-key="${key}"]`);
+      if(cell === null) {
+        continue;
+      }
       cell.innerText = statsItem.value ?? "";
       cell.dataset.sortValue = statsItem.sortValue ?? 0;
-      row.appendChild(cell);
-    });
+    };
   });
 
   tableBody.replaceChildren(...newTableRows);
+}
+
+function makeShipNameCellData(ship) {
+  const shipNccDisplay = ship.nccPrefix ? (ship.nccPrefix + "-") : "";
+  const shipClassDisplay = ship.shipClass ? (", " + ship.shipClass) : "";
+  let shipNameString;
+  if(ship.ncc !== null) {
+    shipNameString = `${ship.name} (${shipNccDisplay}${ship.ncc}${shipClassDisplay})`;
+  } else {
+    shipNameString = ship.name;
+  }
+  if(ship.isDestroyed) {
+    shipNameString += " †";
+  }
+  const shipNameSortValue = ship.ncc ?? ship.name;
+  return {
+    value: shipNameString,
+    sortValue: shipNameSortValue
+  };
+}
+
+function makeOwnerCellData(ship) {
+  let ownerNameString;
+  if(ship.owner && ship.owner.name === null && ship.owner.id !== null) {
+    ownerNameString = ship.owner.id;
+  } else if(ship.owner && ship.owner.name !== null) {
+    ownerNameString = ship.owner.name;
+    if(ship.owner.id !== null) {
+      const ownerIdDisplay = ` (${ship.owner.idPrefix ? (ship.owner.idPrefix + "-") : ""}${ship.owner.id})`;
+      ownerNameString += ownerIdDisplay;
+    }
+  } else {
+    ownerNameString = "?";
+  }
+  const shipOwnerSortValue = ship.owner?.id ?? ship.owner?.name ?? "";
+  return {
+    value: ownerNameString,
+    sortValue: shipOwnerSortValue
+  }
+}
+
+function makeDamageDealtCellData(ship) {
+  let damageDealtText = ship.effectiveDamageDealt;
+  if(ship.overkillDamageDealt > 0) {
+    damageDealtText += ` (+${ship.overkillDamageDealt})`;
+  }
+  const damageDealtSortValue = ship.totalDamageDealt;
+  return {
+    value: damageDealtText,
+    sortValue: damageDealtSortValue
+  };
+}
+
+function makeDamageTakenCellData(ship) {
+  let damageTakenText = ship.shieldDamageReceived + ship.hullDamageReceived;
+  if(ship.overkillDamageReceived > 0) {
+    damageTakenText += ` (+${ship.overkillDamageReceived})`;
+  }
+  const damageTakenSortValue = ship.shieldDamageReceived + ship.hullDamageReceived + ship.overkillDamageReceived;
+  return {
+    value: damageTakenText,
+    sortValue: damageTakenSortValue
+  };
+}
+
+function makeHitRateCellData(ship) {
+  const shotsFired = ship.shotsFired;
+  let hitRateText;
+  let hitRateSortValue;
+  if(shotsFired.length > 0) {
+    const shotsHitNumber = shotsFired.filter(shot => shot.shotHasHit).length;
+    hitRateText = (Math.round(10000 * shotsHitNumber / shotsFired.length) / 100) + "%";
+    hitRateSortValue = shotsHitNumber / shotsFired.length;
+  } else {
+    hitRateText = "-";
+    hitRateSortValue = Number.MIN_SAFE_INTEGER;
+  }
+  return {
+    value: hitRateText,
+    sortValue: hitRateSortValue
+  };
+}
+
+function makeDodgeRateCellData(ship) {
+  const shotsReceived = ship.shotsReceived;
+  let dodgeRateText;
+  let dodgeRateSortValue;
+  if(shotsReceived.length > 0) {
+    const shotsDodgedNumber = shotsReceived.length - shotsReceived.filter(shot => shot.shotHasHit).length;
+    dodgeRateText = (Math.round(10000 * shotsDodgedNumber / shotsReceived.length) / 100) + "%";
+    dodgeRateSortValue = shotsDodgedNumber / shotsReceived.length;
+  } else {
+    dodgeRateText = "-";
+    dodgeRateSortValue = Number.MIN_SAFE_INTEGER;
+  }
+  return {
+    value: dodgeRateText,
+    sortValue: dodgeRateSortValue
+  };
 }
 
 function updateShipStatisticsTable(libraryStatistics) {
   const statsMentionedShipsTableBody = document.querySelector("#stats-mentioned-ships-table");
   const statsTableContents = [];
   libraryStatistics.ships.mentionedShips.forEach(ship => {
-    const statsTableRow = [];
-    const shipNccDisplay = ship.nccPrefix ? (ship.nccPrefix + "-") : "";
-    const shipClassDisplay = ship.shipClass ? (", " + ship.shipClass) : "";
-    let shipNameString;
-    if(ship.ncc !== null) {
-      shipNameString = `${ship.name} (${shipNccDisplay}${ship.ncc}${shipClassDisplay})`;
-    } else {
-      shipNameString = ship.name;
-    }
-    if(ship.isDestroyed) {
-      shipNameString += " †";
-    }
-    const shipNameSortValue = ship.ncc ?? ship.name;
-    statsTableRow.push({
-        value: shipNameString,
-        sortValue: shipNameSortValue
-      }
-    );
-
-    let ownerNameString;
-    if(ship.owner && ship.owner.name === null && ship.owner.id !== null) {
-      ownerNameString = ship.owner.id;
-    } else if(ship.owner && ship.owner.name !== null) {
-      ownerNameString = ship.owner.name;
-      if(ship.owner.id !== null) {
-        const ownerIdDisplay = ` (${ship.owner.idPrefix ? (ship.owner.idPrefix + "-") : ""}${ship.owner.id})`;
-        ownerNameString += ownerIdDisplay;
-      }
-    } else {
-      ownerNameString = "?";
-    }
-    const shipOwnerSortValue = ship.owner?.id ?? ship.owner?.name ?? "";
-    statsTableRow.push(
-      {
-        value: ownerNameString,
-        sortValue: shipOwnerSortValue
-      }
-    );
-    
-    let damageDealtText = ship.effectiveDamageDealt;
-    if(ship.overkillDamageDealt > 0) {
-      damageDealtText += ` (+${ship.overkillDamageDealt})`;
-    }
-    const damageDealtSortValue = ship.totalDamageDealt;
-    statsTableRow.push(
-      {
-        value: damageDealtText,
-        sortValue: damageDealtSortValue
-      }
-    );
-    
-    let damageTakenText = ship.shieldDamageReceived + ship.hullDamageReceived;
-    if(ship.overkillDamageReceived > 0) {
-      damageTakenText += ` (+${ship.overkillDamageReceived})`;
-    }
-    const damageTakenSortValue = ship.shieldDamageReceived + ship.hullDamageReceived + ship.overkillDamageReceived;
-    statsTableRow.push(
-      {
-        value: damageTakenText,
-        sortValue: damageTakenSortValue
-      }
-    );
-
-    const shotsFired = ship.shotsFired;
-    let hitRateText;
-    let hitRateSortValue;
-    if(shotsFired.length > 0) {
-      const shotsHitNumber = shotsFired.filter(shot => shot.shotHasHit).length;
-      hitRateText = (Math.round(10000 * shotsHitNumber / shotsFired.length) / 100) + "%";
-      hitRateSortValue = shotsHitNumber / shotsFired.length;
-    } else {
-      hitRateText = "-";
-      hitRateSortValue = Number.MIN_SAFE_INTEGER;
-    }
-    statsTableRow.push(
-      {
-        value: hitRateText,
-        sortValue: hitRateSortValue
-      }
-    );
-    
-    const shotsReceived = ship.shotsReceived;
-    let dodgeRateText;
-    let dodgeRateSortValue;
-    if(shotsReceived.length > 0) {
-      const shotsDodgedNumber = shotsReceived.length - shotsReceived.filter(shot => shot.shotHasHit).length;
-      dodgeRateText = (Math.round(10000 * shotsDodgedNumber / shotsReceived.length) / 100) + "%";
-      dodgeRateSortValue = shotsDodgedNumber / shotsReceived.length;
-    } else {
-      dodgeRateText = "-";
-      dodgeRateSortValue = Number.MIN_SAFE_INTEGER;
-    }
-    statsTableRow.push(
-      {
-        value: dodgeRateText,
-        sortValue: dodgeRateSortValue
-      }
-    );
+    const statsTableRow = {};
+    statsTableRow.ship = makeShipNameCellData(ship);
+    statsTableRow.owner = makeOwnerCellData(ship);
+    statsTableRow.damageDealt = makeDamageDealtCellData(ship);
+    statsTableRow.damageTaken = makeDamageTakenCellData(ship);
+    statsTableRow.hitRate = makeHitRateCellData(ship);
+    statsTableRow.dodgeRate = makeDodgeRateCellData(ship);
 
     statsTableContents.push(statsTableRow);
   });
