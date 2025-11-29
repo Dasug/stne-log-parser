@@ -4,6 +4,7 @@ import TerserPlugin from 'terser-webpack-plugin';
 export default {
   entry: {
     main: './src/index.js',
+    demonstration: './src/demonstration/index.js',
   },
   output: {
     filename: '[name].js',
