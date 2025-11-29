@@ -80,6 +80,66 @@
                     </tr>
                   </template>
                 </div>
+
+                <div class="stat-category">
+                  <h3>By Players</h3>
+                  <table id="stats-aggregated-ships-by-player-table" data-row-template="#stats-player-table-row-template">
+                    <thead>
+                      <tr>
+                        <th data-sortable="true">Player</th>
+                        <th data-sortable="true">Damage Dealt</th>
+                        <th data-sortable="true">Damage Taken</th>
+                        <th data-sortable="true">Hit Rate</th>
+                        <th data-sortable="true">Dodge Rate</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td colspan="0">No ships were mentioned in the log.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <template id="stats-player-table-row-template">
+                    <tr>
+                      <td data-key="owner"></td>
+                      <td data-key="damageDealt"></td>
+                      <td data-key="damageTaken"></td>
+                      <td data-key="hitRate"></td>
+                      <td data-key="dodgeRate"></td>
+                    </tr>
+                  </template>
+                </div>
+                
+                <div class="stat-category">
+                  <h3>By Player & Ship Class</h3>
+                  <table id="stats-aggregated-ships-by-player-and-class-table" data-row-template="#stats-player-class-table-row-template">
+                    <thead>
+                      <tr>
+                        <th data-sortable="true">Player</th>
+                        <th data-sortable="true">Class</th>
+                        <th data-sortable="true">Damage Dealt</th>
+                        <th data-sortable="true">Damage Taken</th>
+                        <th data-sortable="true">Hit Rate</th>
+                        <th data-sortable="true">Dodge Rate</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td colspan="0">No ships were mentioned in the log.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <template id="stats-player-class-table-row-template">
+                    <tr>
+                      <td data-key="owner"></td>
+                      <td data-key="shipClass"></td>
+                      <td data-key="damageDealt"></td>
+                      <td data-key="damageTaken"></td>
+                      <td data-key="hitRate"></td>
+                      <td data-key="dodgeRate"></td>
+                    </tr>
+                  </template>
+                </div>
               </div>
           </details>
         </section>

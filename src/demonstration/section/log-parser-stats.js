@@ -2,6 +2,7 @@
 
 import LogEntry from "../../log-entry.js"
 import { Statistics } from "../../statistics.index.js";
+import AggregateShipStatistics from "../../statistics/aggregate-ship-statistics.js";
 
 /**
  * builds the log statistics object given by the library
@@ -110,6 +111,13 @@ function makeShipNameCellData(ship) {
   };
 }
 
+function makeShipClassCellData(ship) {
+  return {
+    value: ship.shipClass,
+    sortValue: ship.shipClass
+  };
+}
+
 function makeOwnerCellData(ship) {
   let ownerNameString;
   if(ship.owner && ship.owner.name === null && ship.owner.id !== null) {
@@ -155,13 +163,12 @@ function makeDamageTakenCellData(ship) {
 }
 
 function makeHitRateCellData(ship) {
-  const shotsFired = ship.shotsFired;
+  const hitRate = ship.hitRate;
   let hitRateText;
   let hitRateSortValue;
-  if(shotsFired.length > 0) {
-    const shotsHitNumber = shotsFired.filter(shot => shot.shotHasHit).length;
-    hitRateText = (Math.round(10000 * shotsHitNumber / shotsFired.length) / 100) + "%";
-    hitRateSortValue = shotsHitNumber / shotsFired.length;
+  if(hitRate !== null) {
+    hitRateText = (Math.round(10000 * hitRate) / 100) + "%";
+    hitRateSortValue = hitRate;
   } else {
     hitRateText = "-";
     hitRateSortValue = Number.MIN_SAFE_INTEGER;
@@ -174,6 +181,9 @@ function makeHitRateCellData(ship) {
 
 function makeDodgeRateCellData(ship) {
   const shotsReceived = ship.shotsReceived;
+  if(typeof shotsReceived === "undefined") {
+    console.log(ship);
+  }
   let dodgeRateText;
   let dodgeRateSortValue;
   if(shotsReceived.length > 0) {
@@ -204,7 +214,45 @@ function updateShipStatisticsTable(libraryStatistics) {
 
     statsTableContents.push(statsTableRow);
   });
+
   buildStatsTableBody(statsMentionedShipsTableBody, statsTableContents);
+  
+  const aggregateByPlayer = AggregateShipStatistics.aggregateByPlayer(libraryStatistics.ships.mentionedShips);
+
+  const aggregateStatsTableContents = [];
+  for(const aggregateShip of Object.values(aggregateByPlayer)) {
+    const statsTableRow = {};
+    statsTableRow.owner = makeOwnerCellData(aggregateShip);
+    statsTableRow.damageDealt = makeDamageDealtCellData(aggregateShip);
+    statsTableRow.damageTaken = makeDamageTakenCellData(aggregateShip);
+    statsTableRow.hitRate = makeHitRateCellData(aggregateShip);
+    statsTableRow.dodgeRate = makeDodgeRateCellData(aggregateShip);
+
+    aggregateStatsTableContents.push(statsTableRow);
+  };
+
+  const statsAggregatedShipsByPlayerTableBody = document.querySelector("#stats-aggregated-ships-by-player-table");
+  buildStatsTableBody(statsAggregatedShipsByPlayerTableBody, aggregateStatsTableContents);
+  
+  const aggregateByPlayerAndClass = AggregateShipStatistics.aggregateByPlayerAndShipClass(libraryStatistics.ships.mentionedShips);
+
+  const aggregateClassStatsTableContents = [];
+  for(const aggregateShipClasses of Object.values(aggregateByPlayerAndClass)) {
+    for(const aggregateShip of Object.values(aggregateShipClasses)) {
+      const statsTableRow = {};
+      statsTableRow.owner = makeOwnerCellData(aggregateShip);
+      statsTableRow.shipClass = makeShipClassCellData(aggregateShip);
+      statsTableRow.damageDealt = makeDamageDealtCellData(aggregateShip);
+      statsTableRow.damageTaken = makeDamageTakenCellData(aggregateShip);
+      statsTableRow.hitRate = makeHitRateCellData(aggregateShip);
+      statsTableRow.dodgeRate = makeDodgeRateCellData(aggregateShip);
+
+      aggregateClassStatsTableContents.push(statsTableRow);
+    }
+  };
+
+  const statsAggregatedShipsByPlayerAndClassTableBody = document.querySelector("#stats-aggregated-ships-by-player-and-class-table");
+  buildStatsTableBody(statsAggregatedShipsByPlayerAndClassTableBody, aggregateClassStatsTableContents);
 }
 
 function updateStatistics(logEntries) {
