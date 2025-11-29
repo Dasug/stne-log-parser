@@ -459,6 +459,11 @@ class IndividualShipStatistics {
     this.#shotsReceived = [...this.#shotsReceived, ...ship.shotsReceived];
     this.#destroyedByShot = this.#destroyedByShot ?? ship.destroyedByShot;
     this.#disabledByShot = this.#disabledByShot ?? ship.disabledByShot;
+    if(this.owner !== ship.owner && this.owner === null) {
+      this.setOwner(ship.owner);
+    }
+
+    return this;
   }
   
   constructor() {
