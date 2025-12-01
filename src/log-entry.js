@@ -161,17 +161,25 @@ class LogEntry {
         if(logLine.tags.includes(LineTag.weaponShotResult)) {
           inBattleResultPhase = true;
           currentAttack.push(logLine);
+          
+          // find the next (detected) line
+          let nextLineIndex = index+1;
           /**
            * @type {LogLine}
            */
-          const nextLine = this.#parsedLines[index + 1];
+          let nextLine = this.#parsedLines[nextLineIndex];
+          while(typeof nextLine !== "undefined") {
+            if(nextLine.detected) {
+              break;
+            }
+            nextLineIndex++;
+            nextLine = this.#parsedLines[nextLineIndex];
+          }
+
+          // we reached the end of the log so we'll end the attack here
           if(typeof nextLine === "undefined") {
             currentAttack = null;
             inBattleResultPhase = false;
-            continue;
-          }
-          // next line is undetected, presume to be still part of the attack so we don't need to end it here
-          if(!nextLine.detected) {
             continue;
           }
           
