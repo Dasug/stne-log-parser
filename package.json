@@ -20,7 +20,7 @@
     "webpack-merge": "^6.0.1"
   },
   "scripts": {
-    "test": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest",
+    "test": "cross-env NODE_OPTIONS=\"--experimental-vm-modules --no-webstorage\" jest",
     "prepare": "webpack --config webpack.prod.js",
     "build": "webpack --config webpack.prod.js",
     "watch": "webpack serve --config webpack.dev.js"
