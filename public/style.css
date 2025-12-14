@@ -425,6 +425,33 @@ details > div {
   font-size: 0.7rem;
 }
 
+/** Build tooltip only if browser supports anchor positioning */
+@supports (position-area: top) {
+  .tooltip {
+    anchor-name: --tooltip;
+    anchor-scope: --tooltip;
+  }
+  .tooltip::after {
+    position: absolute;
+    position-anchor: --tooltip;
+    position-area: top;
+    content: attr(data-tooltip-content);
+    display: none;
+    background: var(--bg-color);
+    border: var(--border-color) 2px solid;
+    border-radius: 8px;
+    margin-bottom: 0.5em;
+    padding: 0.5em;
+    block-size: fit-content;
+    inline-size: fit-content;
+    white-space: pre-line;
+  }
+
+  .tooltip:hover::after {
+    display: block;
+  }
+}
+
 @property --stat-num {
   syntax: '<integer>';
   initial-value: 0;

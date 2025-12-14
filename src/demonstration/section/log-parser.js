@@ -2,6 +2,7 @@
 
 import LogEntry from '../../log-entry.js';
 import LogHeadParser from '../../regex/log-head-parser.js';
+import DisplayableRegexResult from '../../regex/parse-result/displayable-regex-result.js';
 import { updateStatistics } from './log-parser-stats.js';
 
 function setupLogParser() {
@@ -37,10 +38,23 @@ function processLogEntry(logEntryInputField, workQueue) {
       newLineDivs.push(lineDiv);
       const parsedLine = parsedLines[index] ?? null;
       lineDiv.innerText = parsedLine.line;
-      
+      lineDiv.classList.add("tooltip");
+
       if(parsedLine.detected) {
+        lineDiv.dataset.tooltipContent = String.raw`Line Type: ${parsedLine.lineParser.name}`;
+        for(const [key, value] of Object.entries(parsedLine.parseResult)) {
+          lineDiv.dataset.tooltipContent += "\n";
+          if(value instanceof DisplayableRegexResult) {
+            lineDiv.dataset.tooltipContent += `${key}: ${value.asDisplayString()}`;
+          } else if(typeof value === "object") {
+            lineDiv.dataset.tooltipContent += `${key}: ${JSON.stringify(value)}`;
+          } else {
+            lineDiv.dataset.tooltipContent += `${key}: ${value}`;
+          }
+        }
         lineDiv.classList.add("log-line-parsed");
       } else {
+        lineDiv.dataset.tooltipContent = "Line could not be parsed.";
         lineDiv.classList.add("log-line-not-parsed");
       }
     }
