@@ -41,6 +41,7 @@ describe('ship name and ncc regex', () => {
     expect(result.nccPrefix).toBe("NX");
     expect(result.ncc).toBe(2527210);
     expect(result.shipClass).toBe("Galaxy");
+    expect(result.asDisplayString()).toBe("[Laburec] Eternal Flare (NX-2527210, Galaxy)");
   });
 
   test("ShipNameAndNcc can parse ship types with included type description ", () => {
@@ -50,5 +51,6 @@ describe('ship name and ncc regex', () => {
     expect(result.nccPrefix).toBeNull();
     expect(result.ncc).toBe(2774826);
     expect(result.shipClass).toBe("Pegasus (Sondenjagdschiff)");
+    expect(result.asDisplayString()).toBe("First Strike (2774826, Pegasus (Sondenjagdschiff))");
   });
 });

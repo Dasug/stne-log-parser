@@ -1,8 +1,9 @@
 "use strict"
 
 import BuildingType from "../../enum/building-type.js";
+import DisplayableRegexResult from "./displayable-regex-result.js";
 
-class BuildingResult {
+class BuildingResult extends DisplayableRegexResult {
   /**
    * type of the building
    * @type {BuildingType}
@@ -14,6 +15,13 @@ class BuildingResult {
    * @type {?string}
    */
   name;
+
+  asDisplayString() {
+    if(this.name === null) {
+      return this.type.enumKey;
+    }
+    return String.raw`${this.name} (${this.type.enumKey})`;
+  }
 }
 
 export default BuildingResult;

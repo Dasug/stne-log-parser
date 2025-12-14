@@ -15,5 +15,6 @@ describe('colony name and id regex', () => {
     expect(result).not.toBeNull();
     expect(result.name).toBe("[March] Vorash");
     expect(result.id).toBe(23296);
+    expect(result.asDisplayString()).toBe("[March] Vorash (23296)");
   });
 });

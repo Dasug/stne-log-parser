@@ -23,6 +23,7 @@ describe('avatar regex', () => {
     expect(resultObject.name).toBe("Mario Frueh");
     expect(resultObject.itemId).toBe(1103184);
     expect(resultObject.job).toBe(AvatarJob.dronePilot);
+    expect(resultObject.asDisplayString()).toBe("Mario Frueh (1103184, dronePilot)");
   });
 
   test("avatar returns proper EN resultObject", () => {
@@ -31,6 +32,7 @@ describe('avatar regex', () => {
     expect(resultObject.name).toBe("Casnia of Borg");
     expect(resultObject.itemId).toBe(1252602);
     expect(resultObject.job).toBe(AvatarJob.defenseTactician);
+    expect(resultObject.asDisplayString()).toBe("Casnia of Borg (1252602, defenseTactician)");
   });
 
 });

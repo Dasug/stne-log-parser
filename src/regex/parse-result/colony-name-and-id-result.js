@@ -1,6 +1,8 @@
 "use strict"
 
-class ColonyNameAndIdResult {
+import DisplayableRegexResult from "./displayable-regex-result.js";
+
+class ColonyNameAndIdResult extends DisplayableRegexResult {
   /** 
    * colony name
    * @type {string}
@@ -12,6 +14,10 @@ class ColonyNameAndIdResult {
    * @type {number}
    */
   id;
+
+  asDisplayString() {
+    return String.raw`${this.name} (${this.id})`;
+  }
 }
 
 export default ColonyNameAndIdResult;

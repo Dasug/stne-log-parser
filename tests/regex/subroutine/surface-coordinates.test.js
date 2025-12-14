@@ -17,5 +17,6 @@ describe('surface coordinates regex', () => {
     const resultObject = SurfaceCoordinates.matchResult("8|3");
     expect(resultObject.x).toBe(8);
     expect(resultObject.y).toBe(3);
+    expect(resultObject.asDisplayString()).toBe("8|3");
   });
 });

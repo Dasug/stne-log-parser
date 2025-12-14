@@ -1,6 +1,8 @@
 "use strict"
 
-class SurfaceCoordinatesResult {
+import DisplayableRegexResult from "./displayable-regex-result.js";
+
+class SurfaceCoordinatesResult extends DisplayableRegexResult {
   /**
    * x coordinate
    * @type {number}
@@ -12,6 +14,10 @@ class SurfaceCoordinatesResult {
    * @type {number}
    */
   y;
+
+  asDisplayString() {
+    return String.raw`${this.x}|${this.y}`;
+  }
 }
 
 export default SurfaceCoordinatesResult;

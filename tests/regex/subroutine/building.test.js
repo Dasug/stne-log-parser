@@ -73,6 +73,7 @@ describe('german language buildings regex', () => {
       expect(resultObject).not.toBeNull();
       expect(resultObject.name).toBe(name);
       expect(resultObject.type).toBe(buildingEntry.type);
+      expect(resultObject.asDisplayString()).toBe(String.raw`${name} (${buildingEntry.type.enumKey})`);
     });
   });
   test("test all German building types without names", () => {
@@ -81,6 +82,7 @@ describe('german language buildings regex', () => {
       expect(resultObject).not.toBeNull();
       expect(resultObject.name).toBeNull();
       expect(resultObject.type).toBe(buildingEntry.type);
+      expect(resultObject.asDisplayString()).toBe(buildingEntry.type.enumKey);
     });
   });
   test("test all English building types with random names", () => {
@@ -93,6 +95,7 @@ describe('german language buildings regex', () => {
       expect(resultObject).not.toBeNull();
       expect(resultObject.name).toBe(name);
       expect(resultObject.type).toBe(buildingEntry.type);
+      expect(resultObject.asDisplayString()).toBe(String.raw`${name} (${buildingEntry.type.enumKey})`);
     });
   });
   test("test all English building types without names", () => {
@@ -101,6 +104,7 @@ describe('german language buildings regex', () => {
       expect(resultObject).not.toBeNull();
       expect(resultObject.name).toBeNull();
       expect(resultObject.type).toBe(buildingEntry.type);
+      expect(resultObject.asDisplayString()).toBe(buildingEntry.type.enumKey);
     });
   });
 });

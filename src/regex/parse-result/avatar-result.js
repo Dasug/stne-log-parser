@@ -1,8 +1,9 @@
 "use strict"
 
 import AvatarJob from "../../enum/avatar-job.js";
+import DisplayableRegexResult from "./displayable-regex-result.js";
 
-class AvatarResult {
+class AvatarResult extends DisplayableRegexResult {
   /** 
    * name of the avatar
    * @type {string}
@@ -19,6 +20,10 @@ class AvatarResult {
    * @type {AvatarJob}
    */
   job;
+
+  asDisplayString() {
+    return String.raw`${this.name} (${this.itemId}, ${this.job.enumKey})`;
+  }
 }
 
 export default AvatarResult;

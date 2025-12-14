@@ -1,8 +1,8 @@
 "use strict"
 
-import AvatarJob from "../../enum/avatar-job.js";
+import DisplayableRegexResult from "./displayable-regex-result.js";
 
-class ItemResult {
+class ItemResult extends DisplayableRegexResult {
   /** 
    * name of the item
    * @type {string}
@@ -19,6 +19,13 @@ class ItemResult {
    * @type {number}
   */
   itemTypeId;
+
+  asDisplayString() {
+    if(this.itemId === null) {
+      return String.raw`${this.name} (${this.itemTypeId})`;
+    }
+    return String.raw`${this.name} (${this.itemId}, ${this.itemTypeId})`;
+  }
 }
 
 export default ItemResult;

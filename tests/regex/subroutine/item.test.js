@@ -19,6 +19,7 @@ describe('item regex', () => {
     expect(resultObject.name).toBe(String.raw`Lackierungsset "Verlassene" für die Klaestron`);
     expect(resultObject.itemId).toBe(1592871);
     expect(resultObject.itemTypeId).toBe(111121);
+    expect(resultObject.asDisplayString()).toBe(String.raw`Lackierungsset "Verlassene" für die Klaestron (1592871, 111121)`);
   });
 
   test("item returns proper resultObject without item id", () => {
@@ -27,6 +28,7 @@ describe('item regex', () => {
     expect(resultObject.name).toBe("Spektralersplitter");
     expect(resultObject.itemTypeId).toBe(111001);
     expect(resultObject.itemId).toBeNull();
+    expect(resultObject.asDisplayString()).toBe("Spektralersplitter (111001)");
   });
 
 });

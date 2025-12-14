@@ -1,6 +1,8 @@
 "use strict"
 
-class ShipNameAndNccResult {
+import DisplayableRegexResult from "./displayable-regex-result.js";
+
+class ShipNameAndNccResult extends DisplayableRegexResult {
   /** 
    * name of the ship
    * @type {string}
@@ -23,6 +25,11 @@ class ShipNameAndNccResult {
    * @type {string}
    */
   shipClass;
+
+  asDisplayString() {
+    const nccPrefix = this.nccPrefix !== null ? String.raw`${this.nccPrefix}-` : "";
+    return String.raw`${this.name} (${nccPrefix}${this.ncc}, ${this.shipClass})`;
+  }
 }
 
 export default ShipNameAndNccResult;

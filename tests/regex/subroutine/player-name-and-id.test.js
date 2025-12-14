@@ -31,6 +31,7 @@ describe('player name and id regex', () => {
     expect(result.name).toBe("[DE-1] SUPPORT");
     expect(result.idPrefix).toBe("NPC");
     expect(result.id).toBe(50546);
+    expect(result.asDisplayString()).toBe("[DE-1] SUPPORT (NPC-50546)");
   });
 
   test("Matches even with linebreak between name and ID", () => {
@@ -40,5 +41,6 @@ describe('player name and id regex', () => {
     expect(result.name).toBe("S||Mâreth McDèrmot");
     expect(result.idPrefix).toBeNull();
     expect(result.id).toBe(75738);
+    expect(result.asDisplayString()).toBe("S||Mâreth McDèrmot (75738)");
   });
 });

@@ -17,5 +17,7 @@ describe('weapon damage regex', () => {
     expect(result.shieldDamage).toBe(22);
     expect(result.hullDamage).toBe(44);
     expect(result.energyDamage).toBe(66);
+
+    expect(result.asDisplayString()).toBe("Shield: 22 / Hull: 44 / Energy: 66");
   });
 });

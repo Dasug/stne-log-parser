@@ -1,6 +1,8 @@
 "use strict"
 
-class PlayerNameAndIdResult {
+import DisplayableRegexResult from "./displayable-regex-result.js";
+
+class PlayerNameAndIdResult extends DisplayableRegexResult {
   /** 
    * player name
    * @type {string}
@@ -18,6 +20,11 @@ class PlayerNameAndIdResult {
    * @type {?string}
    */
   idPrefix;
+
+  asDisplayString() {
+    const idPrefix = this.idPrefix !== null ? String.raw`${this.idPrefix}-` : "";
+    return String.raw`${this.name} (${idPrefix}${this.id})`;
+  }
 }
 
 export default PlayerNameAndIdResult;
