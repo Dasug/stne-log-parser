@@ -5941,12 +5941,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"regex@npm:^6.0.1":
-  version: 6.0.1
-  resolution: "regex@npm:6.0.1"
+"regex@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "regex@npm:6.1.0"
   dependencies:
     regex-utilities: "npm:^2.3.0"
-  checksum: 10c0/687b3e063d4ca19b0de7c55c24353f868a0fb9ba21512692470d2fb412e3a410894dd5924c91ea49d8cb8fa865e36ec956e52436ae0a256bdc095ff136c30aba
+  checksum: 10c0/6e0ee2a1c17d5a66dc1120dfc51899dedf6677857e83a0df4d5a822ebb8645a54a079772efc1ade382b67aad35e4e22b5bd2d33c05ed28b0e000f8f57eb0aec1
   languageName: node
   linkType: hard
 
@@ -6493,7 +6493,7 @@ __metadata:
     dayjs: "npm:^1.11.18"
     enumify: "npm:^2.0.0"
     jest: "npm:^30.0.5"
-    regex: "npm:^6.0.1"
+    regex: "npm:^6.1.0"
     terser-webpack-plugin: "npm:^5.3.16"
     webpack: "npm:^5.102.1"
     webpack-cli: "npm:^6.0.1"
