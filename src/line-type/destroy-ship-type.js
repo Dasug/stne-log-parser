@@ -53,6 +53,18 @@ class DestroyShipType extends GenericType {
     )
   }
 
+  static _linebreakFixRegex = addSubroutines(
+    pattern`
+      (?<= (von|from|by)\ *)
+      \n
+      (?= \ *(?<owner> \g<playerAndId>))
+    `,
+    {
+      "playerAndId": PlayerNameAndId.asSubroutineDefinition(),
+    },
+    'g'
+  );
+
   static _buildResultObject(matches) {
     const ship = ShipNameAndNcc.matchResult(matches.groups.ship);
     const owner = PlayerNameAndId.matchResult(matches.groups.owner) ?? null;
@@ -65,6 +77,12 @@ class DestroyShipType extends GenericType {
 
 
     return resultObject;
+  }
+
+  /** fixes the lines in this log entry being split in some cases when copying it from the STNE log page */
+  static fixSplitLines(logText) {
+    const regexp = this._linebreakFixRegex;
+    return logText.replaceAll(regexp, ' ');
   }
 
   /**
