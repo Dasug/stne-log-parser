@@ -188,7 +188,9 @@ class FireWeaponType extends GenericType {
    * @override
    */
   static populateStatistics(/** @type {Statistics}*/ statistics, parseResult) {
-    statistics.registerShipAndOwner(parseResult.origin, parseResult.owner);
+    if(parseResult.origin instanceof ShipNameAndNccResult) {
+      statistics.registerShipAndOwner(parseResult.origin, parseResult.owner);
+    }
     statistics.register(parseResult.target);
     
     return statistics;

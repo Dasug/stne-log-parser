@@ -203,6 +203,10 @@ class IndividualAvatarStatistics {
     if(shotOrigin === null) {
       return false;
     }
+    // shot origin doesn't yet collect shots fired information
+    if(typeof shotOrigin.shotsFired === "undefined") {
+      return false;
+    }
     const weaponShots = shotOrigin.shotsFired.filter(/** @type {WeaponShot} */ weaponShot => weaponShot.weaponName === weaponName);
     if(weaponShots.length === 0) {
       return false;
