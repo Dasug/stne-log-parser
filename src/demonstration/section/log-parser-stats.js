@@ -181,9 +181,6 @@ function makeHitRateCellData(ship) {
 
 function makeDodgeRateCellData(ship) {
   const shotsReceived = ship.shotsReceived;
-  if(typeof shotsReceived === "undefined") {
-    console.log(ship);
-  }
   let dodgeRateText;
   let dodgeRateSortValue;
   if(shotsReceived.length > 0) {
