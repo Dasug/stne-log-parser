@@ -1,6 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
 import LineTag from '../../src/enum/line-tag.js';
-import Statistics from '../../src/statistics/statistics.js';
 import AtmosphereAbsorptionType from '../../src/line-type/atmosphere-absorption-type.js';
 
 describe('atmosphere absorption line type', () => {

@@ -2,7 +2,7 @@
 
 import GenericType from "./generic-type.js";
 import LineTag from "../../src/enum/line-tag.js";
-import AtmoshpereAbsorptionResult from "./parse-result/athmosphere-absorption-result.js";
+import AtmoshpereAbsorptionResult from "./parse-result/atmosphere-absorption-result.js";
 import { regex } from "regex";
 
 class AtmosphereAbsorptionType extends GenericType {
