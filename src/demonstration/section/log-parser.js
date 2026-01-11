@@ -6,11 +6,22 @@ import DisplayableRegexResult from '../../regex/parse-result/displayable-regex-r
 import { updateStatistics } from './log-parser-stats.js';
 
 function setupLogParser() {
-  const input = document.querySelector("#parser .log-entry");
+  const input = document.querySelector("#log-parser-input");
   input.addEventListener("input", () => handleInput(input, input.innerText));
 }
 
-function processLogEntry(logEntryInputField, workQueue) {
+function jumpToLogLine(lineDiv) {
+  lineDiv.scrollIntoView({
+    "behavior": "auto",
+    "block": "center",
+    "container": "all",
+    "inline": "start",
+  });
+  lineDiv.classList.add("highlighted");
+  setTimeout(() => lineDiv.classList.remove("highlighted"), 3000);
+}
+
+function processLogEntry(logEntryInputField, unknownLogLineContainer, workQueue) {
   if(workQueue.length === 0) {
     updateStatistics(logEntryInputField.parsedEntries);
     return;
@@ -25,7 +36,6 @@ function processLogEntry(logEntryInputField, workQueue) {
   } catch(e) {
     console.error("could not parse log entry", {entry, e});
   }
-
   
   if(parsedEntry !== null) {
     logEntryInputField.parsedEntries.push(parsedEntry);
@@ -56,6 +66,10 @@ function processLogEntry(logEntryInputField, workQueue) {
       } else {
         lineDiv.dataset.tooltipContent = "Line could not be parsed.";
         lineDiv.classList.add("log-line-not-parsed");
+        const lineDivClone = lineDiv.cloneNode(true);
+        lineDivClone.classList.add("log-line-jump");
+        lineDivClone.addEventListener("click", () => jumpToLogLine(lineDiv));
+        unknownLogLineContainer.appendChild(lineDivClone);
       }
     }
 
@@ -65,7 +79,7 @@ function processLogEntry(logEntryInputField, workQueue) {
   updateStatistics(logEntryInputField.parsedEntries);
 
   // go to the next item when done.
-  window.setTimeout(() => processLogEntry(logEntryInputField, workQueue), 100);
+  window.setTimeout(() => processLogEntry(logEntryInputField, unknownLogLineContainer, workQueue), 100);
 }
 
 function handleInput(inputField, inputContent) {
@@ -78,6 +92,9 @@ function handleInput(inputField, inputContent) {
   let currentEntryDiv = null;
   const lastEntryLine = logEntries.reduce((acc, entry) => Math.max(acc, entry.lineEnd), 0);
   const entryDivs = [];
+
+  const unknownLogLineContainer = document.querySelector("#unknown-log-lines");
+  unknownLogLineContainer.replaceChildren();
 
   for (let lineNum = 0; lineNum < lines.length; lineNum++) {
     const line = lines[lineNum];
@@ -119,7 +136,7 @@ function handleInput(inputField, inputContent) {
     };
   }).sort((a,b) => (a.entry.dateTime - b.entry.dateTime));
   window.setTimeout(() => {
-    processLogEntry(inputField, workQueue);
+    processLogEntry(inputField, unknownLogLineContainer, workQueue);
   }, 100);
 }
 

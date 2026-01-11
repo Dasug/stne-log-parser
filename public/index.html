@@ -23,7 +23,7 @@
         <section id="parser">
           <h2>Log Parser</h2>
           <div class="log-parser-container">
-            <div contenteditable="plaintext-only" spellcheck="false" class="log-entry"></div>
+            <div contenteditable="plaintext-only" spellcheck="false" id="log-parser-input" class="log-entry"></div>
           </div>
           <details id="log-statistics">
             <summary>Statistics</summary>
@@ -142,6 +142,12 @@
                   </template>
                 </div>
               </div>
+          </details>
+          <details id="unknown-log-lines-detail">
+            <summary>Unknown Log Lines</summary>
+            <div>
+              <div class="log-entry" id="unknown-log-lines"></div>
+            </div>
           </details>
         </section>
 

@@ -204,9 +204,17 @@ button:hover {
 }
 
 .log-entry:empty:before {
-  content: 'Enter your log entry here...';
   color: #666666;
   font-style: italic;
+  pointer-events: none;
+}
+
+#log-parser-input:empty::before {
+  content: 'Enter your log entry here...';
+}
+
+#unknown-log-lines:empty::before {
+  content: 'No unknown log lines found so far.';
 }
 
 .log-entry .log-entry-boundary {
@@ -217,6 +225,11 @@ button:hover {
 
 .log-entry .log-line {
   padding: 0 0.25em;
+  transition: background-color 500ms linear;
+}
+
+.log-entry .log-line.highlighted {
+  animation: 1s linear 0s infinite alternate-reverse --highlight-with-border;
 }
 
 .log-entry .log-line:first-child {
@@ -257,6 +270,10 @@ button:hover {
 
 .log-entry .log-header:hover {
   background-color: var(--line-header-color-hover);
+}
+
+.log-line-jump {
+  cursor: pointer;
 }
 
 /* Table styling for dark theme */
@@ -423,6 +440,15 @@ details > div {
 
 .stat-grid.compact .stat-label {
   font-size: 0.7rem;
+}
+
+@keyframes --highlight-with-border {
+  from {
+    outline: 1px solid rgb(159, 121, 24);
+  }
+  to {
+    outline: 1px solid rgb(255, 217, 0);
+  }
 }
 
 /** Build tooltip only if browser supports anchor positioning */
