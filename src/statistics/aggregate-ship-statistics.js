@@ -53,12 +53,11 @@ class AggregateShipStatistics extends IndividualShipStatistics {
     const shipsByOwner = this.#organizeShipsByOwner(ships);
     const shipsByOwnerAndClass = mapObject(shipsByOwner, shipList => this.#organizeShipsByAttribute(shipList, "shipClass"));
 
-
     const aggregates = {};
     for(const [owner, ownerClasses] of Object.entries(shipsByOwnerAndClass)) {
       aggregates[owner] = {};
       for(const [shipClass, shipClassShips] of Object.entries(ownerClasses)) {
-        aggregates[owner][shipClass] = shipClassShips.reduce((ship, aggregate) => aggregate.mergeShipData(ship), new AggregateShipStatistics);
+        aggregates[owner][shipClass] = shipClassShips.reduce((aggregate, ship) => aggregate.mergeShipData(ship), new AggregateShipStatistics);
       }
     };
 
