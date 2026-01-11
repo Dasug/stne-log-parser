@@ -2,6 +2,12 @@ import { mapObject } from "../util/object-helper.js";
 import IndividualShipStatistics from "./individual-ship-statistics.js";
 
 class AggregateShipStatistics extends IndividualShipStatistics {
+  #number = 0;
+
+  get number() {
+    return this.#number;
+  }
+
   static #organizeShipsByOwner(ships) {
     const shipsByOwner = {};
     ships.forEach(ship => {
@@ -31,6 +37,16 @@ class AggregateShipStatistics extends IndividualShipStatistics {
     });
 
     return shipsByAttribute;
+  }
+
+  /**
+   * @inheritdoc
+   * @override
+   */
+  mergeShipData(ship) {
+    super.mergeShipData(ship);
+    this.#number += ship instanceof AggregateShipStatistics ? ship.number : 1;
+    return this;
   }
 
   /**

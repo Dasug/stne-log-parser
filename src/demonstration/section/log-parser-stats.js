@@ -118,6 +118,13 @@ function makeShipClassCellData(ship) {
   };
 }
 
+function makeShipClassNumberCellData(ship) {
+  return {
+    value: ship.number ?? 1,
+    sortValue: ship.number ?? 1
+  };
+}
+
 function makeOwnerCellData(ship) {
   let ownerNameString;
   if(ship.owner && ship.owner.name === null && ship.owner.id !== null) {
@@ -239,6 +246,7 @@ function updateShipStatisticsTable(libraryStatistics) {
       const statsTableRow = {};
       statsTableRow.owner = makeOwnerCellData(aggregateShip);
       statsTableRow.shipClass = makeShipClassCellData(aggregateShip);
+      statsTableRow.number = makeShipClassNumberCellData(aggregateShip);
       statsTableRow.damageDealt = makeDamageDealtCellData(aggregateShip);
       statsTableRow.damageTaken = makeDamageTakenCellData(aggregateShip);
       statsTableRow.hitRate = makeHitRateCellData(aggregateShip);
