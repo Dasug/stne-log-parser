@@ -2,7 +2,7 @@ import { describe, expect, test } from '@jest/globals';
 import LineTag from '../../src/enum/line-tag.js';
 import FireOnCloakedBuildingType from '../../src/line-type/fire-on-cloaked-building-type.js';
 
-describe('atmosphere absorption line type', () => {
+describe('fire on cloaked building line type', () => {
   const lineTypeClass = FireOnCloakedBuildingType;
   test("has battle tag", () => {
     expect(lineTypeClass.getTags()).toEqual(expect.arrayContaining([LineTag.battle, LineTag.weaponShotResult]));
