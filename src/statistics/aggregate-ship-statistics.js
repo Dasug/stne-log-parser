@@ -15,6 +15,11 @@ class AggregateShipStatistics extends IndividualShipStatistics {
     return shipsByOwner;
   }
 
+  /**
+   * @param {IndividualShipStatistics[]} ships ships to organize
+   * @param {string} attribute attribute name to organize by
+   * @returns {Object.<string,IndividualShipStatistics>}
+   */
   static #organizeShipsByAttribute(ships, attribute) {
     const shipsByAttribute = {};
     ships.forEach(ship => {
