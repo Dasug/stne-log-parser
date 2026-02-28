@@ -11,10 +11,10 @@
     "@babel/cli": "^7.28.6",
     "@babel/core": "^7.29.0",
     "@babel/preset-env": "^7.29.0",
-    "cross-env": "^10.0.0",
-    "jest": "^30.0.5",
+    "cross-env": "^10.1.0",
+    "jest": "^30.2.0",
     "terser-webpack-plugin": "^5.3.16",
-    "webpack": "^5.105.2",
+    "webpack": "^5.105.3",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.3",
     "webpack-merge": "^6.0.1"
@@ -37,7 +37,7 @@
     ]
   },
   "dependencies": {
-    "dayjs": "^1.11.18",
+    "dayjs": "^1.11.19",
     "enumify": "^2.0.0",
     "regex": "^6.1.0"
   },
