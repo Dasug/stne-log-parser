@@ -37,7 +37,7 @@
     ]
   },
   "dependencies": {
-    "dayjs": "^1.11.19",
+    "dayjs": "^1.11.20",
     "enumify": "^2.0.0",
     "regex": "^6.1.0"
   },
