@@ -5,9 +5,9 @@ __metadata:
   version: 8
   cacheKey: 10c0
 
-"@babel/cli@npm:^7.28.6":
-  version: 7.28.6
-  resolution: "@babel/cli@npm:7.28.6"
+"@babel/cli@npm:^7.29.7":
+  version: 7.29.7
+  resolution: "@babel/cli@npm:7.29.7"
   dependencies:
     "@jridgewell/trace-mapping": "npm:^0.3.28"
     "@nicolo-ribaudo/chokidar-2": "npm:2.1.8-no-fsevents.3"
@@ -28,7 +28,7 @@ __metadata:
   bin:
     babel: ./bin/babel.js
     babel-external-helpers: ./bin/babel-external-helpers.js
-  checksum: 10c0/b1bde80a44ca2f23c4786278db3faf0c41b249a67e6205bf9859debd19b58face48b8d0b57d3843b08c813b5d0b93ebbe153974b67fcea493cb9829ae76b6cb4
+  checksum: 10c0/0f5bd4a8b2958a86ab74375bf51e3e9e6886f8637c59f21b881d6735c22c4cdd39f2582280bfa7342243f0c8de23d6429f2d43e2ecfa0aa150a875fec1a14fce
   languageName: node
   linkType: hard
 
@@ -6940,7 +6940,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "stne-log-parser@workspace:."
   dependencies:
-    "@babel/cli": "npm:^7.28.6"
+    "@babel/cli": "npm:^7.29.7"
     "@babel/core": "npm:^7.29.0"
     "@babel/preset-env": "npm:^7.29.5"
     cross-env: "npm:^10.1.0"
