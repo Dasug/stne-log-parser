@@ -4,3 +4,7 @@ node_modules/
 # Ignore build artifacts
 dist/
 lib/
+
+.understand-anything/intermediate
+.understand-anything/.trash*
+.understand-anything/diff-overlay.json
