@@ -9,7 +9,7 @@
   "type": "module",
   "devDependencies": {
     "@babel/cli": "^8.0.4",
-    "@babel/core": "^8.0.1",
+    "@babel/core": "^8.0.5",
     "@babel/preset-env": "^8.0.2",
     "cross-env": "^10.1.0",
     "jest": "^30.5.1",
