@@ -8,7 +8,7 @@
   "license": "MIT",
   "type": "module",
   "devDependencies": {
-    "@babel/cli": "^8.0.6",
+    "@babel/cli": "^8.1.0",
     "@babel/core": "^8.0.10",
     "@babel/preset-env": "^8.0.7",
     "cross-env": "^10.1.0",
